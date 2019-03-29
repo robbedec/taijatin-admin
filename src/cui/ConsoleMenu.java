@@ -47,7 +47,7 @@ public class ConsoleMenu {
                 case 9:
                     break;
                 default:
-                    System.out.println("Ongeldige keuze");
+                    System.out.println("Ongeldig");
                     break;
             }
         }

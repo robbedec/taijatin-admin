@@ -1,6 +1,9 @@
 package main;
 
 import domain.Address;
+import domain.Attendance;
+import domain.Comment;
+import domain.User;
 import repository.AddressDao;
 import repository.GenericDao;
 import repository.GenericDaoJpa;
@@ -33,5 +36,17 @@ public class StartUp {
             System.out.printf("ID: %s, GEMEENTE: %s%n", a.getAddressId(), a.getCity());
         }
         System.out.println(lijst.size());
+
+        GenericDao<User> userRepo = new GenericDaoJpa<>(User.class);
+        List<User> userList = userRepo.getAll();
+        System.out.println("Users:");
+        for(User u : userList){
+            System.out.printf("ID: %s, USERNAME: %s%n", u.getId(), u.getUserName());
+            System.out.println(u.getAddressByAddressId().getStreet());
+            System.out.println();
+            for (Comment com : u.getCommentsById()){
+                System.out.println(com.getCommentText());
+            }
+        }
     }
 }

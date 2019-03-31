@@ -2,6 +2,7 @@ package domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -18,9 +19,9 @@ public class Address {
     private int zipCode;
     private String street;
     private int number;
+    private Collection<User> usersByAddressId;
 
     @Id
-    @GeneratedValue
     @Column(name = "AddressId")
     public int getAddressId() {
         return addressId;
@@ -96,5 +97,14 @@ public class Address {
     @Override
     public int hashCode() {
         return Objects.hash(addressId, country, city, zipCode, street, number);
+    }
+
+    @OneToMany(mappedBy = "addressByAddressId")
+    public Collection<User> getUsersByAddressId() {
+        return usersByAddressId;
+    }
+
+    public void setUsersByAddressId(Collection<User> usersByAddressId) {
+        this.usersByAddressId = usersByAddressId;
     }
 }

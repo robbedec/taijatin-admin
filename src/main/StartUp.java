@@ -41,7 +41,7 @@ public class StartUp {
         List<User> userList = userRepo.getAll();
         System.out.println("Users:");
         for(User u : userList){
-            System.out.printf("ID: %s, USERNAME: %s%n", u.getId(), u.getUserName());
+            System.out.printf("ID: %s, USERNAME: %s%n%s%n", u.getId(), u.getUserName(), u.getType());
             System.out.println(u.getAddressByAddressId().getStreet());
             System.out.println();
             for (Comment com : u.getCommentsById()){

@@ -345,4 +345,9 @@ public class User {
     public void setFormulasByFormulaId(Formula formulasByFormulaId) {
         this.formulasByFormulaId = formulasByFormulaId;
     }
+
+    @Override
+    public String toString(){
+        return this.userName;
+    }
 }

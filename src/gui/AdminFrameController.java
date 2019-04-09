@@ -10,12 +10,16 @@ import java.io.IOException;
 public class AdminFrameController extends BorderPane {
     private DomainController dc;
     private OverviewPanelController overviewPanelController;
+    private DetailPanelController detailPanelController;
 
     public AdminFrameController(DomainController dc) {
         this.dc = dc;
 
         overviewPanelController = new OverviewPanelController(this.dc);
         dc.addPropertyChangeListener(overviewPanelController);
+
+        detailPanelController = new DetailPanelController();
+        dc.addPropertyChangeListener(detailPanelController);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminFrame.fxml"));
         loader.setRoot(this);
@@ -27,5 +31,6 @@ public class AdminFrameController extends BorderPane {
             throw new RuntimeException(ex);
         }
         this.setLeft(overviewPanelController);
+        this.setCenter(detailPanelController);
     }
 }

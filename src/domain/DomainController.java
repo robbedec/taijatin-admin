@@ -3,16 +3,19 @@ package domain;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import repository.GenericDao;
 import repository.GenericDaoJpa;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class DomainController {
 
-    private User currentUser;
+    public User currentUser;
+    private PropertyChangeSupport subject;
 
     private GenericDao<User> userRepo;
 
@@ -23,10 +26,8 @@ public class DomainController {
         userRepo = new GenericDaoJpa<>(User.class);
         userLijst = FXCollections.observableList(userRepo.getAll());
         filteredList = new FilteredList<>(userLijst, p -> true);
-    }
-
-    public ObservableList<String> getMembers() {
-        return FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(userRepo.getAll().stream().filter(x -> x.getType().equals("Member")).map(User::getUserName).collect(Collectors.toList())));
+        subject = new PropertyChangeSupport(this);
+        currentUser = null;
     }
 
     public Collection<User> getFilteredMembers() {
@@ -38,8 +39,17 @@ public class DomainController {
     }
 
     public void setCurrentUser(User user){
+        subject.firePropertyChange("user", this.currentUser, user);
         this.currentUser = user;
-        notifyAll();
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        subject.addPropertyChangeListener(pcl);
+        pcl.propertyChange(new PropertyChangeEvent(pcl, "user", null, this.currentUser));
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener pcl) {
+        subject.removePropertyChangeListener(pcl);
     }
 
 }

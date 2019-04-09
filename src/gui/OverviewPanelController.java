@@ -2,29 +2,28 @@ package gui;
 
 import domain.DomainController;
 import domain.User;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
 
 import javafx.scene.input.KeyEvent;
-import java.io.IOException;
-import java.util.stream.Collectors;
 
-public class OverviewPanelController extends FlowPane {
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.IOException;
+
+public class OverviewPanelController extends FlowPane implements PropertyChangeListener {
 
     private final DomainController dc;
 
     @FXML
     private Button btnFilter;
     @FXML
-    private ListView<String> listViewMembers;
+    private ListView<User> listViewMembers;
     @FXML
     private TextField txtFilter;
 
@@ -41,11 +40,36 @@ public class OverviewPanelController extends FlowPane {
             throw new RuntimeException(ex);
         }
         listViewMembers.setItems((ObservableList) dc.getFilteredMembers());
+        listViewMembers.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
+            if(newValue != null) {
+                if(oldValue == null || !oldValue.equals(newValue)) {
+                    User user = newValue;
+                    dc.setCurrentUser(user);
+                    System.out.println(dc.currentUser.getUserName());
+                    System.out.println(user.getType());
+                }
+            }
+        });
     }
 
     @FXML
     private void filter(KeyEvent event) {
         dc.filter(txtFilter.getText());
         System.out.println(txtFilter.getText());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        /*User user = (User)evt.getNewValue();
+        System.out.println("kut");
+        dc.setCurrentUser(listViewMembers.getSelectionModel().getSelectedItem());
+        dc.setCurrentUser(user);
+
+        if(user != null){
+            System.out.println(user.getUserName());
+        }
+
+        System.out.println(dc.currentUser.getUserName());
+        System.out.println(user.getUserName());*/
     }
 }

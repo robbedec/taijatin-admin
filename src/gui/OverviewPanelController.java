@@ -2,10 +2,12 @@ package gui;
 
 import domain.DomainController;
 import domain.User;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
@@ -15,10 +17,12 @@ import javafx.scene.input.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class OverviewPanelController extends FlowPane implements PropertyChangeListener {
 
     private final DomainController dc;
+    public final String[] types = new String[]{ "Geen filter", "Lid", "Leraar", "Beheerder" };
 
     @FXML
     private Button btnFilter;
@@ -26,6 +30,9 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
     private ListView<User> listViewMembers;
     @FXML
     private TextField txtFilter;
+
+    @FXML
+    private ComboBox cboType;
 
     public OverviewPanelController(DomainController dc) {
         this.dc = dc;
@@ -50,11 +57,17 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
                 }
             }
         });
+        cboType.setItems(FXCollections.observableList(Arrays.asList(types)));
+        cboType.getSelectionModel().selectedItemProperty().addListener(x -> {
+            filter();
+            //dc.filterType(cboType.getSelectionModel().getSelectedIndex());
+        });
+        cboType.getSelectionModel().select(0);
     }
 
     @FXML
-    private void filter(KeyEvent event) {
-        dc.filter(txtFilter.getText());
+    private void filter() {
+        dc.filter(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex());
         System.out.println(txtFilter.getText());
     }
 

@@ -10,7 +10,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class DomainController {
 
@@ -21,6 +20,8 @@ public class DomainController {
 
     private ObservableList<User> userLijst;
     private FilteredList<User> filteredList;
+
+    public final String[] types = new String[]{ "Geen filter", "Member", "Teacher", "Admin" };
 
     public DomainController(){
         userRepo = new GenericDaoJpa<>(User.class);
@@ -34,8 +35,12 @@ public class DomainController {
         return filteredList;
     }
 
-    public void filter(String userName){
-        filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()));
+    public void filter(String userName, int index){
+        if(index == 0){
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()));
+        } else {
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(types[index]));
+        }
     }
 
     public void setCurrentUser(User user){

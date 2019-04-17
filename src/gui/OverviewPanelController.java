@@ -52,15 +52,12 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
                 if(oldValue == null || !oldValue.equals(newValue)) {
                     User user = newValue;
                     dc.setCurrentUser(user);
-                    System.out.println(dc.currentUser.getUserName());
-                    System.out.println(user.getType());
                 }
             }
         });
         cboType.setItems(FXCollections.observableList(Arrays.asList(types)));
         cboType.getSelectionModel().selectedItemProperty().addListener(x -> {
             filter();
-            //dc.filterType(cboType.getSelectionModel().getSelectedIndex());
         });
         cboType.getSelectionModel().select(0);
     }
@@ -68,7 +65,6 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
     @FXML
     private void filter() {
         dc.filter(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex());
-        System.out.println(txtFilter.getText());
     }
 
     @Override

@@ -57,7 +57,9 @@ public class GenericDaoJpa<T> implements GenericDao<T> {
 
     @Override
     public void insert(T object) {
+        startTransaction();
         entityManager.persist(object);
+        commitTransaction();
     }
 
     @Override

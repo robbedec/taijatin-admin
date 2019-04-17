@@ -1,6 +1,7 @@
 package domain;
 
 import javax.persistence.*;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Collection;
@@ -34,6 +35,9 @@ public class User {
     private String type;
     private Integer score;
     private Integer grade;
+
+    @Transient
+    private PropertyChangeSupport subject = new PropertyChangeSupport(this);
 
     @OneToMany(mappedBy = "usersByMemberId")
     private Collection<Attendance> attendancesById;
@@ -94,6 +98,7 @@ public class User {
     }
 
     public void setFirstname(String firstname) {
+        subject.firePropertyChange("firstname", this.firstname, firstname);
         this.firstname = firstname;
     }
 
@@ -350,4 +355,6 @@ public class User {
     public String toString(){
         return this.userName;
     }
+
+
 }

@@ -30,15 +30,13 @@ public class StartUp {
         entityManager.close();
         JPAUtil.getEntityManagerFactory().close();*/
 
-        GenericDao<Address> addressRepo = new GenericDaoJpa<>(Address.class);
-        List<Address> lijst = addressRepo.getAll();
-        for(Address a : lijst){
-            System.out.printf("ID: %s, GEMEENTE: %s%n", a.getAddressId(), a.getCity());
-        }
-        System.out.println(lijst.size());
-
         GenericDao<User> userRepo = new GenericDaoJpa<>(User.class);
         List<User> userList = userRepo.getAll();
+
+        User u = userList.get(0);
+        u.setFirstname("fouke");
+
+        /*
         System.out.println("Users:");
         for(User u : userList){
             System.out.printf("ID: %s, USERNAME: %s%n%s%n", u.getId(), u.getUserName(), u.getType());
@@ -47,6 +45,6 @@ public class StartUp {
             for (Comment com : u.getCommentsById()){
                 System.out.println(com.getCommentText());
             }
-        }
+        }*/
     }
 }

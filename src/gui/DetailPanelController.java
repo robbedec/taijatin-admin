@@ -1,8 +1,10 @@
 package gui;
 
+import domain.DomainController;
 import domain.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
@@ -11,14 +13,15 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
 public class DetailPanelController extends GridPane implements PropertyChangeListener {
+    private DomainController dc;
     @FXML
-    private TextField txtUsername;
+    private TextField txtUsername, txtFirstname, txtLastname;
     @FXML
-    private TextField txtType;
-
+    private Button btnSave;
     private User user;
 
-    public DetailPanelController() {
+    public DetailPanelController(DomainController dc) {
+        this.dc = dc;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("DetailPanel.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -29,12 +32,19 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
         }
     }
 
+    public void updateUser() {
+        user.setFirstname(txtFirstname.getText());
+        dc.setCurrentUser(user);
+        dc.updateUser();
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.user = (User)evt.getNewValue();
         if(this.user != null){
             txtUsername.setText(user.getUserName());
-
+            txtFirstname.setText(user.getFirstname());
+            txtLastname.setText(user.getLastname());
         }
     }
 }

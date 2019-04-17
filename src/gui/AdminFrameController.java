@@ -16,9 +16,9 @@ public class AdminFrameController extends BorderPane {
         this.dc = dc;
 
         overviewPanelController = new OverviewPanelController(this.dc);
-        dc.addPropertyChangeListener(overviewPanelController);
+        //dc.addPropertyChangeListener(overviewPanelController);
 
-        detailPanelController = new DetailPanelController();
+        detailPanelController = new DetailPanelController(this.dc);
         dc.addPropertyChangeListener(detailPanelController);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminFrame.fxml"));

@@ -51,10 +51,16 @@ public class DomainController {
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         subject.addPropertyChangeListener(pcl);
         pcl.propertyChange(new PropertyChangeEvent(pcl, "user", null, this.currentUser));
+
     }
 
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         subject.removePropertyChangeListener(pcl);
+    }
+
+    public void updateUser() {
+        System.out.println(currentUser.getFirstname());
+        userRepo.insert(currentUser);
     }
 
 }

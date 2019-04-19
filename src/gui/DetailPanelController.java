@@ -15,7 +15,7 @@ import java.io.IOException;
 public class DetailPanelController extends GridPane implements PropertyChangeListener {
     private DomainController dc;
     @FXML
-    private TextField txtUsername, txtFirstname, txtLastname;
+    private TextField txtUsername, txtFirstname, txtLastname, txtEmail;
     @FXML
     private Button btnSave;
     private User user;
@@ -34,6 +34,8 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
 
     public void updateUser() {
         user.setFirstname(txtFirstname.getText());
+        user.setLastname(txtLastname.getText());
+        user.setEmail(txtEmail.getText());
         dc.setCurrentUser(user);
         dc.updateUser();
     }
@@ -45,6 +47,7 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
             txtUsername.setText(user.getUserName());
             txtFirstname.setText(user.getFirstname());
             txtLastname.setText(user.getLastname());
+            txtEmail.setText(user.getEmail());
         }
     }
 }

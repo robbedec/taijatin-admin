@@ -9,6 +9,7 @@ import repository.GenericDaoJpa;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.sql.SQLOutput;
 import java.util.Collection;
 
 public class DomainController {
@@ -60,6 +61,8 @@ public class DomainController {
 
     public void updateUser() {
         System.out.println(currentUser.getFirstname());
+        System.out.println(currentUser.getLastname());
+        System.out.println(currentUser.getEmail());
         userRepo.insert(currentUser);
     }
 

@@ -18,6 +18,7 @@
   </rowConstraints>
    <children>
       <TextField fx:id="txtUsername" editable="false" promptText="Gebruikersnaam" />
+      <TextField fx:id="txtEmail" promptText="Email" GridPane.columnIndex="1" />
       <TextField fx:id="txtFirstname" promptText="Voornaam" GridPane.rowIndex="1" />
       <TextField fx:id="txtLastname" promptText="Naam" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Button fx:id="btnSave" mnemonicParsing="false" onAction="#updateUser" text="Opslaan" GridPane.rowIndex="2" />

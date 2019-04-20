@@ -1,6 +1,7 @@
 package domain;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.sql.Date;
@@ -20,7 +21,7 @@ public class User {
     private String email;
     private String firstname;
     private String lastname;
-    private int gender;
+    private Integer gender;
     private String nationalInsuranceNumber;
     private Date registrationdate;
     private String bornIn;
@@ -114,11 +115,14 @@ public class User {
 
     @Basic
     @Column(name = "Gender")
-    public int getGender() {
+    public Integer getGender() {
+        if(gender == null){
+            return 0;
+        }
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
@@ -255,6 +259,9 @@ public class User {
     @Basic
     @Column(name = "Grade")
     public Integer getGrade() {
+        if(grade == null){
+            return 0;
+        }
         return grade;
     }
 

@@ -14,7 +14,7 @@
             <Insets left="5.0" />
          </FlowPane.margin>
       </ComboBox>
-            <ListView fx:id="listViewMembers" prefHeight="211.0" prefWidth="400.0" />
+            <ListView fx:id="listViewMembers" prefHeight="300.0" prefWidth="400.0" />
    </children>
    <padding>
       <Insets top="10.0" />

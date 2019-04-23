@@ -64,7 +64,7 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
 
     @FXML
     private void filter() {
-        dc.filter(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex());
+        dc.filterUsers(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex());
     }
 
     @Override

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="javaG10">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>domain.Address</class>
+        <class>domain.Attendance</class>
+        <class>domain.CommentReply</class>
+        <class>domain.Comment</class>
+        <class>domain.CourseModuleViewer</class>
+        <class>domain.CourseModule</class>
+        <class>domain.Course</class>
+        <class>domain.FormulaDay</class>
+        <class>domain.FormulaFormulaDay</class>
+        <class>domain.Session</class>
+        <class>domain.User</class>
+        <class>domain.Formula</class>
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://DESKTOP-KTPB7P4:1433/G10_ProjectDotNet;instance=sqlexpress"/>
+            <property name="javax.persistence.jdbc.driver" value="net.sourceforge.jtds.jdbc.Driver"/>
+        </properties>
+    </persistence-unit>
+</persistence>

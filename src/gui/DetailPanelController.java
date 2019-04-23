@@ -31,7 +31,7 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
     @FXML
     private ChoiceBox txtGrade, txtGender, txtType;
     @FXML
-    private Button btnSave;
+    private Button btnSave, btnDelete;
     private User user;
 
     public DetailPanelController(DomainController dc) {
@@ -63,6 +63,11 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
         user.setGrade(newGrade);
         dc.setCurrentUser(user);
         dc.updateUser();
+    }
+
+    public void deleteUser(){
+        dc.setCurrentUser(user);
+        dc.deleteUser();
     }
 
     @Override

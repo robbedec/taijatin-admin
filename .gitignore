@@ -214,4 +214,7 @@ gradle-app.setting
 ### Gradle Patch ###
 **/build/
 
+# Persistence #
+src/META-INF/
+
 # End of https://www.gitignore.io/api/intellij,eclipse,netbeans,java,maven,gradle

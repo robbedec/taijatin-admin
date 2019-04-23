@@ -1,5 +1,6 @@
 package domain;
 
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -20,6 +21,8 @@ public class Club {
 
     private ObservableList<User> userLijst;
     private FilteredList<User> filteredList;
+
+    private ObservableBooleanValue hasClickedOnNewUser;
 
     public final String[] types = new String[]{ "Geen filter", "Member", "Teacher", "Admin" };
 
@@ -68,4 +71,14 @@ public class Club {
     public void deleteUser(){
         userRepo.delete(currentUser);
     }
+
+    public void addUser(User newUser){
+        System.out.println(currentUser.getFirstname());
+        System.out.println(currentUser.getLastname());
+        System.out.println(currentUser.getEmail());
+        userRepo.insert(newUser);
+        userLijst.add(newUser);
+
+    }
+
 }

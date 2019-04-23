@@ -17,6 +17,8 @@ import javafx.scene.input.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 public class OverviewPanelController extends FlowPane implements PropertyChangeListener {
@@ -83,6 +85,15 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
 
     @FXML
     public void newUser(){
+        User newUser = new User();
+        Date defaultBirthDay = Date.valueOf(LocalDate.of(1920, 1, 1));
+        Date registrationDate = Date.valueOf(LocalDate.now());
+
+        newUser.setBirthday(defaultBirthDay);
+        newUser.setRegistrationdate(registrationDate);
+        newUser.setGrade(1);
+        newUser.setType("Member");
+        dc.setCurrentUser(newUser);
 
     }
 

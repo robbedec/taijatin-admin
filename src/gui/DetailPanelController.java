@@ -31,7 +31,7 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
     @FXML
     private ChoiceBox txtGrade, txtGender, txtType;
     @FXML
-    private Button btnSave, btnDelete;
+    private Button btnSave, btnAdd;
     private User user;
 
     public DetailPanelController(DomainController dc) {
@@ -44,9 +44,11 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
     }
 
     public void updateUser() {
+        user.setUserName(txtUsername.getText());
         user.setFirstname(txtFirstname.getText());
         user.setLastname(txtLastname.getText());
         user.setEmail(txtEmail.getText());
@@ -68,23 +70,55 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.user = (User)evt.getNewValue();
-        if(this.user != null){
+        if(this.user != null) {
             txtUsername.setText(user.getUserName());
+            if(this.user.getUserName() == null || this.user.getUserName() == ""){
+                txtUsername.setEditable(true);
+                btnAdd.setVisible(true);
+                btnSave.setVisible(false);
+            }
+            else {
+                txtUsername.setEditable(false);
+                btnAdd.setVisible(false);
+                btnSave.setVisible(true);
+            }
             txtFirstname.setText(user.getFirstname());
+            txtFirstname.setEditable(true);
             txtLastname.setText(user.getLastname());
+            txtLastname.setEditable(true);
             txtEmail.setText(user.getEmail());
+            txtEmail.setEditable(true);
             txtBirthday.setValue(user.getBirthday().toLocalDate());
+            txtBirthday.setDisable(false);
             txtRegistrationDate.setValue(user.getRegistrationdate().toLocalDate());
+            txtRegistrationDate.setDisable(false);
             txtType.setItems(FXCollections.observableArrayList("Member", "Teacher", "Admin"));
             txtType.setValue(user.getType());
+            txtType.setDisable(false);
             //This will show the correct gender for each user
-            ObservableList genders = FXCollections.observableArrayList( "Selecteer", "Man", "Vrouw", "Trans");
+            ObservableList genders = FXCollections.observableArrayList("Selecteer", "Man", "Vrouw", "Trans");
             txtGender.setItems(genders);
             txtGender.setValue(genders.get(user.getGender()));
-            //The correct grzde of the user
+            txtGender.setDisable(false);
+            //The correct grade of the user
             ObservableList grades = FXCollections.observableArrayList("Selecteer", "Zesde Kyu", "Vijfde Kyu", "Vierde Kyu", "Derde Kyu", "Tweede Kyu", "Eerste Kyu", "Eerste Dan", "Tweede Dan", "Derde Dan", "Vierde Dan", "Vijfde Dan", "Zesde Dan", "Zevende Dan", "Achtste Dan", "Negende Dan", "Tiende Dan", "Elfde Dan", "Twaalfde Dan");
             txtGrade.setItems(grades);
             txtGrade.setValue(grades.get(user.getGrade()));
+            txtGrade.setDisable(false);
+        }
+        else if(user == null){
+            btnSave.setVisible(false);
+            btnAdd.setVisible(false);
+            txtUsername.setEditable(false);
+            txtEmail.setEditable(false);
+            txtFirstname.setEditable(false);
+            txtLastname.setEditable(false);
+            txtRegistrationDate.setDisable(true);
+            txtBirthday.setDisable(true);
+            txtType.setDisable(true);
+            txtGender.setDisable(true);
+            txtGrade.setDisable(true);
+
         }
     }
 

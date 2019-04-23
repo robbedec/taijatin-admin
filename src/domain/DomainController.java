@@ -78,8 +78,7 @@ public class DomainController {
         club.deleteUser();
     }
 
-    public void addUser(){
-
+    public void addUser(User newUser){
+        club.addUser(newUser);
     }
-
 }

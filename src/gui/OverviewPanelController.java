@@ -33,8 +33,12 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
 
     @FXML
     private ComboBox cboType;
+    @FXML
+    private Button btnNew, btnDelete;
 
-    public OverviewPanelController(DomainController dc) {
+    private ObservableList<User> users;
+
+        public OverviewPanelController(DomainController dc) {
         this.dc = dc;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("OverviewPanel.fxml"));
@@ -46,7 +50,8 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        listViewMembers.setItems((ObservableList) dc.getFilteredMembers());
+        users = FXCollections.observableList((ObservableList) dc.getFilteredMembers());
+        listViewMembers.setItems(users);
         listViewMembers.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
             if(newValue != null) {
                 if(oldValue == null || !oldValue.equals(newValue)) {
@@ -65,6 +70,20 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
     @FXML
     private void filter() {
         dc.filterUsers(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex());
+    }
+
+    @FXML
+    public void deleteUser(){
+        int index = listViewMembers.getSelectionModel().getSelectedIndex();
+        if(index >= 0) {
+            users.remove(index);
+            dc.deleteUser();
+        }
+    }
+
+    @FXML
+    public void newUser(){
+
     }
 
     @Override

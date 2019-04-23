@@ -65,11 +65,6 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
         dc.updateUser();
     }
 
-    public void deleteUser(){
-        dc.setCurrentUser(user);
-        dc.deleteUser();
-    }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.user = (User)evt.getNewValue();

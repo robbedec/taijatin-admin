@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
-
 public class GenericDaoJpa<T> implements GenericDao<T> {
 
     private static final String PU_NAME = "javaG10";
@@ -52,7 +51,9 @@ public class GenericDaoJpa<T> implements GenericDao<T> {
 
     @Override
     public void delete(T object) {
+        startTransaction();
         entityManager.remove(entityManager.merge(object));
+        commitTransaction();
     }
 
     @Override

@@ -15,7 +15,7 @@
         <class>domain.User</class>
         <class>domain.Formula</class>
         <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://DESKTOP-KTPB7P4:1433/G10_ProjectDotNet;instance=sqlexpress"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://127.0.0.1:1433/G10_ProjectDotNet;instance=sqlexpress;user=sa;password=p@ssword1"/>
             <property name="javax.persistence.jdbc.driver" value="net.sourceforge.jtds.jdbc.Driver"/>
         </properties>
     </persistence-unit>

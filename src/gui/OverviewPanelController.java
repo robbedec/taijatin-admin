@@ -77,10 +77,8 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
     @FXML
     public void deleteUser(){
         int index = listViewMembers.getSelectionModel().getSelectedIndex();
-        if(index >= 0) {
-            users.remove(index);
-            dc.deleteUser();
-        }
+        System.out.println(index);
+        dc.deleteUser();
     }
 
     @FXML

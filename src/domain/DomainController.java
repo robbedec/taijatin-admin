@@ -13,9 +13,9 @@ import java.sql.SQLOutput;
 import java.util.Collection;
 
 public class DomainController {
-
-   /* public User currentUser;
     private PropertyChangeSupport subject;
+   /* public User currentUser;
+
 
     private GenericDao<User> userRepo;
 
@@ -33,6 +33,7 @@ public class DomainController {
         subject = new PropertyChangeSupport(this);
         currentUser = null;*/
         club = new Club();
+       // subject = new PropertyChangeSupport(this);
     }
 
     public Collection<User> getFilteredMembers() {

@@ -52,7 +52,7 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        users = FXCollections.observableList((ObservableList) dc.getFilteredMembers());
+        users = (ObservableList) dc.getFilteredMembers();
         listViewMembers.setItems(users);
         listViewMembers.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
             if(newValue != null) {

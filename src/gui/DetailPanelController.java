@@ -121,13 +121,5 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
 
         }
     }
-
-    //Convert localdate to date
-    /*private Date convertLocalDateToDate(DatePicker datePicker){
-        LocalDate localDate = datePicker.getValue();
-        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-        Date date = Date.from(instant);
-        return date;
-    }*/
 }
 ;

@@ -62,9 +62,6 @@ public class Club {
     }
 
     public void updateUser() {
-        System.out.println(currentUser.getFirstname());
-        System.out.println(currentUser.getLastname());
-        System.out.println(currentUser.getEmail());
         userRepo.insert(currentUser);
     }
 

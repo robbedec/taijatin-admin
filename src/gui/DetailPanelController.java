@@ -1,5 +1,6 @@
 package gui;
 
+import domain.Address;
 import domain.DomainController;
 import domain.User;
 import javafx.collections.FXCollections;
@@ -13,6 +14,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -25,7 +27,7 @@ import java.util.List;
 public class DetailPanelController extends GridPane implements PropertyChangeListener {
     private DomainController dc;
     @FXML
-    private TextField txtUsername, txtFirstname, txtLastname, txtEmail;
+    private TextField txtUsername, txtFirstname, txtLastname, txtEmail, txtGsm, txtNationalNumber, txtTelephone, txtCountry, txtPlace, txtZipcode, txtStreet, txtNumber, txtBornIn;
     @FXML
     private DatePicker txtBirthday, txtRegistrationDate;
     @FXML
@@ -33,6 +35,7 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
     @FXML
     private Button btnSave, btnAdd;
     private User user;
+    private Address address;
 
     public DetailPanelController(DomainController dc) {
         this.dc = dc;
@@ -63,6 +66,30 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
         ObservableList grades = txtGrade.getItems();
         int newGrade = grades.indexOf(txtGrade.getValue());
         user.setGrade(newGrade);
+        user.setMobilePhoneNumber(txtGsm.getText());
+        user.setNationalInsuranceNumber(txtNationalNumber.getText());
+        user.setPhoneNumber(txtTelephone.getText());
+        //Update the address
+        address = user.getAddressByAddressId();
+        if(txtCountry.getText() != address.getCountry()) {
+            address.setCountry(txtCountry.getText());
+        }
+        if(txtPlace.getText() != address.getCountry()) {
+            address.setCity(txtPlace.getText());
+        }
+        Integer zip = Integer.parseInt(txtZipcode.getText());
+        if(zip != address.getZipCode()) {
+            address.setZipCode(zip);
+        }
+        if(txtStreet.getText() != address.getStreet()) {
+            address.setStreet(txtStreet.getText());
+        }
+        Integer number = Integer.parseInt(txtNumber.getText());
+        if(number != address.getNumber()) {
+            address.setNumber(number);
+        }
+        user.setAddressByAddressId(address);
+        user.setBornIn(txtBornIn.getText());
         dc.setCurrentUser(user);
         dc.updateUser();
     }
@@ -105,6 +132,24 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
             txtGrade.setItems(grades);
             txtGrade.setValue(grades.get(user.getGrade()));
             txtGrade.setDisable(false);
+            txtGsm.setText(user.getMobilePhoneNumber());
+            txtGsm.setEditable(true);
+            txtNationalNumber.setText(user.getNationalInsuranceNumber());
+            txtNationalNumber.setEditable(true);
+            txtTelephone.setText(user.getPhoneNumber());
+            txtTelephone.setEditable(true);
+            txtCountry.setText(user.getAddressByAddressId().getCountry());
+            txtCountry.setEditable(true);
+            txtPlace.setText(user.getAddressByAddressId().getCity());
+            txtPlace.setEditable(true);
+            txtZipcode.setText(user.getAddressByAddressId().getZipCode().toString());
+            txtZipcode.setEditable(true);
+            txtStreet.setText(user.getAddressByAddressId().getStreet());
+            txtStreet.setEditable(true);
+            txtNumber.setText(user.getAddressByAddressId().getNumber().toString());
+            txtNumber.setEditable(true);
+            txtBornIn.setText(user.getBornIn());
+            txtBornIn.setEditable(true);
         }
         else if(user == null){
             btnSave.setVisible(false);
@@ -118,7 +163,15 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
             txtType.setDisable(true);
             txtGender.setDisable(true);
             txtGrade.setDisable(true);
-
+            txtGsm.setEditable(false);
+            txtNationalNumber.setEditable(false);
+            txtTelephone.setEditable(false);
+            txtCountry.setEditable(false);
+            txtPlace.setEditable(false);
+            txtZipcode.setEditable(false);
+            txtStreet.setEditable(false);
+            txtNumber.setEditable(false);
+            txtBornIn.setEditable(false);
         }
     }
 }

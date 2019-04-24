@@ -17,17 +17,25 @@
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints minHeight="5.0" prefHeight="8.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="5.0" prefHeight="8.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="5.0" prefHeight="8.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="5.0" prefHeight="8.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="5.0" prefHeight="8.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="5.0" prefHeight="8.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="5.0" prefHeight="8.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="5.0" prefHeight="8.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="5.0" prefHeight="8.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="5.0" prefHeight="8.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="5.0" prefHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="3.0" percentHeight="6.0" prefHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="3.0" prefHeight="6.0" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="3.0" prefHeight="6.0" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="6.0" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="6.0" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="6.0" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="6.0" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="6.0" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="6.0" vgrow="SOMETIMES" />
+     <RowConstraints minHeight="3.0" prefHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="3.0" prefHeight="6.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="8.0" percentHeight="12.0" prefHeight="12.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <TextField fx:id="txtUsername" editable="false" promptText="Gebruikersnaam" GridPane.rowIndex="1">
@@ -46,7 +54,10 @@
          <GridPane.margin>
             <Insets left="20.0" right="20.0" />
          </GridPane.margin></TextField>
-      <Button fx:id="btnSave" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateUser" prefHeight="30.0" prefWidth="300.0" text="Opslaan" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
+      <Button fx:id="btnSave" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateUser" prefHeight="30.0" prefWidth="300.0" text="Opslaan" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="18">
+         <GridPane.margin>
+            <Insets bottom="15.0" />
+         </GridPane.margin></Button>
       <Label text="Graad" GridPane.rowIndex="8">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -138,6 +149,126 @@
          <GridPane.margin>
             <Insets left="20.0" />
          </GridPane.margin></ChoiceBox>
-      <Button fx:id="btnAdd" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateUser" prefHeight="30.0" prefWidth="300.0" text="Voeg gebruiker toe" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
+      <Button fx:id="btnAdd" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateUser" prefHeight="30.0" prefWidth="300.0" text="Voeg gebruiker toe" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="18">
+         <GridPane.margin>
+            <Insets bottom="15.0" />
+         </GridPane.margin></Button>
+      <TextField fx:id="txtGsm" promptText="Gsm-nummer" GridPane.columnIndex="1" GridPane.rowIndex="9">
+         <GridPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </GridPane.margin>
+      </TextField>
+      <Label layoutX="30.0" layoutY="361.0" text="Gsm-nummer" GridPane.columnIndex="1" GridPane.rowIndex="8">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Rijksregisternummer" GridPane.rowIndex="10">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="txtNationalNumber" promptText="Rijksregisternummer" GridPane.rowIndex="11">
+         <GridPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </GridPane.margin>
+      </TextField>
+      <Label fx:id="txtTelefoon" layoutX="430.0" layoutY="361.0" text="Telefoonnummer" GridPane.columnIndex="1" GridPane.rowIndex="10">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <TextField fx:id="txtTelephone" layoutX="430.0" layoutY="398.0" promptText="Telefoonnummer" GridPane.columnIndex="1" GridPane.rowIndex="11">
+         <GridPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </GridPane.margin>
+      </TextField>
+      <Label text="Woonplaats" GridPane.columnIndex="1" GridPane.rowIndex="12">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="txtPlace" promptText="Woonplaats" GridPane.columnIndex="1" GridPane.rowIndex="13">
+         <GridPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </GridPane.margin>
+      </TextField>
+      <Label text="Straat" GridPane.columnIndex="1" GridPane.rowIndex="14">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Land" GridPane.rowIndex="12">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="txtCountry" promptText="Land" GridPane.rowIndex="13">
+         <GridPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </GridPane.margin>
+      </TextField>
+      <TextField fx:id="txtZipcode" layoutX="10.0" layoutY="567.0" promptText="Postcode" GridPane.rowIndex="15">
+         <GridPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </GridPane.margin>
+      </TextField>
+      <Label text="Huisnummer" GridPane.rowIndex="16">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+      <Label layoutX="430.0" layoutY="556.0" text="Postcode" GridPane.rowIndex="14">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="txtStreet" layoutX="10.0" layoutY="589.0" promptText="Straat" GridPane.columnIndex="1" GridPane.rowIndex="15">
+         <GridPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </GridPane.margin>
+      </TextField>
+      <TextField fx:id="txtNumber" layoutX="410.0" layoutY="589.0" promptText="Huisnummer" GridPane.rowIndex="17">
+         <GridPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </GridPane.margin>
+      </TextField>
+      <Label text="Geboorteplaats" GridPane.columnIndex="1" GridPane.rowIndex="16">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="txtBornIn" promptText="Geboorteplaats" GridPane.columnIndex="1" GridPane.rowIndex="17">
+         <GridPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </GridPane.margin>
+      </TextField>
    </children>
 </fx:root>

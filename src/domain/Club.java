@@ -1,6 +1,5 @@
 package domain;
 
-import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -10,6 +9,7 @@ import repository.GenericDaoJpa;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.sql.SQLOutput;
 import java.util.Collection;
 
 public class Club {
@@ -22,8 +22,6 @@ public class Club {
     private ObservableList<User> userLijst;
     private FilteredList<User> filteredList;
 
-    private ObservableBooleanValue hasClickedOnNewUser;
-
     public final String[] types = new String[]{ "Geen filter", "Member", "Teacher", "Admin" };
 
     public Club(){
@@ -35,12 +33,12 @@ public class Club {
     }
 
     public void filterUsers(String userName, int index){
-        if(index == 0){
+        if(index == 0) {
             filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()));
         } else {
             filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(types[index]));
         }
-}
+    }
 
     public Collection<User> getFilteredMembers() {
         return filteredList;

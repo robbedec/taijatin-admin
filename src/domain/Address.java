@@ -1,7 +1,6 @@
 package domain;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -16,9 +15,9 @@ public class Address {
     private int addressId;
     private String country;
     private String city;
-    private int zipCode;
+    private Integer zipCode;
     private String street;
-    private int number;
+    private Integer number;
     private Collection<User> usersByAddressId;
 
     @Id
@@ -53,11 +52,11 @@ public class Address {
 
     @Basic
     @Column(name = "ZipCode")
-    public int getZipCode() {
+    public Integer getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(int zipCode) {
+    public void setZipCode(Integer zipCode) {
         this.zipCode = zipCode;
     }
 
@@ -73,11 +72,11 @@ public class Address {
 
     @Basic
     @Column(name = "Number")
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 

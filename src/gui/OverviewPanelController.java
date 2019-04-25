@@ -25,6 +25,7 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
 
     private final DomainController dc;
     public final String[] types = new String[]{ "Geen filter", "Lid", "Leraar", "Beheerder" };
+    public final String[] overzichten = new String[]{ "Activiteiten", "Inschrijvingen", "Aanwezigheden", "Clubkampioenschap", "Raadplegingen lesmateriaal" };
 
     @FXML
     private Button btnFilter;
@@ -34,7 +35,7 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
     private TextField txtFilter;
 
     @FXML
-    private ComboBox cboType;
+    private ComboBox cboType, cboOverzicht;
     @FXML
     private Button btnNew, btnDelete;
 
@@ -67,6 +68,11 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
             filter();
         });
         cboType.getSelectionModel().select(0);
+
+        cboOverzicht.setItems(FXCollections.observableList(Arrays.asList(overzichten)));
+        cboOverzicht.getSelectionModel().selectedItemProperty().addListener(x -> {
+
+        });
     }
 
     @FXML

@@ -65,6 +65,7 @@ public class Club {
 
     public void deleteUser(){
         userRepo.delete(currentUser);
+        userLijst.remove(currentUser);
     }
 
     public void addUser(User newUser){

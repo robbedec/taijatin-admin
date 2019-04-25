@@ -1,12 +1,7 @@
 package domain;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.Objects;
@@ -17,9 +12,6 @@ import java.util.Objects;
         @NamedQuery(name = "Users.findAll", query = "SELECT b FROM User b WHERE b.type = :type")
 })
 public class User {
-
-    //private final SimpleStringProperty username = new SimpleStringProperty();
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -368,7 +360,4 @@ public class User {
     public String toString(){
         return this.userName;
     }
-
-
-
 }

@@ -3,14 +3,15 @@ package domain;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import repository.GenericDao;
 import repository.GenericDaoJpa;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.sql.SQLOutput;
 import java.util.Collection;
+import java.util.Comparator;
 
 public class Club {
 
@@ -21,6 +22,11 @@ public class Club {
 
     private ObservableList<User> userLijst;
     private FilteredList<User> filteredList;
+    private SortedList<User> sorderdList;
+
+    private final Comparator<User> byUsername = (p1,p2) -> p1.getUserName().compareToIgnoreCase(p2.getUserName());
+    private final Comparator<User> byGrade = Comparator.comparing(User::getGrade);
+    private final Comparator<User> sortOrder = byUsername.thenComparing(byGrade);
 
     public final String[] types = new String[]{ "Geen filter", "Member", "Teacher", "Admin" };
 
@@ -28,6 +34,7 @@ public class Club {
         userRepo = new GenericDaoJpa<>(User.class);
         userLijst = FXCollections.observableList(userRepo.getAll());
         filteredList = new FilteredList<>(userLijst, p -> true);
+        sorderdList = new SortedList<>(filteredList, sortOrder);
         subject = new PropertyChangeSupport(this);
         currentUser = null;
     }
@@ -41,7 +48,7 @@ public class Club {
     }
 
     public Collection<User> getFilteredMembers() {
-        return filteredList;
+        return sorderdList;
     }
 
     public void setCurrentUser(User user){
@@ -52,7 +59,6 @@ public class Club {
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         subject.addPropertyChangeListener(pcl);
         pcl.propertyChange(new PropertyChangeEvent(pcl, "user", null, this.currentUser));
-
     }
 
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
@@ -69,12 +75,7 @@ public class Club {
     }
 
     public void addUser(User newUser){
-        System.out.println(currentUser.getFirstname());
-        System.out.println(currentUser.getLastname());
-        System.out.println(currentUser.getEmail());
         userRepo.insert(newUser);
         userLijst.add(newUser);
-
     }
-
 }

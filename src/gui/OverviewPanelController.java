@@ -1,6 +1,7 @@
 package gui;
 
 import domain.DomainController;
+import domain.Grade;
 import domain.User;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -20,23 +21,18 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class OverviewPanelController extends FlowPane implements PropertyChangeListener {
+public class OverviewPanelController extends FlowPane {
 
     private final DomainController dc;
     public final String[] types = new String[]{ "Geen filter", "Lid", "Leraar", "Beheerder" };
     public final String[] overzichten = new String[]{ "Activiteiten", "Inschrijvingen", "Aanwezigheden", "Clubkampioenschap", "Raadplegingen lesmateriaal" };
 
     @FXML
-    private Button btnFilter;
-    @FXML
-    private ListView<User> listViewMembers;
-    @FXML
     private TableView<User> userTable;
     @FXML
     private TableColumn<User, String> usernameCol, typeCol, gradeCol;
     @FXML
     private TextField txtFilter;
-
     @FXML
     private ComboBox cboType, cboOverzicht;
     @FXML
@@ -44,6 +40,9 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
 
     private ObservableList<User> users;
 
+    /**
+     * @param dc
+     */
         public OverviewPanelController(DomainController dc) {
         this.dc = dc;
 
@@ -57,8 +56,19 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
             throw new RuntimeException(ex);
         }
         users = (ObservableList) dc.getFilteredMembers();
-        listViewMembers.setItems(users);
-        listViewMembers.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
+        cboType.setItems(FXCollections.observableList(Arrays.asList(types)));
+        cboType.getSelectionModel().selectedItemProperty().addListener(x -> {
+            filter();
+        });
+        cboType.getSelectionModel().select(0);
+
+        // Databinding user properties to table column
+        userTable.setPlaceholder(new Label("Geen gebruikers gevonden"));
+        usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
+        typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getType()));
+        gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grade.valueOf(cellData.getValue().getGrade())));
+        userTable.setItems((ObservableList)dc.getFilteredMembers());
+        userTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
             if(newValue != null) {
                 if(oldValue == null || !oldValue.equals(newValue)) {
                     User user = newValue;
@@ -66,24 +76,6 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
                 }
             }
         });
-        cboType.setItems(FXCollections.observableList(Arrays.asList(types)));
-        cboType.getSelectionModel().selectedItemProperty().addListener(x -> {
-            filter();
-        });
-        cboType.getSelectionModel().select(0);
-
-        cboOverzicht.setItems(FXCollections.observableList(Arrays.asList(overzichten)));
-        cboOverzicht.getSelectionModel().selectedItemProperty().addListener(x -> {
-
-        });
-
-        /*
-        Table settings
-         */
-        usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
-        typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getType()));
-        gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grade.valueOf(cellData.getValue().getGrade())));
-        userTable.setItems((ObservableList)dc.getFilteredMembers());
         }
 
     @FXML
@@ -93,7 +85,7 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
 
     @FXML
     public void deleteUser(){
-        int index = listViewMembers.getSelectionModel().getSelectedIndex();
+        int index = userTable.getSelectionModel().getSelectedIndex();
         System.out.println(index);
         dc.deleteUser();
     }
@@ -110,53 +102,5 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
         newUser.setType("Member");
         dc.setCurrentUser(newUser);
 
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        /*User user = (User)evt.getNewValue();
-        System.out.println("kut");
-        dc.setCurrentUser(listViewMembers.getSelectionModel().getSelectedItem());
-        dc.setCurrentUser(user);
-
-        if(user != null){
-            System.out.println(user.getUserName());
-        }
-
-        System.out.println(dc.currentUser.getUserName());
-        System.out.println(user.getUserName());*/
-    }
-}
-
-enum Grade {
-    Zesde_Kyu(0),
-    Vijfde_Kyu(1),
-    Vierde_Kyu(2),
-    Derde_Kyu(3),
-    Tweede_Kyu(4),
-    Eerste_Kyu(5),
-    Eerste_Dan(6),
-    Tweede_Dan(7),
-    Derde_Dan(8),
-    Vierde_Dan(9),
-    Vijfde_Dan(10),
-    Zesde_Dan(11),
-    Zevende_Dan(12),
-    Achtste_Dan(13),
-    Negende_Dan(14),
-    Tiende_Dan(15),
-    Elfde_Dan(16),
-    Twaalfde_Dan(17);
-
-    private final int value;
-
-    Grade(int value) {
-        this.value = value;
-    }
-
-    public static String valueOf(int value) {
-        return Arrays.stream(values())
-                .filter(legNo -> legNo.value == value)
-                .findFirst().get().name();
     }
 }

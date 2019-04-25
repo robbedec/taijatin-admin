@@ -2,14 +2,12 @@ package gui;
 
 import domain.DomainController;
 import domain.User;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 
 import javafx.scene.input.KeyEvent;
@@ -20,6 +18,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class OverviewPanelController extends FlowPane implements PropertyChangeListener {
 
@@ -31,6 +30,10 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
     private Button btnFilter;
     @FXML
     private ListView<User> listViewMembers;
+    @FXML
+    private TableView<User> userTable;
+    @FXML
+    private TableColumn<User, String> usernameCol, typeCol, gradeCol;
     @FXML
     private TextField txtFilter;
 
@@ -73,7 +76,15 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
         cboOverzicht.getSelectionModel().selectedItemProperty().addListener(x -> {
 
         });
-    }
+
+        /*
+        Table settings
+         */
+        usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
+        typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getType()));
+        gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grade.valueOf(cellData.getValue().getGrade())));
+        userTable.setItems((ObservableList)dc.getFilteredMembers());
+        }
 
     @FXML
     private void filter() {
@@ -114,5 +125,38 @@ public class OverviewPanelController extends FlowPane implements PropertyChangeL
 
         System.out.println(dc.currentUser.getUserName());
         System.out.println(user.getUserName());*/
+    }
+}
+
+enum Grade {
+    Zesde_Kyu(0),
+    Vijfde_Kyu(1),
+    Vierde_Kyu(2),
+    Derde_Kyu(3),
+    Tweede_Kyu(4),
+    Eerste_Kyu(5),
+    Eerste_Dan(6),
+    Tweede_Dan(7),
+    Derde_Dan(8),
+    Vierde_Dan(9),
+    Vijfde_Dan(10),
+    Zesde_Dan(11),
+    Zevende_Dan(12),
+    Achtste_Dan(13),
+    Negende_Dan(14),
+    Tiende_Dan(15),
+    Elfde_Dan(16),
+    Twaalfde_Dan(17);
+
+    private final int value;
+
+    Grade(int value) {
+        this.value = value;
+    }
+
+    public static String valueOf(int value) {
+        return Arrays.stream(values())
+                .filter(legNo -> legNo.value == value)
+                .findFirst().get().name();
     }
 }

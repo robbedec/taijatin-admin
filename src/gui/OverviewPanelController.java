@@ -2,6 +2,7 @@ package gui;
 
 import domain.DomainController;
 import domain.Grade;
+import domain.IUser;
 import domain.User;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -30,7 +31,7 @@ public class OverviewPanelController extends FlowPane {
     @FXML
     private TableView<User> userTable;
     @FXML
-    private TableColumn<User, String> usernameCol, typeCol, gradeCol;
+    private TableColumn<IUser, String> usernameCol, typeCol, gradeCol;
     @FXML
     private TextField txtFilter;
     @FXML
@@ -38,7 +39,7 @@ public class OverviewPanelController extends FlowPane {
     @FXML
     private Button btnNew, btnDelete;
 
-    private ObservableList<User> users;
+    private ObservableList<IUser> users;
 
     /**
      * @param dc

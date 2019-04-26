@@ -70,22 +70,33 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
         user.setPhoneNumber(txtTelephone.getText());
         //Update the address
         address = user.getAddressByAddressId();
-        if(!txtCountry.getText().equals(address.getCountry())) {
+        if (address == null) { // new address for new user
+            address = new Address();
             address.setCountry(txtCountry.getText());
-        }
-        if(!txtPlace.getText().equals(address.getCountry())) {
             address.setCity(txtPlace.getText());
-        }
-        Integer zip = Integer.parseInt(txtZipcode.getText());
-        if(!zip.equals(address.getZipCode())) {
+            Integer zip = Integer.parseInt(txtZipcode.getText());
             address.setZipCode(zip);
-        }
-        if(!txtStreet.getText().equals(address.getStreet())) {
             address.setStreet(txtStreet.getText());
-        }
-        Integer number = Integer.parseInt(txtNumber.getText());
-        if(!number.equals(address.getNumber())) {
+            Integer number = Integer.parseInt(txtNumber.getText());
             address.setNumber(number);
+        } else {
+            if(!txtCountry.getText().equals(address.getCountry())) {
+                address.setCountry(txtCountry.getText());
+            }
+            if(!txtPlace.getText().equals(address.getCountry())) {
+                address.setCity(txtPlace.getText());
+            }
+            Integer zip = Integer.parseInt(txtZipcode.getText());
+            if(!zip.equals(address.getZipCode())) {
+                address.setZipCode(zip);
+            }
+            if(!txtStreet.getText().equals(address.getStreet())) {
+                address.setStreet(txtStreet.getText());
+            }
+            Integer number = Integer.parseInt(txtNumber.getText());
+            if(!number.equals(address.getNumber())) {
+                address.setNumber(number);
+            }
         }
         user.setAddressByAddressId(address);
         user.setBornIn(txtBornIn.getText());

@@ -93,7 +93,7 @@ public class OverviewPanelController extends FlowPane {
         User newUser = new User();
         Date defaultBirthDay = Date.valueOf(LocalDate.of(1920, 1, 1));
         Date registrationDate = Date.valueOf(LocalDate.now());
-        Address defaultAddress = dc.getAddressById(3);
+        Address defaultAddress = new Address();
         defaultAddress.setCity("");
         defaultAddress.setCountry("");
         defaultAddress.setStreet("");

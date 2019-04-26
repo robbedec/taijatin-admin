@@ -1,9 +1,6 @@
 package gui;
 
-import domain.DomainController;
-import domain.Grade;
-import domain.IUser;
-import domain.User;
+import domain.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -96,11 +93,18 @@ public class OverviewPanelController extends FlowPane {
         User newUser = new User();
         Date defaultBirthDay = Date.valueOf(LocalDate.of(1920, 1, 1));
         Date registrationDate = Date.valueOf(LocalDate.now());
+        Address defaultAddress = dc.getAddressById(3);
+        defaultAddress.setCity("");
+        defaultAddress.setCountry("");
+        defaultAddress.setStreet("");
+        defaultAddress.setNumber(1);
+        defaultAddress.setZipCode(1000);
 
         newUser.setBirthday(defaultBirthDay);
         newUser.setRegistrationdate(registrationDate);
         newUser.setGrade(1);
         newUser.setType("Member");
+        newUser.setAddressByAddressId(defaultAddress);
         dc.setCurrentUser(newUser);
 
     }

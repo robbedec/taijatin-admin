@@ -43,4 +43,8 @@ public class DomainController {
     public void addUser(User newUser){
         club.addUser(newUser);
     }
+
+    public Address getAddressById(int addressId) {
+        return club.getAddressById(addressId);
+    }
 }

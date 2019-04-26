@@ -8,9 +8,6 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Users")
-@NamedQueries({
-        @NamedQuery(name = "Users.findAll", query = "SELECT b FROM User b WHERE b.type = :type")
-})
 public class User implements IUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

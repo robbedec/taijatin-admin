@@ -6,13 +6,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Address")
-@NamedQueries({
-        @NamedQuery(name = "Address.findAll", query = "select b from Address b")
-})
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int addressId;
+    private Integer addressId;
     private String country;
     private String city;
     private Integer zipCode;

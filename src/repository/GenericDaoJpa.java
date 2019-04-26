@@ -40,7 +40,7 @@ public class GenericDaoJpa<T> implements GenericDao<T> {
     }
 
     @Override
-    public T get(Long id) {
+    public T get(int id) {
         return entityManager.find(type, id);
     }
 

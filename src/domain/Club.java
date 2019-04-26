@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import repository.AddressDao;
+import repository.AddressDaoJpa;
 import repository.GenericDao;
 import repository.GenericDaoJpa;
 
@@ -19,6 +21,7 @@ public class Club {
     private PropertyChangeSupport subject;
 
     private GenericDao<User> userRepo;
+    private GenericDao<Address> addressRepo;
 
     private ObservableList<User> userLijst;
     private FilteredList<User> filteredList;
@@ -32,6 +35,7 @@ public class Club {
 
     public Club(){
         userRepo = new GenericDaoJpa<>(User.class);
+        addressRepo = new GenericDaoJpa<>(Address.class);
         userLijst = FXCollections.observableList(userRepo.getAll());
         filteredList = new FilteredList<>(userLijst, p -> true);
         sorderdList = new SortedList<>(filteredList, sortOrder);
@@ -77,5 +81,9 @@ public class Club {
     public void addUser(User newUser){
         userRepo.insert(newUser);
         userLijst.add(newUser);
+    }
+
+    public Address getAddressById(int addressId) {
+        return addressRepo.get(addressId);
     }
 }

@@ -32,5 +32,6 @@ public class AdminFrameController extends BorderPane {
         }
         this.setLeft(overviewPanelController);
         this.setCenter(detailPanelController);
+        //this.setTop(detailPanelController);
     }
 }

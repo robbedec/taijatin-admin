@@ -7,7 +7,6 @@ import domain.User;
 import repository.AddressDao;
 import repository.GenericDao;
 import repository.GenericDaoJpa;
-import util.JPAUtil;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -34,7 +33,6 @@ public class StartUp {
         List<User> userList = userRepo.getAll();
 
         User u = userList.get(0);
-        u.setFirstname("fouke");
 
         /*
         System.out.println("Users:");

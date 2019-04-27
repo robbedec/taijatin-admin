@@ -8,4 +8,7 @@ import java.util.List;
 public interface UserDao extends GenericDao<User> {
     public List<User> getAll()
             throws EntityNotFoundException;
+
+    public User getByEmail(String email)
+        throws EntityNotFoundException;
 }

@@ -4,40 +4,41 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import repository.AddressDao;
-import repository.AddressDaoJpa;
-import repository.GenericDao;
-import repository.GenericDaoJpa;
+import repository.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Collection;
-import java.util.Comparator;
+import java.util.*;
 
 public class Club {
 
-    public User currentUser;
+    public UserDTO currentUser;
     private PropertyChangeSupport subject;
 
-    private GenericDao<User> userRepo;
-    private GenericDao<Address> addressRepo;
+    private UserDao userRepo;
 
-    private ObservableList<User> userLijst;
-    private FilteredList<User> filteredList;
-    private SortedList<User> sorderdList;
+    private List<User> userLijst;
+    private ObservableList<UserDTO> userDTOLijst;
+    private FilteredList<UserDTO> filteredList;
+    private SortedList<UserDTO> sorderdList;
 
-    private final Comparator<User> byUsername = (p1,p2) -> p1.getUserName().compareToIgnoreCase(p2.getUserName());
-    private final Comparator<User> byGrade = Comparator.comparing(User::getGrade);
-    private final Comparator<User> sortOrder = byUsername.thenComparing(byGrade);
+    private final Comparator<UserDTO> byUsername = (p1,p2) -> p1.getUserName().compareToIgnoreCase(p2.getUserName());
+    private final Comparator<UserDTO> byGrade = Comparator.comparing(UserDTO::getGrade);
+    private final Comparator<UserDTO> sortOrder = byUsername.thenComparing(byGrade);
 
     public final String[] types = new String[]{ "Geen filter", "Member", "Teacher", "Admin" };
 
     public Club(){
-        userRepo = new GenericDaoJpa<>(User.class);
-        addressRepo = new GenericDaoJpa<>(Address.class);
-        userLijst = FXCollections.observableList(userRepo.getAll());
-        filteredList = new FilteredList<>(userLijst, p -> true);
+        userRepo = new UserDaoJpa();
+        userDTOLijst = FXCollections.observableArrayList();
+        userRepo.getAll().forEach(user -> {
+            System.out.print(user);
+            UserDTO uDTO = user.toUserDTO(user);
+            userDTOLijst.add(uDTO);
+        });
+        filteredList = new FilteredList<>(userDTOLijst, p -> true);
         sorderdList = new SortedList<>(filteredList, sortOrder);
         subject = new PropertyChangeSupport(this);
         currentUser = null;
@@ -51,11 +52,11 @@ public class Club {
         }
     }
 
-    public Collection<User> getFilteredMembers() {
+    public Collection<UserDTO> getFilteredMembers() {
         return sorderdList;
     }
 
-    public void setCurrentUser(User user){
+    public void setCurrentUser(UserDTO user){
         subject.firePropertyChange("user", this.currentUser, user);
         this.currentUser = user;
     }
@@ -70,21 +71,24 @@ public class Club {
     }
 
     public void updateUser() {
-        userRepo.insert(currentUser);
-        userLijst.add(currentUser);
+        try {
+            User userToUpdate = userRepo.getByEmail(currentUser.getEmail());
+            userRepo.insert(userToUpdate);
+            userDTOLijst.add(currentUser);
+        } catch (EntityNotFoundException ex) {
+            UserDTO newUserDTO = currentUser;
+            User newUser = newUserDTO.toUser(newUserDTO);
+            userRepo.insert(newUser);
+            userDTOLijst.add(newUserDTO);
+        }
+
+
     }
 
     public void deleteUser(){
-        userRepo.delete(currentUser);
-        userLijst.remove(currentUser);
+        User userToDelete = userRepo.getByEmail(currentUser.getEmail());
+        userRepo.delete(userToDelete);
+        userDTOLijst.remove(currentUser);
     }
 
-    public void addUser(User newUser){
-        userRepo.insert(newUser);
-        userLijst.add(newUser);
-    }
-
-    public Address getAddressById(int addressId) {
-        return addressRepo.get(addressId);
-    }
 }

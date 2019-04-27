@@ -1,14 +1,9 @@
 package main;
 
-import domain.Address;
-import domain.Attendance;
-import domain.Comment;
 import domain.User;
-import repository.AddressDao;
 import repository.GenericDao;
 import repository.GenericDaoJpa;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 public class StartUp {

@@ -13,6 +13,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import repository.UserDTO;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.beans.PropertyChangeEvent;
@@ -34,7 +35,7 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
     private ChoiceBox txtGrade, txtGender, txtType;
     @FXML
     private Button btnSave, btnAdd;
-    private User user;
+    private UserDTO user;
     private Address address;
 
     public DetailPanelController(DomainController dc) {
@@ -106,7 +107,7 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        this.user = (User)evt.getNewValue();
+        this.user = (UserDTO)evt.getNewValue();
         if(this.user != null) {
             txtUsername.setText(user.getUserName());
             if(this.user.getUserName() == null || this.user.getUserName() == ""){
@@ -135,7 +136,11 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
             //This will show the correct gender for each user
             ObservableList genders = FXCollections.observableArrayList("Selecteer", "Man", "Vrouw", "Trans");
             txtGender.setItems(genders);
-            txtGender.setValue(genders.get(user.getGender()));
+            if (user.getGender() == null) {
+                txtGender.setValue(genders.get(0));
+            } else {
+                txtGender.setValue(genders.get(user.getGender()));
+            }
             txtGender.setDisable(false);
             //The correct grade of the user
             ObservableList grades = FXCollections.observableArrayList("Selecteer", "Zesde Kyu", "Vijfde Kyu", "Vierde Kyu", "Derde Kyu", "Tweede Kyu", "Eerste Kyu", "Eerste Dan", "Tweede Dan", "Derde Dan", "Vierde Dan", "Vijfde Dan", "Zesde Dan", "Zevende Dan", "Achtste Dan", "Negende Dan", "Tiende Dan", "Elfde Dan", "Twaalfde Dan");

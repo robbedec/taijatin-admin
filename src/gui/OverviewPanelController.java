@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 
 import javafx.scene.input.KeyEvent;
+import repository.UserDTO;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -26,9 +27,9 @@ public class OverviewPanelController extends FlowPane {
     public final String[] overzichten = new String[]{ "Activiteiten", "Inschrijvingen", "Aanwezigheden", "Clubkampioenschap", "Raadplegingen lesmateriaal" };
 
     @FXML
-    private TableView<User> userTable;
+    private TableView<UserDTO> userTable;
     @FXML
-    private TableColumn<IUser, String> usernameCol, typeCol, gradeCol;
+    private TableColumn<UserDTO, String> usernameCol, typeCol, gradeCol;
     @FXML
     private TextField txtFilter;
     @FXML
@@ -36,7 +37,7 @@ public class OverviewPanelController extends FlowPane {
     @FXML
     private Button btnNew, btnDelete;
 
-    private ObservableList<IUser> users;
+    private ObservableList<UserDTO> users;
 
     /**
      * @param dc
@@ -69,8 +70,8 @@ public class OverviewPanelController extends FlowPane {
         userTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
             if(newValue != null) {
                 if(oldValue == null || !oldValue.equals(newValue)) {
-                    User user = newValue;
-                    dc.setCurrentUser(user);
+                    UserDTO uDto = newValue;
+                    dc.setCurrentUser(uDto);
                 }
             }
         });
@@ -90,7 +91,7 @@ public class OverviewPanelController extends FlowPane {
 
     @FXML
     public void newUser(){
-        User newUser = new User();
+        UserDTO newUser = new UserDTO();
         Date defaultBirthDay = Date.valueOf(LocalDate.of(1920, 1, 1));
         Date registrationDate = Date.valueOf(LocalDate.now());
         Address defaultAddress = new Address();

@@ -15,9 +15,19 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
     public List<User> getAll() throws EntityNotFoundException {
         try {
             return entityManager.createNamedQuery("Users.findAll", User.class)
-                    .setParameter("type", "Member")
                     .getResultList();
         } catch (NoResultException ex){
+            throw new EntityNotFoundException();
+        }
+    }
+
+    @Override
+    public User getByEmail(String email) throws EntityNotFoundException {
+        try {
+            return entityManager.createNamedQuery("Users.findByMail", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
             throw new EntityNotFoundException();
         }
     }

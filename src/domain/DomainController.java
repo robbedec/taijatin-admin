@@ -1,6 +1,8 @@
 package domain;
 
 
+import repository.UserDTO;
+
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 
@@ -12,7 +14,7 @@ public class DomainController {
         club = new Club();
     }
 
-    public Collection<User> getFilteredMembers() {
+    public Collection<UserDTO> getFilteredMembers() {
         return club.getFilteredMembers();
     }
 
@@ -20,7 +22,7 @@ public class DomainController {
         club.filterUsers(userName, index);
     }
 
-    public void setCurrentUser(User user){
+    public void setCurrentUser(UserDTO user){
         club.setCurrentUser(user);
     }
 
@@ -38,13 +40,5 @@ public class DomainController {
 
     public void deleteUser(){
         club.deleteUser();
-    }
-
-    public void addUser(User newUser){
-        club.addUser(newUser);
-    }
-
-    public Address getAddressById(int addressId) {
-        return club.getAddressById(addressId);
     }
 }

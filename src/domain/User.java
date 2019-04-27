@@ -50,7 +50,7 @@ public class User implements IUser {
     @OneToMany(mappedBy = "usersByTeacherId")
     private Collection<Formula> formulasById;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AddressId")
     private Address addressByAddressId;
 

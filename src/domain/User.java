@@ -40,7 +40,7 @@ public class User implements IUser {
 
     public User() {  }
 
-    public User(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId) {
+    public User(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Activity activityById) {
         this.userName = userName;
         this.email = email;
         this.firstname = firstname;
@@ -67,10 +67,11 @@ public class User implements IUser {
         this.formulasById = formulasById;
         this.addressByAddressId = addressByAddressId;
         this.formulasByFormulaId = formulasByFormulaId;
+        this.activityById = activityById;
     }
 
     public UserDTO toUserDTO(User user) {
-        return new UserDTO(user.getUserName(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getGender(), user.getNationalInsuranceNumber(), user.getRegistrationdate(), user.getBornIn(), user.getBirthday(), user.getMobilePhoneNumber(), user.getPhoneNumber(), user.getEmailParent(), user.isAgreeWithBylaws(), user.isAgreeWithPicturesAndAudio(), user.isReceiveClubinfo(), user.isReceiveInfoAboutPromotionsAndFederalMatters(), user.getType(), user.getScore(), user.getGrade(), user.getAttendancesById(), user.getCommentRepliesById(), user.getCommentsById(), user.getCourseModuleViewersById(), user.getFormulasById(), user.getAddressByAddressId(), user.getFormulasByFormulaId());
+        return new UserDTO(user.getUserName(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getGender(), user.getNationalInsuranceNumber(), user.getRegistrationdate(), user.getBornIn(), user.getBirthday(), user.getMobilePhoneNumber(), user.getPhoneNumber(), user.getEmailParent(), user.isAgreeWithBylaws(), user.isAgreeWithPicturesAndAudio(), user.isReceiveClubinfo(), user.isReceiveInfoAboutPromotionsAndFederalMatters(), user.getType(), user.getScore(), user.getGrade(), user.getAttendancesById(), user.getCommentRepliesById(), user.getCommentsById(), user.getCourseModuleViewersById(), user.getFormulasById(), user.getAddressByAddressId(), user.getFormulasByFormulaId(), user.getActivityById());
     }
 
     @Transient
@@ -90,6 +91,10 @@ public class User implements IUser {
 
     @OneToMany(mappedBy = "usersByTeacherId")
     private Collection<Formula> formulasById;
+
+    @ManyToOne
+    @JoinColumn(name = "ActivityId")
+    private Activity activityById;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AddressId")
@@ -337,6 +342,12 @@ public class User implements IUser {
         return Objects.hash(id, userName, email, firstname, lastname, gender, nationalInsuranceNumber, registrationdate, bornIn, birthday, mobilePhoneNumber, phoneNumber, emailParent, agreeWithBylaws, agreeWithPicturesAndAudio, receiveClubinfo, receiveInfoAboutPromotionsAndFederalMatters, type, score, grade);
     }
 
+    public Activity getActivityById(){ return activityById; }
+
+    public void setActivityById(Activity activityById){
+        this.activityById = activityById;
+    }
+
     public Collection<Attendance> getAttendancesById() {
         return attendancesById;
     }
@@ -396,6 +407,6 @@ public class User implements IUser {
 
     @Override
     public String toString(){
-        return this.userName;
+        return String.format("%s ",this.userName);
     }
 }

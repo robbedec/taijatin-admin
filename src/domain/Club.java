@@ -18,11 +18,18 @@ public class Club {
     private PropertyChangeSupport subject;
 
     private UserDao userRepo;
+    private ActivityDao activityRepo;
 
     private List<User> userLijst;
     private ObservableList<UserDTO> userDTOLijst;
     private FilteredList<UserDTO> filteredList;
     private SortedList<UserDTO> sorderdList;
+
+    private List<Activity> activityLijst;
+    private ObservableList<ActivityDTO> activityDTOLijst;
+    private FilteredList<ActivityDTO> filteredActivityList;
+    private FilteredList<ActivityDTO> sortedActivityList;
+
 
     private final Comparator<UserDTO> byUsername = (p1,p2) -> p1.getUserName().compareToIgnoreCase(p2.getUserName());
     private final Comparator<UserDTO> byGrade = Comparator.comparing(UserDTO::getGrade);
@@ -32,13 +39,21 @@ public class Club {
 
     public Club(){
         userRepo = new UserDaoJpa();
+        activityRepo = new ActivityDaoJpa();
         userDTOLijst = FXCollections.observableArrayList();
+        activityDTOLijst = FXCollections.observableArrayList();
         userRepo.getAll().forEach(user -> {
             System.out.print(user);
             UserDTO uDTO = user.toUserDTO(user);
             userDTOLijst.add(uDTO);
         });
+        activityRepo.getAll().forEach(activity -> {
+            System.out.println(activity);
+            ActivityDTO aDTO = activity.toActivityDTO(activity);
+            activityDTOLijst.add(aDTO);
+        });
         filteredList = new FilteredList<>(userDTOLijst, p -> true);
+        filteredActivityList = new FilteredList<>(activityDTOLijst, p -> true);
         sorderdList = new SortedList<>(filteredList, sortOrder);
         subject = new PropertyChangeSupport(this);
         currentUser = null;

@@ -15,6 +15,8 @@ public class Address {
     private Integer zipCode;
     private String street;
     private Integer number;
+    private String bus;     //Added Bus for people who lives in appartements 
+
     private Collection<User> usersByAddressId;
 
     @Id
@@ -75,6 +77,16 @@ public class Address {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    @Basic
+    @Column(name = "Bus")
+    public String getBus() {
+        return bus;
+    }
+
+    public void setBus(String bus) {
+        this.bus = bus;
     }
 
     @Override

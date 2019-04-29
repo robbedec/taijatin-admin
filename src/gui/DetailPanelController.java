@@ -8,11 +8,9 @@ import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import repository.UserDTO;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -25,14 +23,14 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-public class DetailPanelController extends GridPane implements PropertyChangeListener {
+public class DetailPanelController extends VBox implements PropertyChangeListener {
     private DomainController dc;
     @FXML
-    private TextField txtUsername, txtFirstname, txtLastname, txtEmail, txtGsm, txtNationalNumber, txtTelephone, txtCountry, txtPlace, txtZipcode, txtStreet, txtNumber, txtBornIn;
+    private TextField txtUsername, txtFirstname, txtLastname, txtEmail, txtGsm, txtNationalNumber, txtTelephone, txtCountry, txtPlace, txtZipcode, txtStreet, txtNumber, txtBornIn, txtBus;
     @FXML
     private DatePicker txtBirthday, txtRegistrationDate;
     @FXML
-    private ChoiceBox txtGrade, txtGender, txtType;
+    private ChoiceBox txtGrade, txtGender, txtType, txtFormula;
     @FXML
     private Button btnSave, btnAdd;
     private UserDTO user;
@@ -163,8 +161,19 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
             txtStreet.setEditable(true);
             txtNumber.setText(user.getAddressByAddressId().getNumber().toString());
             txtNumber.setEditable(true);
+            txtBus.setText(user.getAddressByAddressId().getBus());
+            txtBus.setEditable(true);
             txtBornIn.setText(user.getBornIn());
             txtBornIn.setEditable(true);
+            ObservableList formulas = FXCollections.observableArrayList("Selecteer", "DI_DO", "DI_ZA", "WO_ZA", "WO", "ZA", "ZO");
+            txtFormula.setDisable(false);
+            txtFormula.setItems(formulas);
+            if(user.getFormulasByFormulaId() == null){
+                txtFormula.setValue(formulas.get(0));
+            }
+            else {
+                txtFormula.setValue(user.getFormulasByFormulaId().getFormulaName());
+            }
         }
         else if(user == null){
             btnSave.setVisible(false);
@@ -187,6 +196,8 @@ public class DetailPanelController extends GridPane implements PropertyChangeLis
             txtStreet.setEditable(false);
             txtNumber.setEditable(false);
             txtBornIn.setEditable(false);
+            txtFormula.setDisable(true);
+            txtBus.setEditable(false);
         }
     }
 }

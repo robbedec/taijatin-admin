@@ -35,6 +35,9 @@ public class Formula {
     @Basic
     @Column(name = "FormulaName")
     public String getFormulaName() {
+        if(formulaName == null || formulaName == ""){
+            return "";
+        }
         return formulaName;
     }
 

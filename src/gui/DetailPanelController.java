@@ -2,6 +2,7 @@ package gui;
 
 import domain.Address;
 import domain.DomainController;
+import domain.Formula;
 import domain.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
@@ -34,7 +35,6 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
     @FXML
     private Button btnSave, btnAdd;
     private UserDTO user;
-    private Address address;
 
     public DetailPanelController(DomainController dc) {
         this.dc = dc;
@@ -68,7 +68,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
         user.setNationalInsuranceNumber(txtNationalNumber.getText());
         user.setPhoneNumber(txtTelephone.getText());
         //Update the address
-        address = user.getAddressByAddressId();
+        Address address = user.getAddressByAddressId();
         if (address == null) { // new address for new user
             address = new Address();
             address.setCountry(txtCountry.getText());
@@ -78,6 +78,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             address.setStreet(txtStreet.getText());
             Integer number = Integer.parseInt(txtNumber.getText());
             address.setNumber(number);
+            address.setBus(txtBus.getText());
         } else {
             if(!txtCountry.getText().equals(address.getCountry())) {
                 address.setCountry(txtCountry.getText());
@@ -89,16 +90,29 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             if(!zip.equals(address.getZipCode())) {
                 address.setZipCode(zip);
             }
-            if(!txtStreet.getText().equals(address.getStreet())) {
+            if(txtStreet.getText().isEmpty() || !txtStreet.getText().equals(address.getStreet())) {
                 address.setStreet(txtStreet.getText());
             }
             Integer number = Integer.parseInt(txtNumber.getText());
             if(!number.equals(address.getNumber())) {
                 address.setNumber(number);
             }
+            if(!txtBus.getText().equals(address.getBus())){
+                address.setBus(txtBus.getText());
+            }
         }
         user.setAddressByAddressId(address);
         user.setBornIn(txtBornIn.getText());
+        Formula formula = user.getFormulasByFormulaId();
+        if(formula == null){
+            formula = new Formula();
+            formula.setFormulaName(txtFormula.getValue().toString());
+        }
+        else {
+            if(!txtFormula.getValue().toString().equals(formula.getFormulaName())){
+                formula.setFormulaName(txtFormula.getValue().toString());
+            }
+        }
         dc.setCurrentUser(user);
         dc.updateUser();
     }
@@ -168,7 +182,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             ObservableList formulas = FXCollections.observableArrayList("Selecteer", "DI_DO", "DI_ZA", "WO_ZA", "WO", "ZA", "ZO");
             txtFormula.setDisable(false);
             txtFormula.setItems(formulas);
-            if(user.getFormulasByFormulaId() == null){
+            if(user.getFormulasByFormulaId().getFormulaName() == null || user.getFormulasByFormulaId().getFormulaName() == ""){
                 txtFormula.setValue(formulas.get(0));
             }
             else {

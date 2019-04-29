@@ -1,6 +1,9 @@
 package domain;
 
+import javafx.collections.FXCollections;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -42,6 +45,56 @@ public class Formula {
     }
 
     public void setFormulaName(String formulaName) {
+        formulaFormulaDaysByFormulaId = new ArrayList<>();
+        FormulaDay dinsdag = new FormulaDay();
+        dinsdag.setDay(1);
+        FormulaDay woensdag = new FormulaDay();
+        woensdag.setDay(2);
+        FormulaDay donderdag = new FormulaDay();
+        donderdag.setDay(3);
+        FormulaDay zaterdag = new FormulaDay();
+        zaterdag.setDay(5);
+        FormulaDay zondag = new FormulaDay();
+        zondag.setDay(6);
+        switch (formulaName){
+            case "DI_DO":
+                FormulaFormulaDay di_dodinsdag = new FormulaFormulaDay();
+                di_dodinsdag.setFormulaDayByFormulaDayId(dinsdag);
+                FormulaFormulaDay di_dodonderdag = new FormulaFormulaDay();
+                di_dodonderdag.setFormulaDayByFormulaDayId(donderdag);
+                formulaFormulaDaysByFormulaId.add(di_dodinsdag);
+                formulaFormulaDaysByFormulaId.add(di_dodonderdag);
+            case "DI_ZA":
+                FormulaFormulaDay di_zadinsdag = new FormulaFormulaDay();
+                di_zadinsdag.setFormulaDayByFormulaDayId(dinsdag);
+                FormulaFormulaDay di_zazaterdag = new FormulaFormulaDay();
+                di_zazaterdag.setFormulaDayByFormulaDayId(zaterdag);
+                formulaFormulaDaysByFormulaId.add(di_zadinsdag);
+                formulaFormulaDaysByFormulaId.add(di_zadinsdag);
+            case "WO_ZA":
+                FormulaFormulaDay wo_zawoensdag = new FormulaFormulaDay();
+                wo_zawoensdag.setFormulaDayByFormulaDayId(woensdag);
+                FormulaFormulaDay wo_zazaterdag = new FormulaFormulaDay();
+                wo_zazaterdag.setFormulaDayByFormulaDayId(zaterdag);
+                formulaFormulaDaysByFormulaId.add(wo_zawoensdag);
+                formulaFormulaDaysByFormulaId.add(wo_zazaterdag);
+            case "WO":
+                FormulaFormulaDay wowoensdag = new FormulaFormulaDay();
+                wowoensdag.setFormulaDayByFormulaDayId(woensdag);
+                formulaFormulaDaysByFormulaId.add(wowoensdag);
+            case "ZA":
+                FormulaFormulaDay zazaterdag = new FormulaFormulaDay();
+                zazaterdag.setFormulaDayByFormulaDayId(zaterdag);
+                formulaFormulaDaysByFormulaId.add(zazaterdag);
+            case "ZO":
+                FormulaFormulaDay zozondag = new FormulaFormulaDay();
+                zozondag.setFormulaDayByFormulaDayId(zondag);
+                formulaFormulaDaysByFormulaId.add(zozondag);
+            case "Selecteer":
+            case "Geen":
+                default:
+
+        }
         this.formulaName = formulaName;
     }
 

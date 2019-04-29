@@ -15,7 +15,7 @@ public class Address {
     private Integer zipCode;
     private String street;
     private Integer number;
-    private String bus;     //Added Bus for people who lives in appartements 
+    private String bus;     //Added Bus for people who lives in appartements
 
     private Collection<User> usersByAddressId;
 
@@ -32,60 +32,85 @@ public class Address {
     @Basic
     @Column(name = "Country")
     public String getCountry() {
+        if(this.country == null)
+            return "";
         return country;
     }
 
     public void setCountry(String country) {
+        if(this.country == null)
+            this.country = "";
         this.country = country;
     }
 
     @Basic
     @Column(name = "City")
     public String getCity() {
+        if(this.city == null)
+            return "";
         return city;
     }
 
     public void setCity(String city) {
+        if(this.city == null){
+            this.city = "";
+        }
         this.city = city;
     }
 
     @Basic
     @Column(name = "ZipCode")
     public Integer getZipCode() {
+        if(this.country == null)
+            return 0;
         return zipCode;
     }
 
     public void setZipCode(Integer zipCode) {
+        if(this.zipCode == null)
+            this.zipCode = 0;
         this.zipCode = zipCode;
     }
 
     @Basic
     @Column(name = "Street")
     public String getStreet() {
+        if(this.country == null)
+            return "";
         return street;
     }
 
     public void setStreet(String street) {
+        if(this.street == null)
+            this.street = "";
         this.street = street;
     }
 
     @Basic
     @Column(name = "Number")
     public Integer getNumber() {
+        if(this.country == null)
+            return 0;
         return number;
     }
 
     public void setNumber(Integer number) {
+        if(this.number == null)
+            this.number = 0;
         this.number = number;
     }
 
     @Basic
     @Column(name = "Bus")
     public String getBus() {
+        if(this.country == null)
+            return "";
         return bus;
     }
 
     public void setBus(String bus) {
+        if(this.bus == null)
+            this.bus = "";
         this.bus = bus;
     }
 

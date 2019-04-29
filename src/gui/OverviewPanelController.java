@@ -29,7 +29,7 @@ public class OverviewPanelController extends FlowPane {
     @FXML
     private TableView<UserDTO> userTable;
     @FXML
-    private TableColumn<UserDTO, String> usernameCol, typeCol, gradeCol;
+    private TableColumn<UserDTO, String> usernameCol, typeCol, gradeCol, formulaCol;
     @FXML
     private TextField txtFilter;
     @FXML
@@ -66,6 +66,7 @@ public class OverviewPanelController extends FlowPane {
         usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
         typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getType()));
         gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grade.valueOf(cellData.getValue().getGrade())));
+        formulaCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getFormulasByFormulaId().getFormulaName()));
         userTable.setItems((ObservableList)dc.getFilteredMembers());
         userTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
             if(newValue != null) {

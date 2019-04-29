@@ -270,6 +270,10 @@ public class UserDTO {
     }
 
     public Formula getFormulasByFormulaId() {
+        if(formulasByFormulaId == null){
+            formulasByFormulaId = new Formula();
+            formulasByFormulaId.setFormulaName("Geen");
+        }
         return formulasByFormulaId;
     }
 

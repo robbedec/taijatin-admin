@@ -92,6 +92,7 @@ public class User implements IUser {
     @OneToMany(mappedBy = "usersByTeacherId")
     private Collection<Formula> formulasById;
 
+
     @ManyToOne
     @JoinColumn(name = "ActivityId")
     private Activity activityById;

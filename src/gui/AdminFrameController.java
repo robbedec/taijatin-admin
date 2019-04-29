@@ -3,6 +3,7 @@ package gui;
 import domain.DomainController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
@@ -11,6 +12,9 @@ public class AdminFrameController extends BorderPane {
     private DomainController dc;
     private OverviewPanelController overviewPanelController;
     private DetailPanelController detailPanelController;
+
+    @FXML
+    private Button btnLeden, btnActiviteiten, btnOverzichten, btnLesmateriaal;
 
     public AdminFrameController(DomainController dc) {
         this.dc = dc;
@@ -30,8 +34,25 @@ public class AdminFrameController extends BorderPane {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+        //this.setLeft(overviewPanelController);
+        //this.setCenter(detailPanelController);
+        //this.setTop(detailPanelController);
+    }
+
+    public void showLeden() {
         this.setLeft(overviewPanelController);
         this.setCenter(detailPanelController);
-        //this.setTop(detailPanelController);
+    }
+
+    public void showActiviteiten() {
+
+    }
+
+    public void showOverzichten() {
+
+    }
+
+    public void showLesmateriaal() {
+
     }
 }

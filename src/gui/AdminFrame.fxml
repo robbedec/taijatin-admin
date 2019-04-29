@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
-
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="800.0" prefWidth="1100.0" type="BorderPane" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" />
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="800.0" prefWidth="1100.0" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <VBox fillWidth="false" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" style="-fx-border-color: black;" BorderPane.alignment="TOP_LEFT">
+         <children>
+            <Button fx:id="btnLeden" alignment="CENTER" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showLeden" text="Ledenbeheer">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets left="50.0" top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnActiviteiten" alignment="CENTER" layoutX="61.0" layoutY="21.0" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showActiviteiten" text="Activiteiten">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets left="50.0" top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnOverzichten" alignment="CENTER" layoutX="61.0" layoutY="81.0" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showOverzichten" text="Overzichten">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets left="50.0" top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btnLesmateriaal" alignment="CENTER" layoutX="61.0" layoutY="141.0" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showLesmateriaal" text="Lesmateriaal">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets left="50.0" top="20.0" />
+               </VBox.margin>
+            </Button>
+         </children></VBox>
+   </top>
+</fx:root>

@@ -1,8 +1,14 @@
 package repository;
 
 import domain.*;
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserDTO {
     private String userName;
@@ -74,6 +80,9 @@ public class UserDTO {
     }
 
     public void setUserName(String userName) {
+        if (empty(userName)) {
+            throw new CRuntimeException("Username can not be empty!");
+        }
         this.userName = userName;
     }
 
@@ -82,7 +91,18 @@ public class UserDTO {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        if(empty(email)) {
+            throw new CRuntimeException("Email can not be empty!");
+        } else if (email.isEmpty() || email != null) {
+            String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(email);
+            if (!matcher.matches()) {
+                throw new CRuntimeException("Validation error in email.");
+            } else {
+                this.email = email;
+            }
+        }
     }
 
     public String getFirstname() {
@@ -90,6 +110,9 @@ public class UserDTO {
     }
 
     public void setFirstname(String firstname) {
+        if (empty(firstname)) {
+            throw new CRuntimeException("Firstname can not be empty!");
+        }
         this.firstname = firstname;
     }
 
@@ -98,6 +121,9 @@ public class UserDTO {
     }
 
     public void setLastname(String lastname) {
+        if (empty(lastname)) {
+            throw new CRuntimeException("Lastname can not be empty!");
+        }
         this.lastname = lastname;
     }
 
@@ -106,6 +132,9 @@ public class UserDTO {
     }
 
     public void setGender(Integer gender) {
+        if (gender == 0) {
+            throw new CRuntimeException("Gender can not be empty!");
+        }
         this.gender = gender;
     }
 
@@ -114,7 +143,19 @@ public class UserDTO {
     }
 
     public void setNationalInsuranceNumber(String nationalInsuranceNumber) {
-        this.nationalInsuranceNumber = nationalInsuranceNumber;
+        if(empty(nationalInsuranceNumber)) {
+            throw new CRuntimeException("Email can not be empty!");
+        } else if (nationalInsuranceNumber.isEmpty() || nationalInsuranceNumber != null) {
+            String regex = "^[0-9]{2}.?[0-9]{2}.?[0-9]{2}-?[0-9]{3}.?[0-9]{2}$"; // bv. 99.04.05-233.75 of 990405-233.75 of 99040523375
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(nationalInsuranceNumber);
+            if (!matcher.matches()) {
+                throw new CRuntimeException("Validation error in national insurance number. Requires: fex. 99.04.05-233.75 or 990405-233.75 or 99040523375");
+            } else {
+                this.nationalInsuranceNumber = nationalInsuranceNumber;
+            }
+        }
+
     }
 
     public Date getRegistrationdate() {
@@ -130,6 +171,9 @@ public class UserDTO {
     }
 
     public void setBornIn(String bornIn) {
+        if (empty(bornIn)) {
+            throw new CRuntimeException("Born in place can not be empty!");
+        }
         this.bornIn = bornIn;
     }
 
@@ -146,6 +190,9 @@ public class UserDTO {
     }
 
     public void setMobilePhoneNumber(String mobilePhoneNumber) {
+        if (empty(mobilePhoneNumber)) {
+            throw new CRuntimeException("Mobile phone number is required!");
+        }
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
 
@@ -288,5 +335,14 @@ public class UserDTO {
 
     public void setActivitiesById(Activity activityById) {
         this.activityById = activityById;
+    }
+
+    private boolean empty(String string) {
+        if (string.trim().isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

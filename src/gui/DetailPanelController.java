@@ -1,9 +1,6 @@
 package gui;
 
-import domain.Address;
-import domain.DomainController;
-import domain.Formula;
-import domain.User;
+import domain.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -23,6 +20,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DetailPanelController extends VBox implements PropertyChangeListener {
     private DomainController dc;
@@ -49,72 +48,77 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
     }
 
     public void updateUser() {
-        user.setUserName(txtUsername.getText());
-        user.setFirstname(txtFirstname.getText());
-        user.setLastname(txtLastname.getText());
-        user.setEmail(txtEmail.getText());
-        user.setBirthday(java.sql.Date.valueOf(txtBirthday.getValue()));
-        user.setBirthday(java.sql.Date.valueOf(txtRegistrationDate.getValue()));
-        user.setType(txtType.getValue().toString());
-        //Get the gender int back from the list of genders
-        ObservableList genders = txtGender.getItems();
-        int newGender = genders.indexOf(txtGender.getValue());
-        user.setGender(newGender);
-        //Get the grade int back
-        ObservableList grades = txtGrade.getItems();
-        int newGrade = grades.indexOf(txtGrade.getValue());
-        user.setGrade(newGrade);
-        user.setMobilePhoneNumber(txtGsm.getText());
-        user.setNationalInsuranceNumber(txtNationalNumber.getText());
-        user.setPhoneNumber(txtTelephone.getText());
-        //Update the address
-        Address address = user.getAddressByAddressId();
-        if (address == null) { // new address for new user
-            address = new Address();
-            address.setCountry(txtCountry.getText());
-            address.setCity(txtPlace.getText());
-            Integer zip = Integer.parseInt(txtZipcode.getText());
-            address.setZipCode(zip);
-            address.setStreet(txtStreet.getText());
-            Integer number = Integer.parseInt(txtNumber.getText());
-            address.setNumber(number);
-            address.setBus(txtBus.getText());
-        } else {
-            if(!txtCountry.getText().equals(address.getCountry())) {
+        try {
+            user.setUserName(txtUsername.getText());
+            user.setFirstname(txtFirstname.getText());
+            user.setLastname(txtLastname.getText());
+            user.setEmail(txtEmail.getText());
+            user.setBirthday(java.sql.Date.valueOf(txtBirthday.getValue()));
+            user.setBirthday(java.sql.Date.valueOf(txtRegistrationDate.getValue()));
+            user.setType(txtType.getValue().toString());
+            //Get the gender int back from the list of genders
+            ObservableList genders = txtGender.getItems();
+            int newGender = genders.indexOf(txtGender.getValue());
+            user.setGender(newGender);
+            //Get the grade int back
+            ObservableList grades = txtGrade.getItems();
+            int newGrade = grades.indexOf(txtGrade.getValue());
+            user.setGrade(newGrade);
+            user.setMobilePhoneNumber(txtGsm.getText());
+            user.setNationalInsuranceNumber(txtNationalNumber.getText());
+            user.setPhoneNumber(txtTelephone.getText());
+            //Update the address
+            Address address = user.getAddressByAddressId();
+            if (address == null) { // new address for new user
+                address = new Address();
                 address.setCountry(txtCountry.getText());
-            }
-            if(!txtPlace.getText().equals(address.getCountry())) {
                 address.setCity(txtPlace.getText());
-            }
-            Integer zip = Integer.parseInt(txtZipcode.getText());
-            if(!zip.equals(address.getZipCode())) {
+                Integer zip = Integer.parseInt(txtZipcode.getText());
                 address.setZipCode(zip);
-            }
-            if(txtStreet.getText().isEmpty() || !txtStreet.getText().equals(address.getStreet())) {
                 address.setStreet(txtStreet.getText());
-            }
-            Integer number = Integer.parseInt(txtNumber.getText());
-            if(!number.equals(address.getNumber())) {
+                Integer number = Integer.parseInt(txtNumber.getText());
                 address.setNumber(number);
-            }
-            if(!txtBus.getText().equals(address.getBus())){
                 address.setBus(txtBus.getText());
+            } else {
+                if (!txtCountry.getText().equals(address.getCountry())) {
+                    address.setCountry(txtCountry.getText());
+                }
+                if (!txtPlace.getText().equals(address.getCountry())) {
+                    address.setCity(txtPlace.getText());
+                }
+                Integer zip = Integer.parseInt(txtZipcode.getText());
+                if (!zip.equals(address.getZipCode())) {
+                    address.setZipCode(zip);
+                }
+                if (txtStreet.getText().isEmpty() || !txtStreet.getText().equals(address.getStreet())) {
+                    address.setStreet(txtStreet.getText());
+                }
+                Integer number = Integer.parseInt(txtNumber.getText());
+                if (!number.equals(address.getNumber())) {
+                    address.setNumber(number);
+                }
+                if (!txtBus.getText().equals(address.getBus())) {
+                    address.setBus(txtBus.getText());
+                }
             }
-        }
-        user.setAddressByAddressId(address);
-        user.setBornIn(txtBornIn.getText());
-        Formula formula = user.getFormulasByFormulaId();
-        if(formula == null){
-            formula = new Formula();
-            formula.setFormulaName(txtFormula.getValue().toString());
-        }
-        else {
-            if(!txtFormula.getValue().toString().equals(formula.getFormulaName())){
+            user.setAddressByAddressId(address);
+            user.setBornIn(txtBornIn.getText());
+            Formula formula = user.getFormulasByFormulaId();
+            if (formula == null) {
+                formula = new Formula();
                 formula.setFormulaName(txtFormula.getValue().toString());
+            } else {
+                if (!txtFormula.getValue().toString().equals(formula.getFormulaName())) {
+                    formula.setFormulaName(txtFormula.getValue().toString());
+                }
             }
+            dc.setCurrentUser(user);
+            dc.updateUser();
+        } catch (CRuntimeException ex) {
+            System.out.println("\nError updating/Creating user: " + ex.getMessage() + "\n");
+        } catch (NullPointerException np) {
+            System.out.println("\nNullPointerExceptoin: no fields touched.\n");
         }
-        dc.setCurrentUser(user);
-        dc.updateUser();
     }
 
     @Override

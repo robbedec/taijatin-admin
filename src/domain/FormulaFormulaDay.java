@@ -29,14 +29,14 @@ public class FormulaFormulaDay {
         this.formulaId = formulaId;
     }
 
-    /*@Column(name = "FormulaDayId")
+    @Column(name = "FormulaDayId")
     public int getFormulaDayId() {
         return formulaDayId;
     }
 
     public void setFormulaDayId(int formulaDayId) {
         this.formulaDayId = formulaDayId;
-    }*/
+    }
 
     @Override
     public boolean equals(Object o) {

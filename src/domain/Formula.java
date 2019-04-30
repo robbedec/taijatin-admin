@@ -105,10 +105,7 @@ public class Formula {
                 FormulaFormulaDay zozondag = new FormulaFormulaDay();
                 zozondag.setFormulaDayByFormulaDayId(zondag);
                 formulaFormulaDaysByFormulaId.add(zozondag);
-            case "Selecteer":
-                setFormulaName("");
             case "Geen":
-                setFormulaName("");
                 default:
 
         }

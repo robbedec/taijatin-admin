@@ -179,7 +179,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             txtBus.setEditable(true);
             txtBornIn.setText(user.getBornIn());
             txtBornIn.setEditable(true);
-            ObservableList formulas = FXCollections.observableArrayList("Selecteer", "DI_DO", "DI_ZA", "WO_ZA", "WO", "ZA", "ZO");
+            ObservableList formulas = FXCollections.observableArrayList("Geen", "DI_DO", "DI_ZA", "WO_ZA", "WO", "ZA", "ZO");
             txtFormula.setDisable(false);
             txtFormula.setItems(formulas);
             if(user.getFormulasByFormulaId().getFormulaName() == null || user.getFormulasByFormulaId().getFormulaName() == ""){

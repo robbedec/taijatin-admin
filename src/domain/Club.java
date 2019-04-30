@@ -89,7 +89,7 @@ public class Club {
         try {
             User userToUpdate = userRepo.getByEmail(currentUser.getEmail());
             userRepo.insert(userToUpdate);
-            userDTOLijst.add(currentUser);
+            //userDTOLijst.add(currentUser);
         } catch (EntityNotFoundException ex) {
             UserDTO newUserDTO = currentUser;
             User newUser = newUserDTO.toUser(newUserDTO);

@@ -273,6 +273,7 @@ public class UserDTO {
         if(formulasByFormulaId == null){
             formulasByFormulaId = new Formula();
             formulasByFormulaId.setFormulaName("Geen");
+            return formulasByFormulaId;
         }
         return formulasByFormulaId;
     }

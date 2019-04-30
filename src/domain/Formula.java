@@ -1,6 +1,7 @@
 package domain;
 
 import javafx.collections.FXCollections;
+import main.StartUpGUI;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -45,6 +46,20 @@ public class Formula {
     }
 
     public void setFormulaName(String formulaName) {
+        addFormulaDays(formulaName);
+        this.formulaName = formulaName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Formula formulas = (Formula) o;
+        return formulaId == formulas.formulaId &&
+                Objects.equals(formulaName, formulas.formulaName);
+    }
+
+    private void addFormulaDays(String formulaName){
         formulaFormulaDaysByFormulaId = new ArrayList<>();
         FormulaDay dinsdag = new FormulaDay();
         dinsdag.setDay(1);
@@ -91,20 +106,12 @@ public class Formula {
                 zozondag.setFormulaDayByFormulaDayId(zondag);
                 formulaFormulaDaysByFormulaId.add(zozondag);
             case "Selecteer":
+                setFormulaName("");
             case "Geen":
+                setFormulaName("");
                 default:
 
         }
-        this.formulaName = formulaName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Formula formulas = (Formula) o;
-        return formulaId == formulas.formulaId &&
-                Objects.equals(formulaName, formulas.formulaName);
     }
 
     @Override

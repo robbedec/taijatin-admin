@@ -101,7 +101,10 @@ public class OverviewPanelController extends FlowPane {
         defaultAddress.setStreet("");
         defaultAddress.setNumber(1);
         defaultAddress.setZipCode(1000);
+        defaultAddress.setBus("");
 
+        Formula defaultFormula = new Formula();
+        defaultFormula.setFormulaName("");
         newUser.setBirthday(defaultBirthDay);
         newUser.setRegistrationdate(registrationDate);
         newUser.setGrade(1);

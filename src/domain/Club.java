@@ -97,7 +97,6 @@ public class Club {
             userDTOLijst.add(newUserDTO);
         }
 
-
     }
 
     public void deleteUser(){

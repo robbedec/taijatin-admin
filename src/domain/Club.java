@@ -16,7 +16,8 @@ public class Club {
 
     public UserDTO currentUser;
     public ActivityDTO currentActivity;
-    private PropertyChangeSupport subject;
+    private PropertyChangeSupport subjectUser;
+    private PropertyChangeSupport subjectActivity;
 
     private UserDao userRepo;
     private ActivityDao activityRepo;
@@ -30,7 +31,6 @@ public class Club {
     private ObservableList<ActivityDTO> activityDTOLijst;
     private FilteredList<ActivityDTO> filteredActivityList;
     private SortedList<ActivityDTO> sortedActivityList;
-
 
     private final Comparator<UserDTO> byUsername = (p1,p2) -> p1.getUserName().compareToIgnoreCase(p2.getUserName());
     private final Comparator<UserDTO> byGrade = Comparator.comparing(UserDTO::getGrade);
@@ -62,7 +62,8 @@ public class Club {
         filteredActivityList = new FilteredList<>(activityDTOLijst, p -> true);
         sorderdList = new SortedList<>(filteredList, sortOrder);
         sortedActivityList = new SortedList<>(filteredActivityList, sortActivityOrder);
-        subject = new PropertyChangeSupport(this);
+        subjectUser = new PropertyChangeSupport(this);
+        subjectActivity = new PropertyChangeSupport(this);
         currentUser = null;
     }
 
@@ -74,41 +75,22 @@ public class Club {
         }
     }
 
-    public void filterActivities(String activityName, int index){
-        if(index == 0) {
-            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()));
-        }
-        else {
-           filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) &&  activity.getType().equals(typesOfActivity[index]));
-        }
-    }
-
     public Collection<UserDTO> getFilteredMembers() {
         return sorderdList;
     }
 
     public void setCurrentUser(UserDTO user){
-        subject.firePropertyChange("user", this.currentUser, user);
+        subjectUser.firePropertyChange("user", this.currentUser, user);
         this.currentUser = user;
     }
 
-    public void setCurrentActivity(ActivityDTO activity){
-        subject.firePropertyChange("activity", this.currentActivity, activity);
-        this.currentActivity = activity;
-    }
-
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        subject.addPropertyChangeListener(pcl);
+        subjectUser.addPropertyChangeListener(pcl);
         pcl.propertyChange(new PropertyChangeEvent(pcl, "user", null, this.currentUser));
     }
 
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        subject.removePropertyChangeListener(pcl);
-    }
-
-    public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {
-        subject.addPropertyChangeListener(pcl);
-        pcl.propertyChange(new PropertyChangeEvent(pcl, "activity", null, this.currentActivity));
+        subjectUser.removePropertyChangeListener(pcl);
     }
 
     public void updateUser() {
@@ -135,8 +117,33 @@ public class Club {
         return typesOfUser;
     }
 
+    public void filterActivities(String activityName, int index){
+        if(index == 0) {
+            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()));
+        }
+        else {
+            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) &&  activity.getType().equals(typesOfActivity[index]));
+        }
+    }
+
     public Collection<ActivityDTO> getFilteredActivities() {
         return sortedActivityList;
+    }
+
+
+    public void setCurrentActivity(ActivityDTO activity){
+        subjectActivity.firePropertyChange("activity", this.currentActivity, activity);
+        this.currentActivity = activity;
+    }
+
+    public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {
+        subjectActivity.addPropertyChangeListener(pcl);
+        pcl.propertyChange(new PropertyChangeEvent(pcl, "activity", null, this.currentActivity));
+    }
+
+
+    public void removeActivityPropertyChangeListener(PropertyChangeListener pcl) {
+        subjectUser.removePropertyChangeListener(pcl);
     }
 
     public void updateActivity(){

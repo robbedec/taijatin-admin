@@ -55,7 +55,7 @@ public class ActivityOverviewPanelController extends FlowPane {
        activityTable.setPlaceholder(new Label("Geen activiteiten gevonden"));
         nameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
         typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(TypeOfActivity.valueOf(cellData.getValue().getType())));
-        activityTable.setItems(activities);
+        activityTable.setItems((ObservableList) dc.getFilteredActivities());
         activityTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
             if (newValue != null) {
                 if (oldValue == null || !oldValue.equals(newValue)) {

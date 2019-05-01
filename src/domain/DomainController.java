@@ -31,10 +31,6 @@ public class DomainController {
         club.addPropertyChangeListener(pcl);
     }
 
-    public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {
-        club.addActivityPropertyChangeListener(pcl);
-    }
-
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         club.removePropertyChangeListener(pcl);
     }
@@ -62,6 +58,14 @@ public class DomainController {
 
     public void filterActivities(String name, int index){
         club.filterActivities(name, index);
+    }
+
+    public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {
+        club.addActivityPropertyChangeListener(pcl);
+    }
+
+    public void removeActivityPropertyChangeListener(PropertyChangeListener pcl) {
+        club.removeActivityPropertyChangeListener(pcl);
     }
 
     public String[] getTypesOfActivity(){

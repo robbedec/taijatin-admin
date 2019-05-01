@@ -55,7 +55,7 @@ public class OverviewPanelController extends FlowPane {
             throw new RuntimeException(ex);
         }
         users = (ObservableList) dc.getFilteredMembers();
-        cboType.setItems(FXCollections.observableList(Arrays.asList(types)));
+        cboType.setItems(FXCollections.observableList(Arrays.asList(dc.getTypesOfUser())));
         cboType.getSelectionModel().selectedItemProperty().addListener(x -> {
             filter();
         });

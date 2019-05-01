@@ -12,6 +12,8 @@ public class AdminFrameController extends BorderPane {
     private DomainController dc;
     private OverviewPanelController overviewPanelController;
     private DetailPanelController detailPanelController;
+    private ActivityOverviewPanelController activityOverviewPanelController;
+    private ActivityDetailPanelController activityDetailPanelController;
 
     @FXML
     private Button btnLeden, btnActiviteiten, btnOverzichten, btnLesmateriaal;
@@ -24,6 +26,10 @@ public class AdminFrameController extends BorderPane {
 
         detailPanelController = new DetailPanelController(this.dc);
         dc.addPropertyChangeListener(detailPanelController);
+
+        activityOverviewPanelController = new ActivityOverviewPanelController(this.dc);
+
+        activityDetailPanelController = new ActivityDetailPanelController(this.dc);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminFrame.fxml"));
         loader.setRoot(this);
@@ -45,7 +51,8 @@ public class AdminFrameController extends BorderPane {
     }
 
     public void showActiviteiten() {
-
+        this.setLeft(activityOverviewPanelController);
+        this.setCenter(activityDetailPanelController);
     }
 
     public void showOverzichten() {

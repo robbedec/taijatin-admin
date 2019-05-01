@@ -1,6 +1,7 @@
 package repository;
 
 import domain.Activity;
+import domain.User;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
@@ -17,6 +18,17 @@ public class ActivityDaoJpa extends GenericDaoJpa<Activity> implements ActivityD
                     .getResultList();
             return resultList;
         } catch (NoResultException ex){
+            throw new EntityNotFoundException();
+        }
+    }
+
+    @Override
+    public Activity getByName(String name) throws EntityNotFoundException {
+        try {
+            return entityManager.createNamedQuery("Users.findByName", Activity.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
             throw new EntityNotFoundException();
         }
     }

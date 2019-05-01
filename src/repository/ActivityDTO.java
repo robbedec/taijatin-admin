@@ -1,13 +1,16 @@
 package repository;
 
+import domain.Activity;
 import domain.TypeOfActivity;
 import domain.User;
 
 import java.util.Collection;
+import java.util.SplittableRandom;
 
 public class ActivityDTO {
     private String name;
-    private TypeOfActivity type;
+    private String info;
+    private Integer type;
     private int numberOfParticipants;
     private boolean status;
     private Collection<User> usersById;
@@ -15,12 +18,17 @@ public class ActivityDTO {
     public ActivityDTO() {
     }
 
-    public ActivityDTO(String name, TypeOfActivity type, int numberOfParticipants, boolean status, Collection<User> usersById) {
+    public ActivityDTO(String name, String info, Integer type, int numberOfParticipants, boolean status, Collection<User> usersById) {
         this.name = name;
+        this.info = info;
         this.type = type;
         this.numberOfParticipants = numberOfParticipants;
         this.status = status;
         this.usersById = usersById;
+    }
+
+    public Activity toActivity(ActivityDTO activity){
+        return new Activity(activity.name, activity.info, activity.type, activity.numberOfParticipants, activity.status, activity.usersById);
     }
 
     public String getName() {
@@ -31,11 +39,19 @@ public class ActivityDTO {
         this.name = name;
     }
 
-    public TypeOfActivity getType() {
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public Integer getType() {
         return type;
     }
 
-    public void setType(TypeOfActivity type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

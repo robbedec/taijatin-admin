@@ -9,21 +9,24 @@ import java.util.Objects;
 @Entity
 @Table(name = "Activities")
 @NamedQueries({
-        @NamedQuery(name = "Activities.findAll", query = "SELECT a FROM Activity a")
+        @NamedQuery(name = "Activities.findAll", query = "SELECT a FROM Activity a"),
+        @NamedQuery(name = "Users.findByName", query = "SELECT a FROM Activity a WHERE a.name = :name")
 })
 public class Activity implements IActivity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private TypeOfActivity type;
+    private String info;
+    private Integer type;
     private int numberOfParticipants;
     private boolean status;
 
     public Activity(){}
 
-    public Activity(String name, TypeOfActivity type, int numberOfParticipants, boolean status, Collection<User> usersById){
+    public Activity(String name, String info, Integer type, int numberOfParticipants, boolean status, Collection<User> usersById){
         this.name = name;
+        this.info = info;
         this.type = type;
         this.numberOfParticipants = numberOfParticipants;
         this.status = status;
@@ -31,7 +34,7 @@ public class Activity implements IActivity {
     }
 
     public ActivityDTO toActivityDTO(Activity activity){
-        return new ActivityDTO(activity.getName(), activity.getType(), activity.getNumberOfParticipants(), activity.getStatus(), activity.getUsersById());
+        return new ActivityDTO(activity.getName(), activity.getInfo(), activity.getType(), activity.getNumberOfParticipants(), activity.getStatus(), activity.getUsersById());
     }
 
     @Column(name = "Id")
@@ -54,12 +57,22 @@ public class Activity implements IActivity {
     }
 
     @Basic
+    @Column(name = "Info")
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    @Basic
     @Column(name = "Type")
-    public TypeOfActivity getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(TypeOfActivity type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

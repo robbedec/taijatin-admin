@@ -9,5 +9,7 @@ import java.util.List;
 public interface ActivityDao extends GenericDao<Activity> {
     public List<Activity> getAll()
             throws EntityNotFoundException;
+    public Activity getByName(String name)
+            throws EntityNotFoundException;
 
 }

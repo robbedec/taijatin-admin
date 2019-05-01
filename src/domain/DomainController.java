@@ -1,6 +1,7 @@
 package domain;
 
 
+import repository.ActivityDTO;
 import repository.UserDTO;
 
 import java.beans.PropertyChangeListener;
@@ -30,6 +31,10 @@ public class DomainController {
         club.addPropertyChangeListener(pcl);
     }
 
+    public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {
+        club.addActivityPropertyChangeListener(pcl);
+    }
+
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         club.removePropertyChangeListener(pcl);
     }
@@ -41,4 +46,35 @@ public class DomainController {
     public void deleteUser(){
         club.deleteUser();
     }
+
+
+    public String[] getTypesOfUser(){
+        return club.getTypesOfUser();
+    }
+
+    public Collection<ActivityDTO> getFilteredActivities() {
+        return club.getFilteredActivities();
+    }
+
+    public void setCurrentActivity(ActivityDTO activity){
+        club.setCurrentActivity(activity);
+    }
+
+    public void filterActivities(String name, int index){
+        club.filterActivities(name, index);
+    }
+
+    public String[] getTypesOfActivity(){
+        return club.getTypesOfActivity();
+    }
+
+    public void updateActivity() {
+        club.updateActivity();
+    }
+
+    public void deleteActivity(){
+        club.deleteActivity();
+    }
+
+
 }

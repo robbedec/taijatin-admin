@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import repository.UserDTO;
 
@@ -130,8 +131,16 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             dc.updateUser();
         } catch (CRuntimeException ex) {
             System.out.println("\nError updating/Creating user: " + ex.getMessage() + "\n");
+            Alert error = new Alert(Alert.AlertType.ERROR, "Error updating/Creating user: " + ex.getMessage(), ButtonType.OK);
+            error.setHeaderText("Validation errors");
+            error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            error.showAndWait();
         } catch (NullPointerException np) {
             System.out.println("\nNullPointerExceptoin: no fields touched.\n");
+            Alert error = new Alert(Alert.AlertType.ERROR, "Please fill in all fields.", ButtonType.OK);
+            error.setHeaderText("Validation errors");
+            error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            error.showAndWait();
         }
     }
 

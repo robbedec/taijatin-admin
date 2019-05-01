@@ -9,7 +9,7 @@
    <left>
       <VBox fx:id="vbLeft" maxWidth="1.7976931348623157E308" BorderPane.alignment="TOP_LEFT">
          <children>
-            <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" style="-fx-border-color: black;">
+            <VBox fx:id="vbMenu" fillWidth="false" maxHeight="-Infinity" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" style="-fx-border-color: black;">
                <children>
                   <Button fx:id="btnLeden" alignment="CENTER" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showLeden" text="Ledenbeheer">
                      <opaqueInsets>

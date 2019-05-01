@@ -21,7 +21,7 @@ public class AdminFrameController extends BorderPane {
     private FlowPane fp;
 
     @FXML
-    private VBox vbLeft;
+    private VBox vbLeft, vbMenu;
 
     @FXML
     private Button btnLeden, btnActiviteiten, btnOverzichten, btnLesmateriaal;
@@ -50,23 +50,20 @@ public class AdminFrameController extends BorderPane {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        //this.setLeft(overviewPanelController);
-        //this.setCenter(detailPanelController);
-        //this.setTop(detailPanelController);
+        showLeden();
     }
 
     public void showLeden() {
+        this.vbLeft.getChildren().clear();
+        this.vbLeft.getChildren().add(vbMenu);
         this.vbLeft.getChildren().add(overviewPanelController);
-        //this.setLeft(overviewPanelController);
-        //fp.getChildren().add(overviewPanelController);
-        //BorderPane.setAlignment(detailPanelController, Pos.TOP_RIGHT);
         this.setCenter(detailPanelController);
-
-        //this.setCenter(detailPanelController);
     }
 
     public void showActiviteiten() {
-        this.setLeft(activityOverviewPanelController);
+        this.vbLeft.getChildren().clear();
+        this.vbLeft.getChildren().add(vbMenu);
+        this.vbLeft.getChildren().add(activityOverviewPanelController);
         this.setCenter(activityDetailPanelController);
     }
 

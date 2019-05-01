@@ -1,6 +1,8 @@
 package gui;
 
 import domain.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -45,6 +47,18 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
+        // Validate number when user starts typing to set birthday and gender
+        txtNationalNumber.textProperty().addListener((observableValue, s, t1) -> {
+            user.setNationalInsuranceNumber(observableValue.getValue());
+            ObservableList genders = FXCollections.observableArrayList("Selecteer", "Man", "Vrouw", "Trans");
+            try {
+                txtGender.setValue(genders.get(user.getGender()));
+                txtBirthday.setValue(user.getBirthday().toLocalDate());
+            } catch (NullPointerException ex) {
+                return;
+            }
+        });
     }
 
     public void updateUser() {

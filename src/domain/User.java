@@ -40,7 +40,7 @@ public class User implements IUser {
 
     public User() {  }
 
-    public User(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Activity activityById) {
+    public User(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Collection<Activity> activityById) {
         this.userName = userName;
         this.email = email;
         this.firstname = firstname;
@@ -92,9 +92,9 @@ public class User implements IUser {
     @OneToMany(mappedBy = "usersByTeacherId")
     private Collection<Formula> formulasById;
 
-    @ManyToOne
+    @ManyToMany
     @JoinColumn(name = "ActivityId")
-    private Activity activityById;
+    private Collection<Activity> activityById;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AddressId")
@@ -342,9 +342,9 @@ public class User implements IUser {
         return Objects.hash(id, userName, email, firstname, lastname, gender, nationalInsuranceNumber, registrationdate, bornIn, birthday, mobilePhoneNumber, phoneNumber, emailParent, agreeWithBylaws, agreeWithPicturesAndAudio, receiveClubinfo, receiveInfoAboutPromotionsAndFederalMatters, type, score, grade);
     }
 
-    public Activity getActivityById(){ return activityById; }
+    public Collection<Activity> getActivityById(){ return activityById; }
 
-    public void setActivityById(Activity activityById){
+    public void setActivityById(Collection<Activity> activityById){
         this.activityById = activityById;
     }
 

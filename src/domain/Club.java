@@ -41,7 +41,7 @@ public class Club {
     private final Comparator<ActivityDTO> sortActivityOrder = byActivityName.thenComparing(byActivityType);
 
     private final String[] typesOfUser = new String[]{ "Geen filter", "Member", "Teacher", "Admin" };
-    private final String[] typesOfActivity = new String[]{"Geen filter", "Stage", "Uitstap"};
+    private final String[] typesOfActivity = new String[]{"Geen filter", "Uitstap", "Stage" };
 
     public Club(){
         userRepo = new UserDaoJpa();

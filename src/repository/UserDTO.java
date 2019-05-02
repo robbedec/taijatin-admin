@@ -36,11 +36,11 @@ public class UserDTO {
     private Collection<Formula> formulasById;
     private Address addressByAddressId;
     private Formula formulasByFormulaId;
-    private Activity activityById;
+    private Collection<Activity> activityById;
 
     public UserDTO() { }
 
-    public UserDTO(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Activity activityById) {
+    public UserDTO(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Collection<Activity> activityById) {
         this.userName = userName;
         this.email = email;
         this.firstname = firstname;
@@ -354,11 +354,11 @@ public class UserDTO {
         this.formulasByFormulaId = formulasByFormulaId;
     }
 
-    public Activity getActivityById() {
+    public Collection<Activity> getActivityById() {
         return activityById;
     }
 
-    public void setActivitiesById(Activity activityById) {
+    public void setActivitiesById(Collection<Activity> activityById) {
         this.activityById = activityById;
     }
 

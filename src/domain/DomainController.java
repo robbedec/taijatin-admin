@@ -43,7 +43,6 @@ public class DomainController {
         club.deleteUser();
     }
 
-
     public String[] getTypesOfUser(){
         return club.getTypesOfUser();
     }

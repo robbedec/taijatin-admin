@@ -3,8 +3,8 @@ package domain;
 import java.util.Arrays;
 
 public enum TypeOfActivity {
-    UITSTAP(0),
-    STAGE(1);
+    Uitstap(0),
+    Stage(1);
 
     private final int value;
 

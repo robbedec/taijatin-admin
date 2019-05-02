@@ -96,7 +96,7 @@ public class Activity implements IActivity {
         this.status = status;
     }
 
-    @OneToMany(mappedBy = "activityById")
+    @ManyToMany
     private Collection<User> usersById;
 
     @Override

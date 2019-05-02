@@ -47,6 +47,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             ObservableList types = txtType.getItems();
             int newType = types.indexOf(txtType.getValue());
             activity.setType(newType);
+            activity.setInfo(txtInfo.getText());
             dc.setCurrentActivity(activity);
             dc.updateActivity();
         } catch (CRuntimeException ex) {

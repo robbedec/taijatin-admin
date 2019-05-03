@@ -100,7 +100,9 @@ public class Activity implements IActivity {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinColumn(name = "Id")
+    @JoinTable(name = "Activity_User",
+        joinColumns = {@JoinColumn(name = "fk_activity")},
+        inverseJoinColumns = {@JoinColumn(name = "fk_user") })
     private Collection<User> usersById;
 
     @Override

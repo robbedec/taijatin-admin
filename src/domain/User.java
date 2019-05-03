@@ -92,7 +92,7 @@ public class User implements IUser {
     @OneToMany(mappedBy = "usersByTeacherId")
     private Collection<Formula> formulasById;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "usersById")
     private Collection<Activity> activityById;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

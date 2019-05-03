@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import repository.ActivityDTO;
 import repository.UserDTO;
@@ -51,9 +52,13 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             dc.setCurrentActivity(activity);
             dc.updateActivity();
         } catch (CRuntimeException ex) {
-            System.out.println("\nError updating/Creating user: " + ex.getMessage() + "\n");
+            System.out.println("\nError updaten/creëren activiteit: " + ex.getMessage() + "\n");
         } catch (NullPointerException np) {
-            System.out.println("\nNullPointerExceptoin: no fields touched.\n");
+            System.out.println("\nNullPointerExceptoin: Geen velden ingevuld.\n");
+            Alert error = new Alert(Alert.AlertType.ERROR, "Vul alle velden in alstublieft.", ButtonType.OK);
+            error.setHeaderText("Validatie errors");
+            error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            error.showAndWait();
         }
     }
 

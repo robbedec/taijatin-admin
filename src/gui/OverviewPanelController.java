@@ -87,7 +87,17 @@ public class OverviewPanelController extends FlowPane {
     public void deleteUser(){
         int index = userTable.getSelectionModel().getSelectedIndex();
         System.out.println(index);
-        dc.deleteUser();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Ben je zeker dat je de gebruiker " + userTable.getSelectionModel().getSelectedItem().getUserName() + " wilt verwijderen?", ButtonType.OK, ButtonType.NO );
+        alert.setTitle("Verwijder gebruiker");
+        alert.setHeaderText("Bevestig of je dit wilt verwijderen.");
+        alert.showAndWait().ifPresent(type -> {
+            if(type == ButtonType.OK){
+                dc.deleteUser();
+            }
+            else {
+                System.out.println("Gebruiker " + userTable.getSelectionModel().getSelectedItem().getUserName() + " is niet verwijderd.");
+            }
+        });
     }
 
     @FXML

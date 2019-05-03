@@ -74,8 +74,17 @@ public class ActivityOverviewPanelController extends FlowPane {
     @FXML
     public void deleteActivity(){
         int index = activityTable.getSelectionModel().getSelectedIndex();
-        System.out.println(index);
-        dc.deleteActivity();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Ben je zeker dat je de activiteit " + activityTable.getSelectionModel().getSelectedItem().getName() + " wilt verwijderen?", ButtonType.OK, ButtonType.NO );
+        alert.setTitle("Verwijder activiteit");
+        alert.setContentText("Bevestig of je dit wilt verwijderen.");
+        alert.showAndWait().ifPresent(type -> {
+            if(type == ButtonType.OK){
+                dc.deleteActivity();
+            }
+            else {
+                System.out.println("Activiteit " + activityTable.getSelectionModel().getSelectedItem().getName() + " is niet verwijderd.");
+            }
+        });
     }
 
     @FXML

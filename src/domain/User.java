@@ -93,7 +93,6 @@ public class User implements IUser {
     private Collection<Formula> formulasById;
 
     @ManyToMany
-    @JoinColumn(name = "ActivityId")
     private Collection<Activity> activityById;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

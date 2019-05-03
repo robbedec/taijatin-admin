@@ -131,14 +131,14 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             dc.updateUser();
         } catch (CRuntimeException ex) {
             System.out.println("\nError updating/Creating user: " + ex.getMessage() + "\n");
-            Alert error = new Alert(Alert.AlertType.ERROR, "Error updating/Creating user: " + ex.getMessage(), ButtonType.OK);
-            error.setHeaderText("Validation errors");
+            Alert error = new Alert(Alert.AlertType.ERROR, "Error updaten/creëren gebruiker: " + ex.getMessage(), ButtonType.OK);
+            error.setHeaderText("Validatie errors");
             error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             error.showAndWait();
         } catch (NullPointerException np) {
             System.out.println("\nNullPointerExceptoin: no fields touched.\n");
-            Alert error = new Alert(Alert.AlertType.ERROR, "Please fill in all fields.", ButtonType.OK);
-            error.setHeaderText("Validation errors");
+            Alert error = new Alert(Alert.AlertType.ERROR, "Vul alle velden in alstublieft.", ButtonType.OK);
+            error.setHeaderText("Validatie errors");
             error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             error.showAndWait();
         }

@@ -96,7 +96,11 @@ public class Activity implements IActivity {
         this.status = status;
     }
 
-    @ManyToMany
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinColumn(name = "Id")
     private Collection<User> usersById;
 
     @Override

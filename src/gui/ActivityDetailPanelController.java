@@ -1,9 +1,6 @@
 package gui;
 
-import domain.Address;
-import domain.CRuntimeException;
-import domain.DomainController;
-import domain.Formula;
+import domain.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,9 +18,15 @@ import java.io.IOException;
 public class ActivityDetailPanelController extends VBox implements PropertyChangeListener {
     private DomainController dc;
     @FXML
-    private TextField txtName;
+    private ListView<IUser> listViewNotRegistered, listViewRegistered;
+    @FXML
+    private TextField txtName, txtTotal, txtSlider;
     @FXML
     private TextArea txtInfo;
+    @FXML
+    private Slider sliderMax;
+    @FXML
+    private CheckBox cbStatus;
     @FXML
     private ChoiceBox txtType;
     @FXML
@@ -49,6 +52,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             int newType = types.indexOf(txtType.getValue());
             activity.setType(newType);
             activity.setInfo(txtInfo.getText());
+            activity.setMaxNumberOfParticipants((int) sliderMax.getValue());
             dc.setCurrentActivity(activity);
             dc.updateActivity();
         } catch (CRuntimeException ex) {
@@ -62,6 +66,20 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
         }
     }
 
+    public void slide(){
+        Double d = sliderMax.getValue();
+        int i = d.intValue();
+        txtSlider.setText(String.valueOf(i));
+    }
+
+    public void register(){
+
+    }
+
+    public void undoRegister(){
+
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.activity = (ActivityDTO) evt.getNewValue();
@@ -71,12 +89,24 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             txtType.setItems(FXCollections.observableArrayList("Uitstap", "Stage"));
             txtType.setValue(activity.getType());
             txtType.setDisable(false);
+            cbStatus.setSelected(activity.getStatus());
+            cbStatus.setDisable(false);
+            sliderMax.setBlockIncrement(1);
+            sliderMax.setMin(0);
+            sliderMax.setMax(20);
+            sliderMax.setValue(activity.getMaxNumberOfParticipants());
+            txtSlider.setText(String.valueOf(activity.getMaxNumberOfParticipants()));
+            txtSlider.setEditable(false);
+            txtTotal.setText(String.valueOf(activity.getNumberOfParticipants()));
+            txtTotal.setEditable(false);
             txtInfo.setText(activity.getInfo());
             txtInfo.setEditable(true);
         }
         else if(activity == null){
             txtName.setEditable(false);
             txtType.setDisable(true);
+            cbStatus.setDisable(true);
+            txtTotal.setEditable(false);
             txtInfo.setEditable(false);
         }
     }

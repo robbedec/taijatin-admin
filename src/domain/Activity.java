@@ -19,22 +19,24 @@ public class Activity implements IActivity {
     private String name;
     private String info;
     private Integer type;
+    private int maxNumberOfParticipants;
     private int numberOfParticipants;
     private boolean status;
 
     public Activity(){}
 
-    public Activity(String name, String info, Integer type, int numberOfParticipants, boolean status, Collection<User> usersById){
+    public Activity(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById){
         this.name = name;
         this.info = info;
         this.type = type;
+        this.maxNumberOfParticipants = maxNumberOfParticipants;
         this.numberOfParticipants = numberOfParticipants;
         this.status = status;
         this.usersById = usersById;
     }
 
     public ActivityDTO toActivityDTO(Activity activity){
-        return new ActivityDTO(activity.getName(), activity.getInfo(), activity.getType(), activity.getNumberOfParticipants(), activity.getStatus(), activity.getUsersById());
+        return new ActivityDTO(activity.getName(), activity.getInfo(), activity.getType(), activity.getMaxNumberOfParticipants(), activity.getNumberOfParticipants(), activity.getStatus(), activity.getUsersById());
     }
 
     @Column(name = "Id")
@@ -77,6 +79,16 @@ public class Activity implements IActivity {
     }
 
     @Basic
+    @Column(name = "MaxNumberOfParticipants")
+    public int getMaxNumberOfParticipants() {
+        return maxNumberOfParticipants;
+    }
+
+    public void setMaxNumberOfParticipants(int maxNumberOfParticipants) {
+        this.maxNumberOfParticipants = maxNumberOfParticipants;
+    }
+
+    @Basic
     @Column(name = "NumberOfParticipants")
     public int getNumberOfParticipants() {
         return numberOfParticipants;
@@ -104,6 +116,12 @@ public class Activity implements IActivity {
         joinColumns = {@JoinColumn(name = "fk_activity")},
         inverseJoinColumns = {@JoinColumn(name = "fk_user") })
     private Collection<User> usersById;
+
+/*    @OneToMany(mappedBy = "registeredtoActivityByActivityId")
+    private Collection<User> registeredUsersByUserId;
+
+    @OneToMany(mappedBy = "notRegisteredToActivityByActivityId")
+    private Collection<User> notRegisteredUsersByUserId;*/
 
     @Override
     public boolean equals(Object o) {
@@ -134,4 +152,20 @@ public class Activity implements IActivity {
     public void setUsersById(Collection<User> usersById) {
         this.usersById = usersById;
     }
+
+  /*  public Collection<User> getRegisteredUsersByUserId() {
+        return registeredUsersByUserId;
+    }
+
+    public void setRegisteredUsersByUserId(Collection<User> registeredUsersByUserId) {
+        this.registeredUsersByUserId = registeredUsersByUserId;
+    }
+
+    public Collection<User> getNotRegisteredUsersByUserId() {
+        return notRegisteredUsersByUserId;
+    }
+
+    public void setNotRegisteredUsersByUserId(Collection<User> notRegisteredUsersByUserId) {
+        this.notRegisteredUsersByUserId = notRegisteredUsersByUserId;
+    }*/
 }

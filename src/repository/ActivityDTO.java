@@ -11,6 +11,7 @@ public class ActivityDTO {
     private String name;
     private String info;
     private Integer type;
+    private int maxNumberOfParticipants;
     private int numberOfParticipants;
     private boolean status;
     private Collection<User> usersById;
@@ -18,17 +19,18 @@ public class ActivityDTO {
     public ActivityDTO() {
     }
 
-    public ActivityDTO(String name, String info, Integer type, int numberOfParticipants, boolean status, Collection<User> usersById) {
+    public ActivityDTO(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById) {
         this.name = name;
         this.info = info;
         this.type = type;
+        this.maxNumberOfParticipants = maxNumberOfParticipants;
         this.numberOfParticipants = numberOfParticipants;
         this.status = status;
         this.usersById = usersById;
     }
 
     public Activity toActivity(ActivityDTO activity){
-        return new Activity(activity.name, activity.info, activity.type, activity.numberOfParticipants, activity.status, activity.usersById);
+        return new Activity(activity.name, activity.info, activity.type, activity.numberOfParticipants, activity.numberOfParticipants, activity.status, activity.usersById);
     }
 
     public String getName() {
@@ -55,6 +57,14 @@ public class ActivityDTO {
         this.type = type;
     }
 
+    public int getMaxNumberOfParticipants() {
+        return maxNumberOfParticipants;
+    }
+
+    public void setMaxNumberOfParticipants(int maxNumberOfParticipants) {
+        this.maxNumberOfParticipants = maxNumberOfParticipants;
+    }
+
     public int getNumberOfParticipants() {
         return numberOfParticipants;
     }
@@ -63,7 +73,7 @@ public class ActivityDTO {
         this.numberOfParticipants = numberOfParticipants;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 

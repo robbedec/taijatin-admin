@@ -32,6 +32,10 @@ public class Club {
     private FilteredList<ActivityDTO> filteredActivityList;
     private SortedList<ActivityDTO> sortedActivityList;
 
+    //Observable Lists to be able to register an user to an activity
+    private ObservableList<User> registeredUsersToActivityList;
+    private ObservableList<User> remainingUsersToActivityList;
+
     private final Comparator<UserDTO> byUsername = (p1,p2) -> p1.getUserName().compareToIgnoreCase(p2.getUserName());
     private final Comparator<UserDTO> byGrade = Comparator.comparing(UserDTO::getGrade);
     private final Comparator<UserDTO> sortOrder = byUsername.thenComparing(byGrade);

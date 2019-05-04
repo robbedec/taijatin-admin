@@ -117,11 +117,11 @@ public class Activity implements IActivity {
         inverseJoinColumns = {@JoinColumn(name = "fk_user") })
     private Collection<User> usersById;
 
-/*    @OneToMany(mappedBy = "registeredtoActivityByActivityId")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<User> registeredUsersByUserId;
 
-    @OneToMany(mappedBy = "notRegisteredToActivityByActivityId")
-    private Collection<User> notRegisteredUsersByUserId;*/
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<User> notRegisteredUsersByUserId;
 
     @Override
     public boolean equals(Object o) {
@@ -153,7 +153,7 @@ public class Activity implements IActivity {
         this.usersById = usersById;
     }
 
-  /*  public Collection<User> getRegisteredUsersByUserId() {
+    public Collection<User> getRegisteredUsersByUserId() {
         return registeredUsersByUserId;
     }
 
@@ -166,6 +166,9 @@ public class Activity implements IActivity {
     }
 
     public void setNotRegisteredUsersByUserId(Collection<User> notRegisteredUsersByUserId) {
+        if(this.registeredUsersByUserId.size() == 0 && this.notRegisteredUsersByUserId.size() == 0){
+            this.notRegisteredUsersByUserId = usersById;
+        }
         this.notRegisteredUsersByUserId = notRegisteredUsersByUserId;
-    }*/
+    }
 }

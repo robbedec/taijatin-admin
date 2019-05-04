@@ -79,5 +79,13 @@ public class DomainController {
         club.deleteActivity();
     }
 
+    public Collection<User> getRegisteredUsersFromActivity(){
+        return club.getRegisteredUsersFromActivity();
+    }
+
+    public Collection<User> getNotRegisteredUsersFromActivity(){
+        return club.getNotRegisteredUsersFromActivity();
+    }
+
 
 }

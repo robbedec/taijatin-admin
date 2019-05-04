@@ -33,6 +33,8 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     private Button btnSave, btnAdd;
     private ActivityDTO activity;
 
+    private ObservableList<IUser> registeredUsers, notRegisteredUsers;
+
     public ActivityDetailPanelController(DomainController dc) {
         this.dc = dc;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ActivityDetailPanel.fxml"));
@@ -43,6 +45,12 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+        notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
+        registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
+        listViewNotRegistered.setPlaceholder(new Label("Geen gebruikers meer gevonden"));
+        listViewRegistered.setPlaceholder(new Label("Geen gebruikers geregistreerd"));
+        listViewNotRegistered.setItems(notRegisteredUsers);
+        listViewRegistered.setItems(registeredUsers);
     }
 
     public void updateActivity() {
@@ -77,7 +85,17 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     }
 
     public void undoRegister(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Wil je deze registratie ongedaan maken?", ButtonType.OK, ButtonType.NO);
+        alert.setTitle("Maak registratie ongedaan");
+        alert.setContentText("Bevestig of je deze gebruiker wilt uitschrijven.");
+        alert.showAndWait().ifPresent(type -> {
+            if(type == ButtonType.OK){
 
+            }
+            else {
+                System.out.println("Gebruiker " + listViewRegistered.getSelectionModel().getSelectedItem() + " is niet uitgeschreven.");
+            }
+        });
     }
 
     @Override

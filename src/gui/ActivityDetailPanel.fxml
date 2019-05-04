@@ -32,8 +32,8 @@
                <RowConstraints minHeight="6.0" prefHeight="6.0" vgrow="SOMETIMES" />
                <RowConstraints minHeight="6.0" prefHeight="6.0" vgrow="SOMETIMES" />
                <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="60.0" prefHeight="200.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                <RowConstraints minHeight="8.0" percentHeight="12.0" prefHeight="8.0" vgrow="SOMETIMES" />
             </rowConstraints>

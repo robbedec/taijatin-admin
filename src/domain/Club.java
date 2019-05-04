@@ -34,7 +34,7 @@ public class Club {
 
     //Observable Lists to be able to register an user to an activity
     private ObservableList<User> registeredUsersToActivityList;
-    private ObservableList<User> remainingUsersToActivityList;
+    private ObservableList<User> notRegisteredUsersToActivityList;
 
     private final Comparator<UserDTO> byUsername = (p1,p2) -> p1.getUserName().compareToIgnoreCase(p2.getUserName());
     private final Comparator<UserDTO> byGrade = Comparator.comparing(UserDTO::getGrade);
@@ -68,6 +68,8 @@ public class Club {
         sortedActivityList = new SortedList<>(filteredActivityList, sortActivityOrder);
         subjectUser = new PropertyChangeSupport(this);
         subjectActivity = new PropertyChangeSupport(this);
+        registeredUsersToActivityList = FXCollections.observableArrayList();
+        notRegisteredUsersToActivityList = FXCollections.observableArrayList();
         currentUser = null;
     }
 
@@ -170,6 +172,14 @@ public class Club {
 
     public String[] getTypesOfActivity(){
         return typesOfActivity;
+    }
+
+    public Collection<User> getRegisteredUsersFromActivity(){
+        return registeredUsersToActivityList;
+    }
+
+    public Collection<User> getNotRegisteredUsersFromActivity(){
+        return notRegisteredUsersToActivityList;
     }
 
 }

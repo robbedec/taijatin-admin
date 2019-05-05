@@ -14,7 +14,7 @@ import java.util.*;
 
 public class Club {
 
-    public UserDTO currentUser;
+    public User currentUser;
     public ActivityDTO currentActivity;
     private PropertyChangeSupport subjectUser;
     private PropertyChangeSupport subjectActivity;
@@ -23,9 +23,9 @@ public class Club {
     private ActivityDao activityRepo;
 
     private List<User> userLijst;
-    private ObservableList<UserDTO> userDTOLijst;
-    private FilteredList<UserDTO> filteredList;
-    private SortedList<UserDTO> sorderdList;
+    private ObservableList<User> userList;
+    private FilteredList<User> filteredList;
+    private SortedList<User> sorderdList;
 
     private List<Activity> activityLijst;
     private ObservableList<ActivityDTO> activityDTOLijst;
@@ -36,9 +36,9 @@ public class Club {
     private ObservableList<User> registeredUsersToActivityList;
     private ObservableList<User> notRegisteredUsersToActivityList;
 
-    private final Comparator<UserDTO> byUsername = (p1,p2) -> p1.getUserName().compareToIgnoreCase(p2.getUserName());
-    private final Comparator<UserDTO> byGrade = Comparator.comparing(UserDTO::getGrade);
-    private final Comparator<UserDTO> sortOrder = byUsername.thenComparing(byGrade);
+    private final Comparator<User> byUsername = (p1,p2) -> p1.getUserName().compareToIgnoreCase(p2.getUserName());
+    private final Comparator<User> byGrade = Comparator.comparing(User::getGrade);
+    private final Comparator<User> sortOrder = byUsername.thenComparing(byGrade);
 
     private final Comparator<ActivityDTO> byActivityName = (p1,p2) -> p1.getName().compareToIgnoreCase(p2.getName());
     private final Comparator<ActivityDTO> byActivityType = Comparator.comparing(ActivityDTO::getType);
@@ -51,19 +51,18 @@ public class Club {
     public Club(){
         userRepo = new UserDaoJpa();
         activityRepo = new ActivityDaoJpa();
-        userDTOLijst = FXCollections.observableArrayList();
+        userList = FXCollections.observableArrayList();
         activityDTOLijst = FXCollections.observableArrayList();
         userRepo.getAll().forEach(user -> {
             System.out.print(user);
-            UserDTO uDTO = user.toUserDTO(user);
-            userDTOLijst.add(uDTO);
+            userList.add(user);
         });
         activityRepo.getAll().forEach(activity -> {
             System.out.println(activity);
             ActivityDTO aDTO = activity.toActivityDTO(activity);
             activityDTOLijst.add(aDTO);
         });
-        filteredList = new FilteredList<>(userDTOLijst, p -> true);
+        filteredList = new FilteredList<>(userList, p -> true);
         filteredActivityList = new FilteredList<>(activityDTOLijst, p -> true);
         sorderdList = new SortedList<>(filteredList, sortOrder);
         sortedActivityList = new SortedList<>(filteredActivityList, sortActivityOrder);
@@ -82,11 +81,11 @@ public class Club {
         }
     }
 
-    public Collection<UserDTO> getFilteredMembers() {
+    public Collection<User> getFilteredMembers() {
         return sorderdList;
     }
 
-    public void setCurrentUser(UserDTO user){
+    public void setCurrentUser(User user){
         subjectUser.firePropertyChange("user", this.currentUser, user);
         this.currentUser = user;
     }
@@ -102,14 +101,13 @@ public class Club {
 
     public void updateUser() {
         try {
-            User userToUpdate = userRepo.getByEmail(currentUser.getEmail());
-            userRepo.insert(userToUpdate);
-            //userDTOLijst.add(currentUser);
+            // NIET VERANDERREN
+            userRepo.insert(userRepo.update(this.currentUser));
         } catch (EntityNotFoundException ex) {
-            UserDTO newUserDTO = currentUser;
-            User newUser = newUserDTO.toUser(newUserDTO);
+            System.out.println(ex.getStackTrace());
+            User newUser = currentUser;
             userRepo.insert(newUser);
-            userDTOLijst.add(newUserDTO);
+            userList.add(newUser);
         }
 
     }
@@ -117,7 +115,7 @@ public class Club {
     public void deleteUser(){
         User userToDelete = userRepo.getByEmail(currentUser.getEmail());
         userRepo.delete(userToDelete);
-        userDTOLijst.remove(currentUser);
+        userList.remove(currentUser);
     }
 
     public String[] getTypesOfUser(){

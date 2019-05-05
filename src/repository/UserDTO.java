@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserDTO {
+    public int id;
     private String userName;
     private String email;
     private String firstname;
@@ -40,7 +41,8 @@ public class UserDTO {
 
     public UserDTO() { }
 
-    public UserDTO(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Collection<Activity> activityById) {
+    public UserDTO(int id, String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Collection<Activity> activityById) {
+        this.id = id;
         this.userName = userName;
         this.email = email;
         this.firstname = firstname;
@@ -70,8 +72,8 @@ public class UserDTO {
         this.activityById = activityById;
     }
 
-    public User toUser(UserDTO user) {
-        return new User(user.getUserName(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getGender(), user.getNationalInsuranceNumber(), user.getRegistrationdate(), user.getBornIn(), user.getBirthday(), user.getMobilePhoneNumber(), user.getPhoneNumber(), user.getEmailParent(), user.isAgreeWithBylaws(), user.isAgreeWithPicturesAndAudio(), user.isReceiveClubinfo(), user.isReceiveInfoAboutPromotionsAndFederalMatters(), user.getType(), user.getScore(), user.getGrade(), user.getAttendancesById(), user.getCommentRepliesById(), user.getCommentsById(), user.getCourseModuleViewersById(), user.getFormulasById(), user.getAddressByAddressId(), user.getFormulasByFormulaId(), user.getActivityById());
+    public User toUser() {
+        return new User(this.getUserName(), this.getEmail(), this.getFirstname(), this.getLastname(), this.getGender(), this.getNationalInsuranceNumber(), this.getRegistrationdate(), this.getBornIn(), this.getBirthday(), this.getMobilePhoneNumber(), this.getPhoneNumber(), this.getEmailParent(), this.isAgreeWithBylaws(), this.isAgreeWithPicturesAndAudio(), this.isReceiveClubinfo(), this.isReceiveInfoAboutPromotionsAndFederalMatters(), this.getType(), this.getScore(), this.getGrade(), this.getAttendancesById(), this.getCommentRepliesById(), this.getCommentsById(), this.getCourseModuleViewersById(), this.getFormulasById(), this.getAddressByAddressId(), this.getFormulasByFormulaId(), this.getActivityById());
     }
 
     public String getUserName() {

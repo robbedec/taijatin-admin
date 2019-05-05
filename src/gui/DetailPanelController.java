@@ -36,7 +36,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
     private ChoiceBox txtGrade, txtGender, txtType, txtFormula;
     @FXML
     private Button btnSave, btnAdd;
-    private UserDTO user;
+    private User user;
 
     public DetailPanelController(DomainController dc) {
         this.dc = dc;
@@ -146,10 +146,10 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        this.user = (UserDTO)evt.getNewValue();
+        this.user = (User)evt.getNewValue();
         if(this.user != null) {
             txtUsername.setText(user.getUserName());
-            if(this.user.getUserName() == null || this.user.getUserName() == ""){
+            if(this.user.getUserName() == null || this.user.getUserName().equals("")){
                 txtUsername.setEditable(true);
                 btnAdd.setVisible(true);
                 btnSave.setVisible(false);
@@ -209,7 +209,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             ObservableList formulas = FXCollections.observableArrayList("Geen", "DI_DO", "DI_ZA", "WO_ZA", "WO", "ZA", "ZO");
             txtFormula.setDisable(false);
             txtFormula.setItems(formulas);
-            if(user.getFormulasByFormulaId().getFormulaName() == null || user.getFormulasByFormulaId().getFormulaName() == ""){
+            if(user.getFormulasByFormulaId() == null || user.getFormulasByFormulaId().getFormulaName().equals("")){
                 txtFormula.setValue(formulas.get(0));
             }
             else {

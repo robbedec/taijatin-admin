@@ -27,9 +27,9 @@ public class OverviewPanelController extends FlowPane {
     public final String[] overzichten = new String[]{ "Activiteiten", "Inschrijvingen", "Aanwezigheden", "Clubkampioenschap", "Raadplegingen lesmateriaal" };
 
     @FXML
-    private TableView<UserDTO> userTable;
+    private TableView<User> userTable;
     @FXML
-    private TableColumn<UserDTO, String> usernameCol, typeCol, gradeCol, formulaCol;
+    private TableColumn<User, String> usernameCol, typeCol, gradeCol, formulaCol;
     @FXML
     private TextField txtFilter;
     @FXML
@@ -37,7 +37,7 @@ public class OverviewPanelController extends FlowPane {
     @FXML
     private Button btnNew, btnDelete;
 
-    private ObservableList<UserDTO> users;
+    private ObservableList<IUser> users;
 
     /**
      * @param dc
@@ -66,12 +66,12 @@ public class OverviewPanelController extends FlowPane {
         usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
         typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getType()));
         gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grade.valueOf(cellData.getValue().getGrade())));
-        formulaCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getFormulasByFormulaId().getFormulaName()));
+//        formulaCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getFormulasByFormulaId().getFormulaName()));
         userTable.setItems((ObservableList)dc.getFilteredMembers());
         userTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
             if(newValue != null) {
                 if(oldValue == null || !oldValue.equals(newValue)) {
-                    UserDTO uDto = newValue;
+                    User uDto = newValue;
                     dc.setCurrentUser(uDto);
                 }
             }
@@ -102,7 +102,7 @@ public class OverviewPanelController extends FlowPane {
 
     @FXML
     public void newUser(){
-        UserDTO newUser = new UserDTO();
+        User newUser = new User();
         Date defaultBirthDay = Date.valueOf(LocalDate.of(1920, 1, 1));
         Date registrationDate = Date.valueOf(LocalDate.now());
         Address defaultAddress = new Address();

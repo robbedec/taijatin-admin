@@ -15,7 +15,7 @@ public class DomainController {
         club = new Club();
     }
 
-    public Collection<UserDTO> getFilteredMembers() {
+    public Collection<User> getFilteredMembers() {
         return club.getFilteredMembers();
     }
 
@@ -23,7 +23,7 @@ public class DomainController {
         club.filterUsers(userName, index);
     }
 
-    public void setCurrentUser(UserDTO user){
+    public void setCurrentUser(User user){
         club.setCurrentUser(user);
     }
 

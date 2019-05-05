@@ -17,19 +17,13 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 
-public class OverviewPanelController extends FlowPane {
+public class OverviewPanelController<T> extends FlowPane {
 
     private final DomainController dc;
-    public final String[] types = new String[]{ "Geen filter", "Lid", "Leraar", "Beheerder" };
     public final String[] overzichten = new String[]{ "Activiteiten", "Inschrijvingen", "Aanwezigheden", "Clubkampioenschap", "Raadplegingen lesmateriaal" };
 
-    @FXML
-    private TableView<User> userTable;
-    @FXML
-    private TableColumn<User, String> usernameCol, typeCol, gradeCol, formulaCol;
     @FXML
     private TextField txtFilter;
     @FXML
@@ -37,13 +31,17 @@ public class OverviewPanelController extends FlowPane {
     @FXML
     private Button btnNew, btnDelete;
 
-    private ObservableList<IUser> users;
+    @FXML
+    private FlowPane flowpane;
+
+    private TableViewFactory factory;
 
     /**
      * @param dc
      */
-        public OverviewPanelController(DomainController dc) {
+        public OverviewPanelController(DomainController dc, List<T> enumInstances) {
         this.dc = dc;
+        this.factory = new TableViewFactory(dc);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("OverviewPanel.fxml"));
         loader.setRoot(this);
@@ -54,28 +52,13 @@ public class OverviewPanelController extends FlowPane {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        users = (ObservableList) dc.getFilteredMembers();
-        cboType.setItems(FXCollections.observableList(Arrays.asList(dc.getTypesOfUser())));
+        enumInstances.forEach(type -> cboType.getItems().add(type.toString()));
         cboType.getSelectionModel().selectedItemProperty().addListener(x -> {
             filter();
         });
         cboType.getSelectionModel().select(0);
 
-        // Databinding user properties to table column
-        userTable.setPlaceholder(new Label("Geen gebruikers gevonden"));
-        usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
-        typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getType()));
-        gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grade.valueOf(cellData.getValue().getGrade())));
-//        formulaCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getFormulasByFormulaId().getFormulaName()));
-        userTable.setItems((ObservableList)dc.getFilteredMembers());
-        userTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
-            if(newValue != null) {
-                if(oldValue == null || !oldValue.equals(newValue)) {
-                    User uDto = newValue;
-                    dc.setCurrentUser(uDto);
-                }
-            }
-        });
+        flowpane.getChildren().add(2, factory.getUserTableView());
         }
 
     @FXML
@@ -85,9 +68,10 @@ public class OverviewPanelController extends FlowPane {
 
     @FXML
     public void deleteUser(){
-        int index = userTable.getSelectionModel().getSelectedIndex();
+        TableView<User> tableView = (TableView)flowpane.getChildren().get(2);
+        int index = tableView.getSelectionModel().getSelectedIndex();
         System.out.println(index);
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Ben je zeker dat je de gebruiker " + userTable.getSelectionModel().getSelectedItem().getUserName() + " wilt verwijderen?", ButtonType.OK, ButtonType.NO );
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Ben je zeker dat je de gebruiker " + tableView.getSelectionModel().getSelectedItem().getUserName() + " wilt verwijderen?", ButtonType.OK, ButtonType.NO );
         alert.setTitle("Verwijder gebruiker");
         alert.setHeaderText("Bevestig of je dit wilt verwijderen.");
         alert.showAndWait().ifPresent(type -> {
@@ -95,7 +79,7 @@ public class OverviewPanelController extends FlowPane {
                 dc.deleteUser();
             }
             else {
-                System.out.println("Gebruiker " + userTable.getSelectionModel().getSelectedItem().getUserName() + " is niet verwijderd.");
+                System.out.println("Gebruiker " + tableView.getSelectionModel().getSelectedItem().getUserName() + " is niet verwijderd.");
             }
         });
     }

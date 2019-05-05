@@ -107,7 +107,7 @@ public class User implements IUser {
     @JoinColumn(name = "AddressId")
     private Address addressByAddressId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "FormulaId")
     private Formula formulasByFormulaId;
 

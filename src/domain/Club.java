@@ -22,7 +22,6 @@ public class Club {
     private UserDao userRepo;
     private ActivityDao activityRepo;
 
-    private List<User> userLijst;
     private ObservableList<User> userList;
     private FilteredList<User> filteredList;
     private SortedList<User> sorderdList;
@@ -81,7 +80,7 @@ public class Club {
         }
     }
 
-    public Collection<User> getFilteredMembers() {
+    public ObservableList<User> getFilteredMembers() {
         return sorderdList;
     }
 
@@ -102,12 +101,11 @@ public class Club {
     public void updateUser() {
         try {
             // NIET VERANDERREN
+            User u = userRepo.getByEmail(currentUser.getEmail());
             userRepo.insert(userRepo.update(this.currentUser));
         } catch (EntityNotFoundException ex) {
-            System.out.println(ex.getStackTrace());
-            User newUser = currentUser;
-            userRepo.insert(newUser);
-            userList.add(newUser);
+            userRepo.insert(currentUser);
+            userList.add(currentUser);
         }
 
     }

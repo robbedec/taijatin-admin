@@ -11,6 +11,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
 import java.util.concurrent.Flow;
 
 public class AdminFrameController extends BorderPane {
@@ -33,7 +37,7 @@ public class AdminFrameController extends BorderPane {
     public AdminFrameController(DomainController dc) {
         this.dc = dc;
 
-        overviewPanelController = new OverviewPanelController(this.dc);
+        overviewPanelController = new OverviewPanelController(this.dc, Arrays.asList(Types.values()));
         //dc.addPropertyChangeListener(overviewPanelController);
 
         detailPanelController = new DetailPanelController(this.dc);

@@ -1,6 +1,7 @@
 package domain;
 
 
+import javafx.collections.ObservableList;
 import repository.ActivityDTO;
 import repository.UserDTO;
 
@@ -15,7 +16,7 @@ public class DomainController {
         club = new Club();
     }
 
-    public Collection<User> getFilteredMembers() {
+    public ObservableList<User> getFilteredMembers() {
         return club.getFilteredMembers();
     }
 

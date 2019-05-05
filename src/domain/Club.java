@@ -42,7 +42,8 @@ public class Club {
 
     private final Comparator<ActivityDTO> byActivityName = (p1,p2) -> p1.getName().compareToIgnoreCase(p2.getName());
     private final Comparator<ActivityDTO> byActivityType = Comparator.comparing(ActivityDTO::getType);
-    private final Comparator<ActivityDTO> sortActivityOrder = byActivityName.thenComparing(byActivityType);
+    private final Comparator<ActivityDTO> byStatus = Comparator.comparing(ActivityDTO::getStatus);
+    private final Comparator<ActivityDTO> sortActivityOrder = byActivityType.thenComparing(byActivityName.thenComparing(byActivityType));
 
     private final String[] typesOfUser = new String[]{ "Geen filter", "Member", "Teacher", "Admin" };
     private final String[] typesOfActivity = new String[]{"Geen filter", "Uitstap", "Stage" };

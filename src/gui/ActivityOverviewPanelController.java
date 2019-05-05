@@ -22,7 +22,7 @@ public class ActivityOverviewPanelController extends FlowPane {
     @FXML
     private TableView<ActivityDTO> activityTable;
     @FXML
-    private TableColumn<ActivityDTO, String> nameCol, typeCol;
+    private TableColumn<ActivityDTO, String> nameCol, typeCol, statusCol;
     @FXML
     private TextField txtFilter;
     @FXML
@@ -55,6 +55,7 @@ public class ActivityOverviewPanelController extends FlowPane {
        activityTable.setPlaceholder(new Label("Geen activiteiten gevonden"));
         nameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
         typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(TypeOfActivity.valueOf(cellData.getValue().getType())));
+        statusCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStatus() ? "Actief" : "Inactief"));
         activityTable.setItems((ObservableList) dc.getFilteredActivities());
         activityTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
             if (newValue != null) {

@@ -17,7 +17,8 @@ public class StartUpGUI extends Application {
         Scene scene = new Scene(new AdminFrameController(new DomainController()));
         primaryStage.setScene(scene);
         primaryStage.setTitle("Admin paneel");
-        primaryStage.setMaximized(true);
+        // Temporary
+        //primaryStage.setMaximized(true);
         primaryStage.setOnShown((WindowEvent t) -> {
             primaryStage.setMinWidth(primaryStage.getWidth());
             primaryStage.setMinHeight(primaryStage.getHeight());

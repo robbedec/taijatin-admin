@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -21,7 +22,10 @@ public class AdminFrameController extends BorderPane {
     private FlowPane fp;
 
     @FXML
-    private VBox vbLeft, vbMenu;
+    private VBox vbLeft;
+
+    @FXML
+    private HBox hbTop;
 
     @FXML
     private Button btnLeden, btnActiviteiten, btnOverzichten, btnLesmateriaal;
@@ -56,14 +60,12 @@ public class AdminFrameController extends BorderPane {
 
     public void showLeden() {
         this.vbLeft.getChildren().clear();
-        this.vbLeft.getChildren().add(vbMenu);
         this.vbLeft.getChildren().add(overviewPanelController);
         this.setCenter(detailPanelController);
     }
 
     public void showActiviteiten() {
         this.vbLeft.getChildren().clear();
-        this.vbLeft.getChildren().add(vbMenu);
         this.vbLeft.getChildren().add(activityOverviewPanelController);
         this.setCenter(activityDetailPanelController);
     }

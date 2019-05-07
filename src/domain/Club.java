@@ -65,8 +65,9 @@ public class Club {
         sortedActivityList = new SortedList<>(filteredActivityList, sortActivityOrder);
         subjectUser = new PropertyChangeSupport(this);
         subjectActivity = new PropertyChangeSupport(this);
+        registeredUsersToActivityList = FXCollections.observableArrayList();
+        notRegisteredUsersToActivityList = FXCollections.observableArrayList();
         currentUser = null;
-        currentActivity = null;
     }
 
     public void filterUsers(String userName, int index){
@@ -134,9 +135,6 @@ public class Club {
     public void setCurrentActivity(Activity activity){
         subjectActivity.firePropertyChange("activity", this.currentActivity, activity);
         this.currentActivity = activity;
-        this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(currentActivity.getNotRegisteredUsersByUserId());
-        System.out.println(notRegisteredUsersToActivityList);
-        this.registeredUsersToActivityList = FXCollections.observableArrayList(currentActivity.getRegisteredUsersByUserId());
     }
 
     public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {

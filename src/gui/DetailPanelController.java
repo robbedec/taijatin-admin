@@ -52,6 +52,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
         // Validate number when user starts typing to set birthday and gender
         txtNationalNumber.textProperty().addListener((observableValue, s, t1) -> {
             user.setNationalInsuranceNumber(observableValue.getValue());
+            System.out.println(observableValue);
             ObservableList genders = FXCollections.observableArrayList("Selecteer", "Man", "Vrouw", "Trans");
             try {
                 txtGender.setValue(genders.get(user.getGender()));
@@ -154,7 +155,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
         }
         if(this.user != null) {
             txtUsername.setText(user.getUserName());
-            if(this.user.getUserName() == null || this.user.getUserName().equals("")){
+            if(this.user.getUserName() == null || this.user.getUserName().equals("") || this.user.getUserName().equals("gebruikersnaam")){
                 txtUsername.setEditable(true);
                 btnAdd.setVisible(true);
                 btnSave.setVisible(false);

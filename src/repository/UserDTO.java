@@ -68,9 +68,8 @@ public class UserDTO {
         setCourseModuleViewersById(courseModuleViewersById);
         setFormulasByFormulaId(formulasByFormulaId);
         setFormulasById(formulasById);
-        setAddressByAddressId(addressByAddressId);
         setActivityById(activityById);
-
+        setAddressByAddressId(addressByAddressId);
     }
 
     public User toUser() {

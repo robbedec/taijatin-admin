@@ -70,8 +70,8 @@ public class User implements IUser {
         setCourseModuleViewersById(courseModuleViewersById);
         setFormulasByFormulaId(formulasByFormulaId);
         setFormulasById(formulasById);
-        setAddressByAddressId(addressByAddressId);
         setActivityById(activityById);
+        setAddressByAddressId(addressByAddressId);
     }
 
     public UserDTO toUserDTO(User user) {
@@ -210,7 +210,7 @@ public class User implements IUser {
     public void setNationalInsuranceNumber(String nationalInsuranceNumber) {
         try {
             if(empty(nationalInsuranceNumber)) {
-                throw new CRuntimeException("Email can not be empty!");
+                throw new CRuntimeException("National Insurance Number can not be empty!");
             } else if (nationalInsuranceNumber.isEmpty() || nationalInsuranceNumber != null) {
                 String regex = "^[0-9]{2}.[0-9]{2}.[0-9]{2}-[0-9]{3}.[0-9]{2}$"; // bv. 99.04.05-233.75
                 Pattern pattern = Pattern.compile(regex);

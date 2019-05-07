@@ -32,6 +32,7 @@ public class DomainController {
         } catch (CRuntimeException ex) {
             // Nieuwe user
             User u = user.toUser();
+            club.setCurrentUser(u);
         }
     }
 

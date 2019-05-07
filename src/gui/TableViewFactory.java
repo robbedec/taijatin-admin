@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import repository.UserDTO;
 
 public class TableViewFactory<T> {
 
@@ -43,7 +44,8 @@ public class TableViewFactory<T> {
         tableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
             if(newValue != null) {
                 if(oldValue == null || !oldValue.equals(newValue)) {
-                    User uDto = (User)newValue;
+                    User u = (User)newValue;
+                    UserDTO uDto = u.toUserDTO(u);
                     dc.setCurrentUser(uDto);
                 }
             }

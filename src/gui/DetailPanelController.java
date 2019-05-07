@@ -146,7 +146,12 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        this.user = (UserDTO)evt.getNewValue();
+        User u = (User)evt.getNewValue();
+        if (u != null) {
+            this.user = u.toUserDTO(u);
+        } else {
+            this.user = null;
+        }
         if(this.user != null) {
             txtUsername.setText(user.getUserName());
             if(this.user.getUserName() == null || this.user.getUserName().equals("")){

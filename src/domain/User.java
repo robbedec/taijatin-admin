@@ -211,7 +211,7 @@ public class User implements IUser {
         try {
             if(empty(nationalInsuranceNumber)) {
                 throw new CRuntimeException("National Insurance Number can not be empty!");
-            } else if (nationalInsuranceNumber.isEmpty() || nationalInsuranceNumber != null) {
+            } else if (!nationalInsuranceNumber.isEmpty() || nationalInsuranceNumber != null) {
                 String regex = "^[0-9]{2}.[0-9]{2}.[0-9]{2}-[0-9]{3}.[0-9]{2}$"; // bv. 99.04.05-233.75
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(nationalInsuranceNumber);
@@ -219,33 +219,11 @@ public class User implements IUser {
                     throw new CRuntimeException("Validation error in national insurance number. Requires: fex. 99.04.05-233.75");
                 } else {
                     this.nationalInsuranceNumber = nationalInsuranceNumber;
-
-                    // Set birthday with number
-                    String year = this.nationalInsuranceNumber.substring(0,2);
-                    String month = this.nationalInsuranceNumber.substring(3, 5);
-                    String day = this.nationalInsuranceNumber.substring(6, 8);
-                    String date = day+"/"+month+"/"+year;
-                    java.util.Date birthday = new SimpleDateFormat("dd/MM/yy").parse(date);
-                    this.setBirthday(new java.sql.Date(birthday.getTime()));
-                    System.out.println("Birthday: " + birthday);
-
-                    // Set gender
-                    int gender = Integer.parseInt(this.nationalInsuranceNumber.substring(9, 12));
-                    if (gender % 2 == 0) {
-                        System.out.println("Vrouw: " + gender);
-                        this.setGender(2);
-                    } else {
-                        System.out.println("Man: " + gender);
-                        this.setGender(1);
-                    }
-
                 }
             }
         } catch (NullPointerException nullp) {
             return;
-        } catch (CRuntimeException cr) { System.out.println(cr.getMessage()); } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        } catch (CRuntimeException cr) { System.out.println(cr.getMessage()); }
     }
 
     @Basic

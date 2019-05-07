@@ -2,27 +2,17 @@ package gui;
 
 import domain.Activity;
 import domain.DomainController;
-import domain.TypeOfActivity;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
-import repository.ActivityDTO;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
 
-public class ActivityOverviewPanelController extends FlowPane {
-    private DomainController dc;
+public class ActivityOverviewPanelController<T> extends FlowPane {
+    private final DomainController dc;
 
-    @FXML
-    private TableView<ActivityDTO> activityTable;
-    @FXML
-    private TableColumn<ActivityDTO, String> nameCol, typeCol, statusCol;
     @FXML
     private TextField txtFilter;
     @FXML
@@ -30,10 +20,15 @@ public class ActivityOverviewPanelController extends FlowPane {
     @FXML
     private Button btnNew, btnDelete;
 
-    private ObservableList<ActivityDTO> activities;
+    @FXML
+    private FlowPane flowpane;
 
-    public ActivityOverviewPanelController(DomainController dc) {
+    private TableViewFactory tableViewFactory;
+
+    public ActivityOverviewPanelController(DomainController dc, List<T> enumInstances) {
         this.dc = dc;
+        this.tableViewFactory = new TableViewFactory(dc);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ActivityOverviewPanel.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -44,27 +39,14 @@ public class ActivityOverviewPanelController extends FlowPane {
             throw new RuntimeException(ex);
         }
 
-        activities = (ObservableList) dc.getFilteredActivities();
-        cboType.setItems(FXCollections.observableList(Arrays.asList(dc.getTypesOfActivity())));
+        enumInstances.forEach(typeOfActivity -> cboType.getItems().add(typeOfActivity.toString()));
         cboType.getSelectionModel().selectedItemProperty().addListener(x -> {
             filter();
         });
         cboType.getSelectionModel().select(0);
 
-        //Databinding activity props to table column
-       activityTable.setPlaceholder(new Label("Geen activiteiten gevonden"));
-        nameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
-        typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(TypeOfActivity.valueOf(cellData.getValue().getType())));
-        statusCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStatus() ? "Actief" : "Inactief"));
-        activityTable.setItems((ObservableList) dc.getFilteredActivities());
-        activityTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (oldValue == null || !oldValue.equals(newValue)) {
-                    ActivityDTO aDTO = newValue;
-                    dc.setCurrentActivity(aDTO);
-                }
-            }
-        });
+        flowpane.getChildren().add(2, tableViewFactory.getActityTableView());
+
     }
 
     @FXML
@@ -74,8 +56,9 @@ public class ActivityOverviewPanelController extends FlowPane {
 
     @FXML
     public void deleteActivity(){
-        int index = activityTable.getSelectionModel().getSelectedIndex();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Ben je zeker dat je de activiteit " + activityTable.getSelectionModel().getSelectedItem().getName() + " wilt verwijderen?", ButtonType.OK, ButtonType.NO );
+        TableView<Activity> tableView = (TableView)flowpane.getChildren().get(2);
+        int index = tableView.getSelectionModel().getSelectedIndex();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Ben je zeker dat je de activiteit " + tableView.getSelectionModel().getSelectedItem().getName() + " wilt verwijderen?", ButtonType.OK, ButtonType.NO );
         alert.setTitle("Verwijder activiteit");
         alert.setContentText("Bevestig of je dit wilt verwijderen.");
         alert.showAndWait().ifPresent(type -> {
@@ -83,15 +66,19 @@ public class ActivityOverviewPanelController extends FlowPane {
                 dc.deleteActivity();
             }
             else {
-                System.out.println("Activiteit " + activityTable.getSelectionModel().getSelectedItem().getName() + " is niet verwijderd.");
+                System.out.println("Activiteit " + tableView.getSelectionModel().getSelectedItem().getName() + " is niet verwijderd.");
             }
         });
     }
 
     @FXML
     public void newActivity(){
-        ActivityDTO newActivity = new ActivityDTO();
+        Activity newActivity = new Activity();
         newActivity.setName("");
+        newActivity.setInfo("");
+        newActivity.setMaxNumberOfParticipants(10);
+        newActivity.setStatus(false);
+        newActivity.setType(0);
         dc.setCurrentActivity(newActivity);
     }
 }

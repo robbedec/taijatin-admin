@@ -3,7 +3,6 @@ package gui;
 import domain.DomainController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -11,11 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.concurrent.Flow;
 
 public class AdminFrameController extends BorderPane {
     private DomainController dc;
@@ -43,7 +38,7 @@ public class AdminFrameController extends BorderPane {
         detailPanelController = new DetailPanelController(this.dc);
         dc.addPropertyChangeListener(detailPanelController);
 
-        activityOverviewPanelController = new ActivityOverviewPanelController(this.dc);
+        activityOverviewPanelController = new ActivityOverviewPanelController(this.dc, Arrays.asList(TypeOfActivity.values()));
 
         activityDetailPanelController = new ActivityDetailPanelController(this.dc);
         dc.addActivityPropertyChangeListener(activityDetailPanelController);

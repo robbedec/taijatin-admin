@@ -1,11 +1,9 @@
 package repository;
 
 import domain.Activity;
-import domain.TypeOfActivity;
 import domain.User;
 
 import java.util.Collection;
-import java.util.SplittableRandom;
 
 public class ActivityDTO {
     private String name;

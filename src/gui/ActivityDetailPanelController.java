@@ -31,7 +31,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     private ChoiceBox txtType;
     @FXML
     private Button btnSave, btnAdd;
-    private ActivityDTO activity;
+    private Activity activity;
 
     private ObservableList<IUser> registeredUsers, notRegisteredUsers;
 
@@ -100,12 +100,23 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        this.activity = (ActivityDTO) evt.getNewValue();
+        this.activity = (Activity) evt.getNewValue();
         if (activity != null) {
+            if(this.activity.getName() == null || this.activity.getName().equals("")){
+                txtName.setEditable(true);
+                btnAdd.setVisible(true);
+                btnSave.setVisible(false);
+            }
+            else {
+                txtName.setEditable(false);
+                btnAdd.setVisible(false);
+                btnSave.setVisible(true);
+            }
             txtName.setText(activity.getName());
             txtName.setEditable(true);
-            txtType.setItems(FXCollections.observableArrayList("Uitstap", "Stage"));
-            txtType.setValue(activity.getType());
+            ObservableList types = FXCollections.observableArrayList(TypeOfActivity.values());
+            txtType.setItems(types);
+            txtType.setValue(types.get(activity.getType()));
             txtType.setDisable(false);
             cbStatus.setSelected(activity.getStatus());
             cbStatus.setDisable(false);
@@ -121,6 +132,8 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             txtInfo.setEditable(true);
         }
         else if(activity == null){
+            btnSave.setVisible(false);
+            btnAdd.setVisible(false);
             txtName.setEditable(false);
             txtType.setDisable(true);
             cbStatus.setDisable(true);

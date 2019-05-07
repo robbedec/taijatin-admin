@@ -3,6 +3,7 @@ package domain;
 import repository.ActivityDTO;
 
 import javax.persistence.*;
+import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -38,6 +39,9 @@ public class Activity implements IActivity {
     public ActivityDTO toActivityDTO(Activity activity){
         return new ActivityDTO(activity.getName(), activity.getInfo(), activity.getType(), activity.getMaxNumberOfParticipants(), activity.getNumberOfParticipants(), activity.getStatus(), activity.getUsersById());
     }
+
+    @Transient
+    private PropertyChangeSupport subject = new PropertyChangeSupport(this);
 
     @Column(name = "Id")
     public int getId() {
@@ -88,14 +92,16 @@ public class Activity implements IActivity {
         this.maxNumberOfParticipants = maxNumberOfParticipants;
     }
 
-    @Basic
-    @Column(name = "NumberOfParticipants")
+    @Column(name = "MaxNumberOfParticipants")
     public int getNumberOfParticipants() {
         return numberOfParticipants;
     }
 
-    public void setNumberOfParticipants(int numberOfParticipants) {
-        this.numberOfParticipants = numberOfParticipants;
+    public void setNumberOfParticipants() {
+        if(registeredUsersByUserId == null){
+            this.numberOfParticipants = 0;
+        }
+        this.numberOfParticipants = registeredUsersByUserId.size();
     }
 
     @Basic

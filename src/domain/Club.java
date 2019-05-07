@@ -15,7 +15,7 @@ import java.util.*;
 public class Club {
 
     public User currentUser;
-    public ActivityDTO currentActivity;
+    public Activity currentActivity;
     private PropertyChangeSupport subjectUser;
     private PropertyChangeSupport subjectActivity;
 
@@ -26,10 +26,9 @@ public class Club {
     private FilteredList<User> filteredList;
     private SortedList<User> sorderdList;
 
-    private List<Activity> activityLijst;
-    private ObservableList<ActivityDTO> activityDTOLijst;
-    private FilteredList<ActivityDTO> filteredActivityList;
-    private SortedList<ActivityDTO> sortedActivityList;
+    private ObservableList<Activity> activityList;
+    private FilteredList<Activity> filteredActivityList;
+    private SortedList<Activity> sortedActivityList;
 
     //Observable Lists to be able to register an user to an activity
     private ObservableList<User> registeredUsersToActivityList;
@@ -39,10 +38,10 @@ public class Club {
     private final Comparator<User> byGrade = Comparator.comparing(User::getGrade);
     private final Comparator<User> sortOrder = byUsername.thenComparing(byGrade);
 
-    private final Comparator<ActivityDTO> byActivityName = (p1,p2) -> p1.getName().compareToIgnoreCase(p2.getName());
-    private final Comparator<ActivityDTO> byActivityType = Comparator.comparing(ActivityDTO::getType);
-    private final Comparator<ActivityDTO> byStatus = Comparator.comparing(ActivityDTO::getStatus);
-    private final Comparator<ActivityDTO> sortActivityOrder = byActivityType.thenComparing(byActivityName.thenComparing(byActivityType));
+    private final Comparator<Activity> byActivityName = (p1,p2) -> p1.getName().compareToIgnoreCase(p2.getName());
+    private final Comparator<Activity> byActivityType = Comparator.comparing(Activity::getType);
+    private final Comparator<Activity> byStatus = Comparator.comparing(Activity::getStatus);
+    private final Comparator<Activity> sortActivityOrder = byActivityType.thenComparing(byActivityName.thenComparing(byActivityType));
 
     private final String[] typesOfUser = new String[]{ "Geen filter", "Member", "Teacher", "Admin" };
     private final String[] typesOfActivity = new String[]{"Geen filter", "Uitstap", "Stage" };
@@ -51,18 +50,17 @@ public class Club {
         userRepo = new UserDaoJpa();
         activityRepo = new ActivityDaoJpa();
         userList = FXCollections.observableArrayList();
-        activityDTOLijst = FXCollections.observableArrayList();
+        activityList = FXCollections.observableArrayList();
         userRepo.getAll().forEach(user -> {
             System.out.print(user);
             userList.add(user);
         });
         activityRepo.getAll().forEach(activity -> {
             System.out.println(activity);
-            ActivityDTO aDTO = activity.toActivityDTO(activity);
-            activityDTOLijst.add(aDTO);
+            activityList.add(activity);
         });
         filteredList = new FilteredList<>(userList, p -> true);
-        filteredActivityList = new FilteredList<>(activityDTOLijst, p -> true);
+        filteredActivityList = new FilteredList<>(activityList, p -> true);
         sorderdList = new SortedList<>(filteredList, sortOrder);
         sortedActivityList = new SortedList<>(filteredActivityList, sortActivityOrder);
         subjectUser = new PropertyChangeSupport(this);
@@ -125,16 +123,16 @@ public class Club {
             filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()));
         }
         else {
-            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) &&  activity.getType().equals(typesOfActivity[index]));
+            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) &&  activity.getType().toString().equals(typesOfActivity[index]));
         }
     }
 
-    public Collection<ActivityDTO> getFilteredActivities() {
+    public Collection<Activity> getFilteredActivities() {
         return sortedActivityList;
     }
 
 
-    public void setCurrentActivity(ActivityDTO activity){
+    public void setCurrentActivity(Activity activity){
         subjectActivity.firePropertyChange("activity", this.currentActivity, activity);
         this.currentActivity = activity;
     }
@@ -154,21 +152,15 @@ public class Club {
             Activity activityToUpdate = activityRepo.getByName(currentActivity.getName());
             activityRepo.insert(activityToUpdate);
         } catch (EntityNotFoundException ex) {
-            ActivityDTO newActivityDTO = currentActivity;
-            Activity newActivity = newActivityDTO.toActivity(newActivityDTO);
-            activityRepo.insert(newActivity);
-            activityDTOLijst.add(newActivityDTO);
+            activityRepo.insert(currentActivity);
+            activityList.add(currentActivity);
         }
     }
 
     public void deleteActivity() {
         Activity activityToDelete = activityRepo.getByName(currentActivity.getName());
         activityRepo.delete(activityToDelete);
-        activityDTOLijst.remove(activityToDelete);
-    }
-
-    public String[] getTypesOfActivity(){
-        return typesOfActivity;
+        activityList.remove(activityToDelete);
     }
 
     public Collection<User> getRegisteredUsersFromActivity(){

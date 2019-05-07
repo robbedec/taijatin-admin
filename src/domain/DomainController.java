@@ -48,11 +48,11 @@ public class DomainController {
         return club.getTypesOfUser();
     }
 
-    public Collection<ActivityDTO> getFilteredActivities() {
+    public Collection<Activity> getFilteredActivities() {
         return club.getFilteredActivities();
     }
 
-    public void setCurrentActivity(ActivityDTO activity){
+    public void setCurrentActivity(Activity activity){
         club.setCurrentActivity(activity);
     }
 
@@ -66,10 +66,6 @@ public class DomainController {
 
     public void removeActivityPropertyChangeListener(PropertyChangeListener pcl) {
         club.removeActivityPropertyChangeListener(pcl);
-    }
-
-    public String[] getTypesOfActivity(){
-        return club.getTypesOfActivity();
     }
 
     public void updateActivity() {

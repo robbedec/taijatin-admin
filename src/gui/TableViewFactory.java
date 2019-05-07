@@ -1,8 +1,6 @@
 package gui;
 
-import domain.DomainController;
-import domain.Grade;
-import domain.User;
+import domain.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
@@ -54,6 +52,39 @@ public class TableViewFactory<T> {
     }
 
     public TableView<T> getActityTableView() {
-        return null;
+        tableView.setPlaceholder(new Label("Geen activiteiten gevonden"));
+
+        TableColumn<Activity, String> nameCol = new TableColumn<>("Naam");
+        nameCol.setPrefWidth(175);
+        nameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
+
+        TableColumn<Activity, String> typeCol = new TableColumn<>("Type");
+        typeCol.setPrefWidth(75);
+        typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(TypeOfActivity.valueOf(cellData.getValue().getType())));
+
+        TableColumn<Activity, String> statusCol = new TableColumn<>("Status");
+        statusCol.setPrefWidth(50);
+        statusCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getStatus())));
+
+        TableColumn<Activity, String> numberCol = new TableColumn<>("Total registered");
+        numberCol.setPrefWidth(100);
+        numberCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getNumberOfParticipants())));
+
+        tableView.getColumns().add((TableColumn<T, ?>) nameCol);
+        tableView.getColumns().add((TableColumn<T, ?>) typeCol);
+        tableView.getColumns().add((TableColumn<T, ?>) statusCol);
+        tableView.getColumns().add((TableColumn<T, ?>) numberCol);
+
+    tableView.setItems((ObservableList)dc.getFilteredActivities());
+        tableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
+            if(newValue != null) {
+                if(oldValue == null || !oldValue.equals(newValue)) {
+                    Activity a = (Activity) newValue;
+                    dc.setCurrentActivity(a);
+                }
+            }
+        });
+        return tableView;
+
     }
 }

@@ -1,6 +1,7 @@
 package gui;
 
 import domain.*;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,8 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import repository.ActivityDTO;
-import repository.UserDTO;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -18,7 +17,9 @@ import java.io.IOException;
 public class ActivityDetailPanelController extends VBox implements PropertyChangeListener {
     private DomainController dc;
     @FXML
-    private ListView<IUser> listViewNotRegistered, listViewRegistered;
+    private ListView<User> listViewNotRegistered;
+    @FXML
+    private ListView<User> listViewRegistered;
     @FXML
     private TextField txtName, txtTotal, txtSlider;
     @FXML
@@ -33,7 +34,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     private Button btnSave, btnAdd;
     private Activity activity;
 
-    private ObservableList<IUser> registeredUsers, notRegisteredUsers;
+    private ObservableList<User> registeredUsers, notRegisteredUsers;
 
     public ActivityDetailPanelController(DomainController dc) {
         this.dc = dc;
@@ -81,6 +82,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     }
 
     public void register(){
+        int index = listViewNotRegistered.getSelectionModel().getSelectedIndex();
 
     }
 

@@ -1,6 +1,8 @@
 package domain;
 
 import repository.ActivityDTO;
+import repository.UserDao;
+import repository.UserDaoJpa;
 
 import javax.persistence.*;
 import java.beans.PropertyChangeSupport;
@@ -92,7 +94,7 @@ public class Activity implements IActivity {
         this.maxNumberOfParticipants = maxNumberOfParticipants;
     }
 
-    @Column(name = "MaxNumberOfParticipants")
+    @Column(name = "NumberOfParticipants")
     public int getNumberOfParticipants() {
         return numberOfParticipants;
     }
@@ -123,10 +125,22 @@ public class Activity implements IActivity {
         inverseJoinColumns = {@JoinColumn(name = "fk_user") })
     private Collection<User> usersById;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "Activity_User",
+            joinColumns = {@JoinColumn(name = "fk_registeredToActivity")},
+            inverseJoinColumns = {@JoinColumn(name = "fk_registeredUser") })
     private Collection<User> registeredUsersByUserId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "Activity_User",
+            joinColumns = {@JoinColumn(name = "fk_notRegisteredToActivity")},
+            inverseJoinColumns = {@JoinColumn(name = "fk_notRegisteredUser") })
     private Collection<User> notRegisteredUsersByUserId;
 
     @Override
@@ -172,9 +186,6 @@ public class Activity implements IActivity {
     }
 
     public void setNotRegisteredUsersByUserId(Collection<User> notRegisteredUsersByUserId) {
-        if(this.registeredUsersByUserId.size() == 0 && this.notRegisteredUsersByUserId.size() == 0){
-            this.notRegisteredUsersByUserId = usersById;
-        }
         this.notRegisteredUsersByUserId = notRegisteredUsersByUserId;
     }
 }

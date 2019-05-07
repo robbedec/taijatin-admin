@@ -66,8 +66,8 @@ public class Club {
         subjectUser = new PropertyChangeSupport(this);
         subjectActivity = new PropertyChangeSupport(this);
         registeredUsersToActivityList = FXCollections.observableArrayList();
-        notRegisteredUsersToActivityList = FXCollections.observableArrayList();
         currentUser = null;
+        currentActivity = null;
     }
 
     public void filterUsers(String userName, int index){
@@ -144,6 +144,7 @@ public class Club {
     public void setCurrentActivity(Activity activity){
         subjectActivity.firePropertyChange("activity", this.currentActivity, activity);
         this.currentActivity = activity;
+        setActivityUserLists();
     }
 
     public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {
@@ -178,6 +179,52 @@ public class Club {
 
     public Collection<User> getNotRegisteredUsersFromActivity(){
         return notRegisteredUsersToActivityList;
+    }
+
+    public void setActivityUserLists(){
+        if(currentActivity != null) {
+            if(currentActivity.getNotRegisteredUsersByUserId() == null && currentActivity.getRegisteredUsersByUserId() == null
+            || currentActivity.getNotRegisteredUsersByUserId().size() == 0 && currentActivity.getRegisteredUsersByUserId().size() == 0){
+                this.notRegisteredUsersToActivityList = userList;
+                currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
+            }
+            else {
+                this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(currentActivity.getNotRegisteredUsersByUserId());
+                currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
+            }
+            System.out.println(notRegisteredUsersToActivityList);
+
+            this.registeredUsersToActivityList = FXCollections.observableArrayList(currentActivity.getRegisteredUsersByUserId());
+            currentActivity.setRegisteredUsersByUserId(registeredUsersToActivityList);
+        }
+    }
+
+    public void register(int index) {
+        if(index >= 0 && index <= notRegisteredUsersToActivityList.size()) {
+            User user = notRegisteredUsersToActivityList.get(index);
+            notRegisteredUsersToActivityList.remove(user);
+            registeredUsersToActivityList.add(user);
+            currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
+            currentActivity.setRegisteredUsersByUserId(registeredUsersToActivityList);
+        }
+    }
+
+    public void undoRegister(int index) {
+        if(index >= 0 && index <= registeredUsersToActivityList.size()){
+            User user = registeredUsersToActivityList.get(index);
+            registeredUsersToActivityList.remove(user);
+            notRegisteredUsersToActivityList.add(user);
+            currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
+            currentActivity.setRegisteredUsersByUserId(registeredUsersToActivityList);
+        }
+    }
+
+    public void addToTotalRegistered(){
+        currentActivity.setNumberOfParticipants(currentActivity.getNumberOfParticipants() + 1);
+    }
+
+    public void distractFromTotalRegistered(){
+        currentActivity.setNumberOfParticipants(currentActivity.getNumberOfParticipants() - 1);
     }
 
 }

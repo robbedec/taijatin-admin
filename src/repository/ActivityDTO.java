@@ -13,11 +13,13 @@ public class ActivityDTO {
     private int numberOfParticipants;
     private boolean status;
     private Collection<User> usersById;
+    private Collection<User> notRegisteredUsers;
+    private Collection<User> registeredUsers;
 
     public ActivityDTO() {
     }
 
-    public ActivityDTO(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById) {
+    public ActivityDTO(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById, Collection<User> notRegisteredUsers, Collection<User> registeredUsers) {
         this.name = name;
         this.info = info;
         this.type = type;
@@ -25,10 +27,12 @@ public class ActivityDTO {
         this.numberOfParticipants = numberOfParticipants;
         this.status = status;
         this.usersById = usersById;
+        this.notRegisteredUsers = notRegisteredUsers;
+        this.registeredUsers = registeredUsers;
     }
 
     public Activity toActivity(ActivityDTO activity){
-        return new Activity(activity.name, activity.info, activity.type, activity.numberOfParticipants, activity.numberOfParticipants, activity.status, activity.usersById);
+        return new Activity(activity.name, activity.info, activity.type, activity.numberOfParticipants, activity.numberOfParticipants, activity.status, activity.usersById, activity.notRegisteredUsers, activity.registeredUsers);
     }
 
     public String getName() {

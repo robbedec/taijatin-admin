@@ -92,5 +92,23 @@ public class DomainController {
         return club.getNotRegisteredUsersFromActivity();
     }
 
+    public void setActivityUserLists(){
+        club.setActivityUserLists();
+    }
 
+    public void register(int index) {
+        club.register(index);
+    }
+
+    public void addToTotalRegistered(){
+        club.addToTotalRegistered();
+    }
+
+    public void distractFromTotalRegistered(){
+        club.distractFromTotalRegistered();
+    }
+
+    public void undoRegister(int index) {
+        club.undoRegister(index);
+    }
 }

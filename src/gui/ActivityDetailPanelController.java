@@ -30,7 +30,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     @FXML
     private ChoiceBox txtType;
     @FXML
-    private Button btnSave, btnAdd;
+    private Button btnSave, btnAdd, btnRegister, btnUndoRegister;
     private Activity activity;
 
     private ObservableList<IUser> registeredUsers, notRegisteredUsers;
@@ -45,12 +45,15 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
-        registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
+        dc.setActivityUserLists();
+
         listViewNotRegistered.setPlaceholder(new Label("Geen gebruikers meer gevonden"));
         listViewRegistered.setPlaceholder(new Label("Geen gebruikers geregistreerd"));
+        notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
+        registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
         listViewNotRegistered.setItems(notRegisteredUsers);
         listViewRegistered.setItems(registeredUsers);
+
     }
 
     public void updateActivity() {
@@ -81,7 +84,12 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     }
 
     public void register(){
-
+        int index = listViewNotRegistered.getSelectionModel().getSelectedIndex();
+        dc.register(index);
+        dc.addToTotalRegistered();
+        txtTotal.setText(String.valueOf(activity.getNumberOfParticipants()));
+        listViewNotRegistered.setItems(notRegisteredUsers);
+        listViewRegistered.setItems(registeredUsers);
     }
 
     public void undoRegister(){
@@ -90,7 +98,12 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
         alert.setContentText("Bevestig of je deze gebruiker wilt uitschrijven.");
         alert.showAndWait().ifPresent(type -> {
             if(type == ButtonType.OK){
-
+                int index = listViewRegistered.getSelectionModel().getSelectedIndex();
+                dc.undoRegister(index);
+                dc.distractFromTotalRegistered();
+                txtTotal.setText(String.valueOf(activity.getNumberOfParticipants()));
+                listViewNotRegistered.setItems(notRegisteredUsers);
+                listViewRegistered.setItems(registeredUsers);
             }
             else {
                 System.out.println("Gebruiker " + listViewRegistered.getSelectionModel().getSelectedItem() + " is niet uitgeschreven.");
@@ -102,6 +115,8 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     public void propertyChange(PropertyChangeEvent evt) {
         this.activity = (Activity) evt.getNewValue();
         if (activity != null) {
+            btnRegister.setVisible(true);
+            btnUndoRegister.setVisible(true);
             if(this.activity.getName() == null || this.activity.getName().equals("")){
                 txtName.setEditable(true);
                 btnAdd.setVisible(true);
@@ -130,15 +145,25 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             txtTotal.setEditable(false);
             txtInfo.setText(activity.getInfo());
             txtInfo.setEditable(true);
+            notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
+            registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
+            listViewNotRegistered.setItems(notRegisteredUsers);
+            listViewNotRegistered.setDisable(false);
+            listViewRegistered.setItems(registeredUsers);
+            listViewRegistered.setDisable(false);
         }
         else if(activity == null){
             btnSave.setVisible(false);
             btnAdd.setVisible(false);
+            btnRegister.setVisible(false);
+            btnUndoRegister.setVisible(false);
             txtName.setEditable(false);
             txtType.setDisable(true);
             cbStatus.setDisable(true);
             txtTotal.setEditable(false);
             txtInfo.setEditable(false);
+            listViewNotRegistered.setDisable(true);
+            listViewRegistered.setDisable(true);
         }
     }
 }

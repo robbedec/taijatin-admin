@@ -26,7 +26,7 @@ public class Activity implements IActivity {
 
     public Activity(){}
 
-    public Activity(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById){
+    public Activity(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById, Collection<User> notRegisteredUsersByUserId, Collection<User> registeredUsersByUserId){
         this.name = name;
         this.info = info;
         this.type = type;
@@ -34,10 +34,12 @@ public class Activity implements IActivity {
         this.numberOfParticipants = numberOfParticipants;
         this.status = status;
         this.usersById = usersById;
+        this.notRegisteredUsersByUserId = notRegisteredUsersByUserId;
+        this.registeredUsersByUserId = registeredUsersByUserId;
     }
 
     public ActivityDTO toActivityDTO(Activity activity){
-        return new ActivityDTO(activity.getName(), activity.getInfo(), activity.getType(), activity.getMaxNumberOfParticipants(), activity.getNumberOfParticipants(), activity.getStatus(), activity.getUsersById());
+        return new ActivityDTO(activity.getName(), activity.getInfo(), activity.getType(), activity.getMaxNumberOfParticipants(), activity.getNumberOfParticipants(), activity.getStatus(), activity.getUsersById(), activity.getNotRegisteredUsersByUserId(), activity.getRegisteredUsersByUserId());
     }
 
     @Transient
@@ -59,6 +61,7 @@ public class Activity implements IActivity {
     }
 
     public void setName(String name) {
+        subject.firePropertyChange("name", this.name, name);
         this.name = name;
     }
 
@@ -97,11 +100,11 @@ public class Activity implements IActivity {
         return numberOfParticipants;
     }
 
-    public void setNumberOfParticipants() {
+    public void setNumberOfParticipants(int numberOfParticipants) {
         if(registeredUsersByUserId == null){
             this.numberOfParticipants = 0;
         }
-        this.numberOfParticipants = registeredUsersByUserId.size();
+        this.numberOfParticipants = numberOfParticipants;
     }
 
     @Basic
@@ -123,10 +126,22 @@ public class Activity implements IActivity {
         inverseJoinColumns = {@JoinColumn(name = "fk_user") })
     private Collection<User> usersById;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "Activity_User",
+            joinColumns = {@JoinColumn(name = "fk_registeredToActivity")},
+            inverseJoinColumns = {@JoinColumn(name = "fk_registeredUser") })
     private Collection<User> registeredUsersByUserId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "Activity_User",
+            joinColumns = {@JoinColumn(name = "fk_notRegisteredToActivity")},
+            inverseJoinColumns = {@JoinColumn(name = "fk_notRegisteredUser") })
     private Collection<User> notRegisteredUsersByUserId;
 
     @Override
@@ -172,9 +187,14 @@ public class Activity implements IActivity {
     }
 
     public void setNotRegisteredUsersByUserId(Collection<User> notRegisteredUsersByUserId) {
-        if(this.registeredUsersByUserId.size() == 0 && this.notRegisteredUsersByUserId.size() == 0){
-            this.notRegisteredUsersByUserId = usersById;
-        }
         this.notRegisteredUsersByUserId = notRegisteredUsersByUserId;
+    }
+
+    private boolean empty(String string) {
+        if (string.trim().isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

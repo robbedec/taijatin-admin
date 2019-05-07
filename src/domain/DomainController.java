@@ -24,8 +24,16 @@ public class DomainController {
         club.filterUsers(userName, index);
     }
 
-    public void setCurrentUser(User user){
-        club.setCurrentUser(user);
+    public void setCurrentUser(UserDTO userDto) {
+        try {
+            // User bestaat
+            User u = club.getUserByEmail(userDto.getEmail());
+            club.setCurrentUser(u);
+        } catch (CRuntimeException ex) {
+            // Nieuwe user
+            User u = userDto.toUser();
+            club.setCurrentUser(u);
+        }
     }
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {

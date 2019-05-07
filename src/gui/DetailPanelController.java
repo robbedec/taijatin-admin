@@ -36,7 +36,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
     private ChoiceBox txtGrade, txtGender, txtType, txtFormula;
     @FXML
     private Button btnSave, btnAdd;
-    private User user;
+    private UserDTO user;
 
     public DetailPanelController(DomainController dc) {
         this.dc = dc;
@@ -146,10 +146,15 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        this.user = (User)evt.getNewValue();
+        User u = (User)evt.getNewValue();
+        if (u != null) {
+            this.user = u.toUserDTO(u);
+        } else {
+            this.user = null;
+        }
         if(this.user != null) {
             txtUsername.setText(user.getUserName());
-            if(this.user.getUserName() == null || this.user.getUserName().equals("")){
+            if(this.user.getUserName() == null || this.user.getUserName().equals("") || this.user.getUserName().equals("gebruikersnaam")){
                 txtUsername.setEditable(true);
                 btnAdd.setVisible(true);
                 btnSave.setVisible(false);

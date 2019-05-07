@@ -114,6 +114,15 @@ public class Club {
         userList.remove(currentUser);
     }
 
+    public User getUserByEmail(String email) {
+        try {
+            User u = userRepo.getByEmail(email);
+            return u;
+        } catch (EntityNotFoundException ex) {
+            throw new CRuntimeException("User with email: " + email + " not found!");
+        }
+    }
+
     public String[] getTypesOfUser(){
         return typesOfUser;
     }

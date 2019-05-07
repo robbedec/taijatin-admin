@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Region;
 import repository.UserDTO;
 
 import java.beans.PropertyChangeEvent;
@@ -53,9 +54,7 @@ public class OverviewPanelController<T> extends FlowPane {
             throw new RuntimeException(ex);
         }
         enumInstances.forEach(type -> cboType.getItems().add(type.toString()));
-        cboType.getSelectionModel().selectedItemProperty().addListener(x -> {
-            filter();
-        });
+        cboType.getSelectionModel().selectedItemProperty().addListener(x -> filter());
         cboType.getSelectionModel().select(0);
 
         flowpane.getChildren().add(2, factory.getUserTableView());
@@ -74,6 +73,7 @@ public class OverviewPanelController<T> extends FlowPane {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Ben je zeker dat je de gebruiker " + tableView.getSelectionModel().getSelectedItem().getUserName() + " wilt verwijderen?", ButtonType.OK, ButtonType.NO );
         alert.setTitle("Verwijder gebruiker");
         alert.setHeaderText("Bevestig of je dit wilt verwijderen.");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait().ifPresent(type -> {
             if(type == ButtonType.OK){
                 dc.deleteUser();
@@ -86,11 +86,11 @@ public class OverviewPanelController<T> extends FlowPane {
 
     @FXML
     public void newUser(){
-        User newUser = new User();
+        UserDTO newUser = new UserDTO();
         Date defaultBirthDay = Date.valueOf(LocalDate.of(1920, 1, 1));
         Date registrationDate = Date.valueOf(LocalDate.now());
         Address defaultAddress = new Address();
-        defaultAddress.setCity("");
+        defaultAddress.setCity("fvgsdfse");
         defaultAddress.setCountry("");
         defaultAddress.setStreet("");
         defaultAddress.setNumber(1);
@@ -104,6 +104,16 @@ public class OverviewPanelController<T> extends FlowPane {
         newUser.setGrade(1);
         newUser.setType("Member");
         newUser.setAddressByAddressId(defaultAddress);
+
+        newUser.setUserName("gebruikersnaam");
+        newUser.setFirstname("voornaam");
+        newUser.setLastname("naam");
+        newUser.setEmail("email@test.com");
+        newUser.setGender(1);
+        newUser.setBornIn("geboorteplaats");
+        newUser.setNationalInsuranceNumber("yy.mm.dd-123.45");
+        newUser.setMobilePhoneNumber("+32");
+
         dc.setCurrentUser(newUser);
 
     }

@@ -11,33 +11,37 @@
       <VBox fx:id="vbLeft" maxWidth="1.7976931348623157E308" BorderPane.alignment="TOP_LEFT" />
    </left>
    <top>
-      <HBox fx:id="hbTop" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="btnLeden" alignment="CENTER" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showLeden" text="Ledenbeheer">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Button>
-            <Button fx:id="btnActiviteiten" alignment="CENTER" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showActiviteiten" text="Activiteiten">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Button>
-            <Button fx:id="btnOverzichten" alignment="CENTER" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showOverzichten" text="Overzichten">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Button>
-            <Button fx:id="btnLesmateriaal" alignment="CENTER" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showLesmateriaal" text="Lesmateriaal">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Button>
-         </children>
+      <VBox fx:id="vbTop" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="10.0" />
          </BorderPane.margin>
-      </HBox>
+         <children>
+            <HBox fx:id="hbTop" alignment="TOP_CENTER">
+               <children>
+                  <Button fx:id="btnLeden" alignment="CENTER" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showLeden" text="Ledenbeheer">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+                  <Button fx:id="btnActiviteiten" alignment="CENTER" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showActiviteiten" text="Activiteiten">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+                  <Button fx:id="btnOverzichten" alignment="CENTER" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showOverzichten" text="Overzichten">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+                  <Button fx:id="btnLesmateriaal" alignment="CENTER" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onMouseClicked="#showLesmateriaal" text="Lesmateriaal">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </top>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

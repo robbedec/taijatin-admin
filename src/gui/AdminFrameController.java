@@ -18,10 +18,13 @@ public class AdminFrameController extends BorderPane {
     private DetailPanelController detailPanelController;
     private ActivityOverviewPanelController activityOverviewPanelController;
     private ActivityDetailPanelController activityDetailPanelController;
+    private OverzichtenPanelController overzichtenPanelController;
+
+    @FXML
     private FlowPane fp;
 
     @FXML
-    private VBox vbLeft;
+    private VBox vbLeft, vbTop;
 
     @FXML
     private HBox hbTop;
@@ -43,6 +46,8 @@ public class AdminFrameController extends BorderPane {
         activityDetailPanelController = new ActivityDetailPanelController(this.dc);
         dc.addActivityPropertyChangeListener(activityDetailPanelController);
 
+        overzichtenPanelController = new OverzichtenPanelController(this.dc);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminFrame.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -58,22 +63,29 @@ public class AdminFrameController extends BorderPane {
     }
 
     public void showLeden() {
-        this.vbLeft.getChildren().clear();
+        clearScreens();
         this.vbLeft.getChildren().add(overviewPanelController);
         this.setCenter(detailPanelController);
     }
 
     public void showActiviteiten() {
-        this.vbLeft.getChildren().clear();
+        clearScreens();
         this.vbLeft.getChildren().add(activityOverviewPanelController);
         this.setCenter(activityDetailPanelController);
     }
 
     public void showOverzichten() {
-
+        clearScreens();
+        this.vbTop.getChildren().add(overzichtenPanelController);
     }
 
     public void showLesmateriaal() {
 
+    }
+
+    private void clearScreens() {
+        this.vbLeft.getChildren().clear();
+        this.vbTop.getChildren().clear();
+        this.vbTop.getChildren().add(hbTop);
     }
 }

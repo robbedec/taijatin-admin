@@ -87,6 +87,5 @@ public class TableViewFactory<T> {
             }
         });
         return tableView;
-
     }
 }

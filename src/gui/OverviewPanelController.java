@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Region;
 import repository.UserDTO;
 
 import java.beans.PropertyChangeEvent;
@@ -53,9 +54,7 @@ public class OverviewPanelController<T> extends FlowPane {
             throw new RuntimeException(ex);
         }
         enumInstances.forEach(type -> cboType.getItems().add(type.toString()));
-        cboType.getSelectionModel().selectedItemProperty().addListener(x -> {
-            filter();
-        });
+        cboType.getSelectionModel().selectedItemProperty().addListener(x -> filter());
         cboType.getSelectionModel().select(0);
 
         flowpane.getChildren().add(2, factory.getUserTableView());
@@ -74,6 +73,7 @@ public class OverviewPanelController<T> extends FlowPane {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Ben je zeker dat je de gebruiker " + tableView.getSelectionModel().getSelectedItem().getUserName() + " wilt verwijderen?", ButtonType.OK, ButtonType.NO );
         alert.setTitle("Verwijder gebruiker");
         alert.setHeaderText("Bevestig of je dit wilt verwijderen.");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait().ifPresent(type -> {
             if(type == ButtonType.OK){
                 dc.deleteUser();

@@ -24,8 +24,9 @@ public class DomainController {
         club.filterUsers(userName, index);
     }
 
-    public void setCurrentUser(User user){
-        club.setCurrentUser(user);
+    public void setCurrentUser(UserDTO user) {
+        User u = club.getUserByEmail(user.getEmail());
+        club.setCurrentUser(u);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {

@@ -81,9 +81,6 @@ public class UserDTO {
     }
 
     public void setUserName(String userName) {
-        if (empty(userName)) {
-            throw new CRuntimeException("Username can not be empty!");
-        }
         this.userName = userName;
     }
 
@@ -92,18 +89,7 @@ public class UserDTO {
     }
 
     public void setEmail(String email) {
-        if(empty(email)) {
-            throw new CRuntimeException("Email can not be empty!");
-        } else if (email.isEmpty() || email != null) {
-            String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(email);
-            if (!matcher.matches()) {
-                throw new CRuntimeException("Validation error in email.");
-            } else {
-                this.email = email;
-            }
-        }
+        this.email = email;
     }
 
     public String getFirstname() {
@@ -111,9 +97,6 @@ public class UserDTO {
     }
 
     public void setFirstname(String firstname) {
-        if (empty(firstname)) {
-            throw new CRuntimeException("Firstname can not be empty!");
-        }
         this.firstname = firstname;
     }
 
@@ -122,9 +105,6 @@ public class UserDTO {
     }
 
     public void setLastname(String lastname) {
-        if (empty(lastname)) {
-            throw new CRuntimeException("Lastname can not be empty!");
-        }
         this.lastname = lastname;
     }
 
@@ -133,9 +113,6 @@ public class UserDTO {
     }
 
     public void setGender(Integer gender) {
-        if (gender == 0) {
-            throw new CRuntimeException("Gender can not be empty!");
-        }
         this.gender = gender;
     }
 
@@ -144,45 +121,7 @@ public class UserDTO {
     }
 
     public void setNationalInsuranceNumber(String nationalInsuranceNumber) {
-        try {
-            if(empty(nationalInsuranceNumber)) {
-                throw new CRuntimeException("Email can not be empty!");
-            } else if (nationalInsuranceNumber.isEmpty() || nationalInsuranceNumber != null) {
-                String regex = "^[0-9]{2}.[0-9]{2}.[0-9]{2}-[0-9]{3}.[0-9]{2}$"; // bv. 99.04.05-233.75
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(nationalInsuranceNumber);
-                if (!matcher.matches()) {
-                    throw new CRuntimeException("Validation error in national insurance number. Requires: fex. 99.04.05-233.75");
-                } else {
-                    this.nationalInsuranceNumber = nationalInsuranceNumber;
-
-                    // Set birthday with number
-                    String year = this.nationalInsuranceNumber.substring(0,2);
-                    String month = this.nationalInsuranceNumber.substring(3, 5);
-                    String day = this.nationalInsuranceNumber.substring(6, 8);
-                    String date = day+"/"+month+"/"+year;
-                    java.util.Date birthday = new SimpleDateFormat("dd/MM/yy").parse(date);
-                    this.setBirthday(new java.sql.Date(birthday.getTime()));
-                    System.out.println("Birthday: " + birthday);
-
-                    // Set gender
-                    int gender = Integer.parseInt(this.nationalInsuranceNumber.substring(9, 12));
-                    if (gender % 2 == 0) {
-                        System.out.println("Vrouw: " + gender);
-                        this.setGender(2);
-                    } else {
-                        System.out.println("Man: " + gender);
-                        this.setGender(1);
-                    }
-
-                }
-            }
-        } catch (NullPointerException nullp) {
-            return;
-        } catch (CRuntimeException cr) { System.out.println(cr.getMessage()); } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        this.nationalInsuranceNumber = nationalInsuranceNumber;
     }
 
     public Date getRegistrationdate() {
@@ -198,9 +137,6 @@ public class UserDTO {
     }
 
     public void setBornIn(String bornIn) {
-        if (empty(bornIn)) {
-            throw new CRuntimeException("Born in place can not be empty!");
-        }
         this.bornIn = bornIn;
     }
 
@@ -217,9 +153,6 @@ public class UserDTO {
     }
 
     public void setMobilePhoneNumber(String mobilePhoneNumber) {
-        if (empty(mobilePhoneNumber)) {
-            throw new CRuntimeException("Mobile phone number is required!");
-        }
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
 
@@ -344,11 +277,6 @@ public class UserDTO {
     }
 
     public Formula getFormulasByFormulaId() {
-        if(formulasByFormulaId == null){
-            formulasByFormulaId = new Formula();
-            formulasByFormulaId.setFormulaName("Geen");
-            return formulasByFormulaId;
-        }
         return formulasByFormulaId;
     }
 
@@ -370,6 +298,5 @@ public class UserDTO {
         } else {
             return false;
         }
-
     }
 }

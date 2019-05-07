@@ -86,7 +86,7 @@ public class OverviewPanelController<T> extends FlowPane {
 
     @FXML
     public void newUser(){
-        User newUser = new User();
+        UserDTO newUser = new UserDTO();
         Date defaultBirthDay = Date.valueOf(LocalDate.of(1920, 1, 1));
         Date registrationDate = Date.valueOf(LocalDate.now());
         Address defaultAddress = new Address();

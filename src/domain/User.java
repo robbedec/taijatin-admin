@@ -45,33 +45,33 @@ public class User implements IUser {
     public User() {  }
 
     public User(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Collection<Activity> activityById) {
-        this.userName = userName;
-        this.email = email;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.gender = gender;
-        this.nationalInsuranceNumber = nationalInsuranceNumber;
-        this.registrationdate = registrationdate;
-        this.bornIn = bornIn;
-        this.birthday = birthday;
-        this.mobilePhoneNumber = mobilePhoneNumber;
-        this.phoneNumber = phoneNumber;
-        this.emailParent = emailParent;
-        this.agreeWithBylaws = agreeWithBylaws;
-        this.agreeWithPicturesAndAudio = agreeWithPicturesAndAudio;
-        this.receiveClubinfo = receiveClubinfo;
-        this.receiveInfoAboutPromotionsAndFederalMatters = receiveInfoAboutPromotionsAndFederalMatters;
-        this.type = type;
-        this.score = score;
-        this.grade = grade;
-        this.attendancesById = attendancesById;
-        this.commentRepliesById = commentRepliesById;
-        this.commentsById = commentsById;
-        this.courseModuleViewersById = courseModuleViewersById;
-        this.formulasById = formulasById;
-        this.addressByAddressId = addressByAddressId;
-        this.formulasByFormulaId = formulasByFormulaId;
-        this.activityById = activityById;
+        setUserName(userName);
+        setEmail(email);
+        setFirstname(firstname);
+        setLastname(lastname);
+        setGender(gender);
+        setNationalInsuranceNumber(nationalInsuranceNumber);
+        setRegistrationdate(registrationdate);
+        setBornIn(bornIn);
+        setBirthday(birthday);
+        setMobilePhoneNumber(mobilePhoneNumber);
+        setPhoneNumber(phoneNumber);
+        setEmailParent(emailParent);
+        setAgreeWithBylaws(agreeWithBylaws);
+        setAgreeWithPicturesAndAudio(agreeWithPicturesAndAudio);
+        setReceiveClubinfo(receiveClubinfo);
+        setReceiveInfoAboutPromotionsAndFederalMatters(receiveInfoAboutPromotionsAndFederalMatters);
+        setType(type);
+        setScore(score);
+        setGrade(grade);
+        setAttendancesById(attendancesById);
+        setCommentRepliesById(commentRepliesById);
+        setCommentsById(commentsById);
+        setCourseModuleViewersById(courseModuleViewersById);
+        setFormulasByFormulaId(formulasByFormulaId);
+        setFormulasById(formulasById);
+        setAddressByAddressId(addressByAddressId);
+        setActivityById(activityById);
     }
 
     public UserDTO toUserDTO(User user) {

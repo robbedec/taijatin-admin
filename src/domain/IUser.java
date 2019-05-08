@@ -1,5 +1,7 @@
 package domain;
 
+import repository.UserDTO;
+
 import java.util.Date;
 
 public interface IUser {
@@ -23,4 +25,7 @@ public interface IUser {
     public String getType();
     public Integer getScore();
     public Integer getGrade();
+
+
+    UserDTO toUserDTO(User u);
 }

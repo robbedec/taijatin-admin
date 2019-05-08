@@ -40,7 +40,7 @@ public class OverviewPanelController<T> extends FlowPane {
     /**
      * @param dc
      */
-        public OverviewPanelController(DomainController dc, List<T> enumInstances) {
+    public OverviewPanelController(DomainController dc, List<T> enumInstances) {
         this.dc = dc;
         this.factory = new TableViewFactory(dc);
 
@@ -58,7 +58,7 @@ public class OverviewPanelController<T> extends FlowPane {
         cboType.getSelectionModel().select(0);
 
         flowpane.getChildren().add(2, factory.getUserTableView());
-        }
+    }
 
     @FXML
     private void filter() {

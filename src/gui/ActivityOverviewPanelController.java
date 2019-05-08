@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
+import repository.ActivityDTO;
 
 import java.io.IOException;
 import java.util.List;
@@ -73,12 +74,13 @@ public class ActivityOverviewPanelController<T> extends FlowPane {
 
     @FXML
     public void newActivity(){
-        Activity newActivity = new Activity();
+        ActivityDTO newActivity = new ActivityDTO();
         newActivity.setName("");
         newActivity.setInfo("");
         newActivity.setMaxNumberOfParticipants(10);
         newActivity.setStatus(false);
         newActivity.setType(0);
+        dc.setActivityUserLists(newActivity);
         dc.setCurrentActivity(newActivity);
     }
 }

@@ -4,6 +4,7 @@ import repository.ActivityDTO;
 
 import javax.persistence.*;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -27,19 +28,19 @@ public class Activity implements IActivity {
     public Activity(){}
 
     public Activity(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById, Collection<User> notRegisteredUsersByUserId, Collection<User> registeredUsersByUserId){
-        this.name = name;
-        this.info = info;
-        this.type = type;
-        this.maxNumberOfParticipants = maxNumberOfParticipants;
-        this.numberOfParticipants = numberOfParticipants;
-        this.status = status;
-        this.usersById = usersById;
-        this.notRegisteredUsersByUserId = notRegisteredUsersByUserId;
-        this.registeredUsersByUserId = registeredUsersByUserId;
+        setName(name);
+        setInfo(info);
+        setType(type);
+        setMaxNumberOfParticipants(maxNumberOfParticipants);
+        setNumberOfParticipants(numberOfParticipants);
+        setStatus(status);
+        setUsersById(usersById);
+        setNotRegisteredUsersByUserId(notRegisteredUsersByUserId);
+        setRegisteredUsersByUserId(registeredUsersByUserId);
     }
 
     public ActivityDTO toActivityDTO(Activity activity){
-        return new ActivityDTO(activity.getName(), activity.getInfo(), activity.getType(), activity.getMaxNumberOfParticipants(), activity.getNumberOfParticipants(), activity.getStatus(), activity.getUsersById(), activity.getNotRegisteredUsersByUserId(), activity.getRegisteredUsersByUserId());
+        return new ActivityDTO(activity.id, activity.getName(), activity.getInfo(), activity.getType(), activity.getMaxNumberOfParticipants(), activity.getNumberOfParticipants(), activity.getStatus(), activity.getUsersById(), activity.getNotRegisteredUsersByUserId(), activity.getRegisteredUsersByUserId());
     }
 
     @Transient
@@ -126,19 +127,13 @@ public class Activity implements IActivity {
         inverseJoinColumns = {@JoinColumn(name = "fk_user") })
     private Collection<User> usersById;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToMany
     @JoinTable(name = "Activity_User",
             joinColumns = {@JoinColumn(name = "fk_registeredToActivity")},
             inverseJoinColumns = {@JoinColumn(name = "fk_registeredUser") })
     private Collection<User> registeredUsersByUserId;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToMany
     @JoinTable(name = "Activity_User",
             joinColumns = {@JoinColumn(name = "fk_notRegisteredToActivity")},
             inverseJoinColumns = {@JoinColumn(name = "fk_notRegisteredUser") })
@@ -175,19 +170,29 @@ public class Activity implements IActivity {
     }
 
     public Collection<User> getRegisteredUsersByUserId() {
-        return registeredUsersByUserId;
+        return registeredUsersByUserId == null ? new ArrayList<>() : registeredUsersByUserId;
     }
 
     public void setRegisteredUsersByUserId(Collection<User> registeredUsersByUserId) {
-        this.registeredUsersByUserId = registeredUsersByUserId;
+         this.registeredUsersByUserId = registeredUsersByUserId;
     }
 
     public Collection<User> getNotRegisteredUsersByUserId() {
-        return notRegisteredUsersByUserId;
+        return notRegisteredUsersByUserId  == null ? new ArrayList<>() : notRegisteredUsersByUserId;
     }
 
     public void setNotRegisteredUsersByUserId(Collection<User> notRegisteredUsersByUserId) {
         this.notRegisteredUsersByUserId = notRegisteredUsersByUserId;
+    }
+
+    public void addRegisteredUser(User user){
+        this.getRegisteredUsersByUserId().add(user);
+        this.getNotRegisteredUsersByUserId().remove(user);
+    }
+
+    public void deleteRegisteredUser(User user){
+        this.getRegisteredUsersByUserId().add(user);
+        this.getNotRegisteredUsersByUserId().remove(user);
     }
 
     private boolean empty(String string) {
@@ -197,4 +202,5 @@ public class Activity implements IActivity {
             return false;
         }
     }
+
 }

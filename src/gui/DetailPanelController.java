@@ -129,6 +129,14 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             }
             dc.setCurrentUser(user);
             dc.updateUser();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Succes", ButtonType.OK);
+            alert.setTitle("De activiteit is succesvol opgeslagen.");
+            alert.showAndWait().ifPresent(type -> {
+                if(type == ButtonType.OK){
+                    dc.setCurrentUser(user);
+                    disableAllFields();
+                }
+            });
         } catch (CRuntimeException ex) {
             System.out.println("\nError updating/Creating user: " + ex.getMessage() + "\n");
             Alert error = new Alert(Alert.AlertType.ERROR, "Error updaten/creëren gebruiker: " + ex.getMessage(), ButtonType.OK);
@@ -146,9 +154,9 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        User u = (User)evt.getNewValue();
+        IUser u = (User)evt.getNewValue();
         if (u != null) {
-            this.user = u.toUserDTO(u);
+            this.user = u.toUserDTO((User) u);
         } else {
             this.user = null;
         }
@@ -222,29 +230,33 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             }
         }
         else if(user == null){
-            btnSave.setVisible(false);
-            btnAdd.setVisible(false);
-            txtUsername.setEditable(false);
-            txtEmail.setEditable(false);
-            txtFirstname.setEditable(false);
-            txtLastname.setEditable(false);
-            txtRegistrationDate.setDisable(true);
-            txtBirthday.setDisable(true);
-            txtType.setDisable(true);
-            txtGender.setDisable(true);
-            txtGrade.setDisable(true);
-            txtGsm.setEditable(false);
-            txtNationalNumber.setEditable(false);
-            txtTelephone.setEditable(false);
-            txtCountry.setEditable(false);
-            txtPlace.setEditable(false);
-            txtZipcode.setEditable(false);
-            txtStreet.setEditable(false);
-            txtNumber.setEditable(false);
-            txtBornIn.setEditable(false);
-            txtFormula.setDisable(true);
-            txtBus.setEditable(false);
+            disableAllFields();
         }
+    }
+
+    private void disableAllFields(){
+        btnSave.setVisible(false);
+        btnAdd.setVisible(false);
+        txtUsername.setEditable(false);
+        txtEmail.setEditable(false);
+        txtFirstname.setEditable(false);
+        txtLastname.setEditable(false);
+        txtRegistrationDate.setDisable(true);
+        txtBirthday.setDisable(true);
+        txtType.setDisable(true);
+        txtGender.setDisable(true);
+        txtGrade.setDisable(true);
+        txtGsm.setEditable(false);
+        txtNationalNumber.setEditable(false);
+        txtTelephone.setEditable(false);
+        txtCountry.setEditable(false);
+        txtPlace.setEditable(false);
+        txtZipcode.setEditable(false);
+        txtStreet.setEditable(false);
+        txtNumber.setEditable(false);
+        txtBornIn.setEditable(false);
+        txtFormula.setDisable(true);
+        txtBus.setEditable(false);
     }
 }
 ;

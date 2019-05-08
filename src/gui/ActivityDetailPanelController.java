@@ -31,7 +31,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     private ChoiceBox txtType;
     @FXML
     private Button btnSave, btnAdd, btnRegister, btnUndoRegister;
-    private Activity activity;
+    private ActivityDTO activity;
 
     private ObservableList<IUser> registeredUsers, notRegisteredUsers;
 
@@ -45,7 +45,6 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        dc.setActivityUserLists();
 
         listViewNotRegistered.setPlaceholder(new Label("Geen gebruikers meer gevonden"));
         listViewRegistered.setPlaceholder(new Label("Geen gebruikers geregistreerd"));
@@ -66,6 +65,13 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             activity.setMaxNumberOfParticipants((int) sliderMax.getValue());
             dc.setCurrentActivity(activity);
             dc.updateActivity();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Succes", ButtonType.OK);
+            alert.setTitle("De activiteit is succesvol opgeslagen.");
+            alert.showAndWait().ifPresent(type -> {
+                if(type == ButtonType.OK){
+                    disableAllFields();
+                }
+            });
         } catch (CRuntimeException ex) {
             System.out.println("\nError updaten/creëren activiteit: " + ex.getMessage() + "\n");
         } catch (NullPointerException np) {
@@ -86,22 +92,26 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     public void register(){
         int index = listViewNotRegistered.getSelectionModel().getSelectedIndex();
         dc.register(index);
-        dc.addToTotalRegistered();
-        txtTotal.setText(String.valueOf(activity.getNumberOfParticipants()));
+        notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
+        registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
+        int total = dc.getTotalRegistered();
+        txtTotal.setText(String.valueOf(total));
         listViewNotRegistered.setItems(notRegisteredUsers);
         listViewRegistered.setItems(registeredUsers);
     }
 
     public void undoRegister(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Wil je deze registratie ongedaan maken?", ButtonType.OK, ButtonType.NO);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "", ButtonType.OK, ButtonType.NO);
         alert.setTitle("Maak registratie ongedaan");
-        alert.setContentText("Bevestig of je deze gebruiker wilt uitschrijven.");
+        alert.setContentText("Bevestig of je gebruiker " + listViewRegistered.getSelectionModel().getSelectedItem().getUserName() + " terug wilt uitschrijven.");
         alert.showAndWait().ifPresent(type -> {
             if(type == ButtonType.OK){
                 int index = listViewRegistered.getSelectionModel().getSelectedIndex();
                 dc.undoRegister(index);
-                dc.distractFromTotalRegistered();
-                txtTotal.setText(String.valueOf(activity.getNumberOfParticipants()));
+                notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
+                registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
+                int total = dc.getTotalRegistered();
+                txtTotal.setText(String.valueOf(total));
                 listViewNotRegistered.setItems(notRegisteredUsers);
                 listViewRegistered.setItems(registeredUsers);
             }
@@ -113,8 +123,13 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        this.activity = (Activity) evt.getNewValue();
-        if (activity != null) {
+        IActivity act = (Activity) evt.getNewValue();
+        if (act != null) {
+            this.activity = act.toActivityDTO((Activity) act);
+        } else {
+            this.activity = null;
+        }
+        if (this.activity != null) {
             btnRegister.setVisible(true);
             btnUndoRegister.setVisible(true);
             if(this.activity.getName() == null || this.activity.getName().equals("")){
@@ -127,24 +142,26 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
                 btnAdd.setVisible(false);
                 btnSave.setVisible(true);
             }
-            txtName.setText(activity.getName());
-            txtName.setEditable(true);
+            txtName.setText(this.activity.getName());
+            txtName.setDisable(false);
             ObservableList types = FXCollections.observableArrayList(TypeOfActivity.values());
             txtType.setItems(types);
-            txtType.setValue(types.get(activity.getType()));
+            txtType.setValue(types.get(this.activity.getType()));
             txtType.setDisable(false);
-            cbStatus.setSelected(activity.getStatus());
+            cbStatus.setSelected(this.activity.getStatus());
             cbStatus.setDisable(false);
             sliderMax.setBlockIncrement(1);
             sliderMax.setMin(0);
-            sliderMax.setMax(20);
-            sliderMax.setValue(activity.getMaxNumberOfParticipants());
-            txtSlider.setText(String.valueOf(activity.getMaxNumberOfParticipants()));
+            sliderMax.setMax(dc.getAmountOfUsers());
+            sliderMax.setValue(this.activity.getMaxNumberOfParticipants());
+            txtSlider.setText(String.valueOf(this.activity.getMaxNumberOfParticipants()));
+            txtSlider.setDisable(false);
             txtSlider.setEditable(false);
-            txtTotal.setText(String.valueOf(activity.getNumberOfParticipants()));
+            txtTotal.setText(String.valueOf(this.activity.getNumberOfParticipants()));
+            txtTotal.setDisable(false);
             txtTotal.setEditable(false);
-            txtInfo.setText(activity.getInfo());
-            txtInfo.setEditable(true);
+            txtInfo.setText(this.activity.getInfo());
+            txtInfo.setDisable(false);
             notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
             registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
             listViewNotRegistered.setItems(notRegisteredUsers);
@@ -152,19 +169,23 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             listViewRegistered.setItems(registeredUsers);
             listViewRegistered.setDisable(false);
         }
-        else if(activity == null){
-            btnSave.setVisible(false);
-            btnAdd.setVisible(false);
-            btnRegister.setVisible(false);
-            btnUndoRegister.setVisible(false);
-            txtName.setEditable(false);
-            txtType.setDisable(true);
-            cbStatus.setDisable(true);
-            txtTotal.setEditable(false);
-            txtInfo.setEditable(false);
-            listViewNotRegistered.setDisable(true);
-            listViewRegistered.setDisable(true);
+        else if(act == null){
+            disableAllFields();
         }
+    }
+
+    private void disableAllFields(){
+        btnSave.setVisible(false);
+        btnAdd.setVisible(false);
+        btnRegister.setVisible(false);
+        btnUndoRegister.setVisible(false);
+        txtName.setDisable(true);
+        txtType.setDisable(true);
+        cbStatus.setDisable(true);
+        txtTotal.setDisable(true);
+        txtInfo.setDisable(true);
+        listViewNotRegistered.setDisable(true);
+        listViewRegistered.setDisable(true);
     }
 }
 ;

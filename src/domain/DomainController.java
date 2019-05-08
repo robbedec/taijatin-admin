@@ -60,8 +60,16 @@ public class DomainController {
         return club.getFilteredActivities();
     }
 
-    public void setCurrentActivity(Activity activity){
-        club.setCurrentActivity(activity);
+    public void setCurrentActivity(ActivityDTO activityDto){
+        try {
+            // Activity bestaat
+            Activity a = club.getActivityByName(activityDto.getName());
+            club.setCurrentActivity(a);
+        } catch (CRuntimeException ex) {
+            // Nieuwe activity
+            Activity a = activityDto.toActivity();
+            club.setCurrentActivity(a);
+        }
     }
 
     public void filterActivities(String name, int index){
@@ -92,23 +100,23 @@ public class DomainController {
         return club.getNotRegisteredUsersFromActivity();
     }
 
-    public void setActivityUserLists(){
-        club.setActivityUserLists();
+    public void setActivityUserLists(ActivityDTO a){
+        club.setActivityUserLists(a);
     }
 
     public void register(int index) {
         club.register(index);
     }
 
-    public void addToTotalRegistered(){
-        club.addToTotalRegistered();
-    }
-
-    public void distractFromTotalRegistered(){
-        club.distractFromTotalRegistered();
-    }
-
     public void undoRegister(int index) {
         club.undoRegister(index);
+    }
+
+    public int getTotalRegistered(){
+        return club.getTotalRegistered();
+    }
+
+    public int getAmountOfUsers() {
+        return club.getAmountOfUsers();
     }
 }

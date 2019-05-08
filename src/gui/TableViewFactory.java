@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import repository.ActivityDTO;
 import repository.UserDTO;
 
 public class TableViewFactory<T> {
@@ -77,12 +78,14 @@ public class TableViewFactory<T> {
         tableView.getColumns().add((TableColumn<T, ?>) statusCol);
         tableView.getColumns().add((TableColumn<T, ?>) numberCol);
 
-    tableView.setItems((ObservableList)dc.getFilteredActivities());
+        tableView.setItems((ObservableList)dc.getFilteredActivities());
         tableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
             if(newValue != null) {
                 if(oldValue == null || !oldValue.equals(newValue)) {
                     Activity a = (Activity) newValue;
-                    dc.setCurrentActivity(a);
+                    ActivityDTO aDto = a.toActivityDTO(a);
+                    dc.setActivityUserLists(aDto);
+                    dc.setCurrentActivity(aDto);
                 }
             }
         });

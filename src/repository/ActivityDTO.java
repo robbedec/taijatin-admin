@@ -6,6 +6,7 @@ import domain.User;
 import java.util.Collection;
 
 public class ActivityDTO {
+    private int id;
     private String name;
     private String info;
     private Integer type;
@@ -19,20 +20,21 @@ public class ActivityDTO {
     public ActivityDTO() {
     }
 
-    public ActivityDTO(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById, Collection<User> notRegisteredUsers, Collection<User> registeredUsers) {
-        this.name = name;
-        this.info = info;
-        this.type = type;
-        this.maxNumberOfParticipants = maxNumberOfParticipants;
-        this.numberOfParticipants = numberOfParticipants;
-        this.status = status;
-        this.usersById = usersById;
-        this.notRegisteredUsers = notRegisteredUsers;
-        this.registeredUsers = registeredUsers;
+    public ActivityDTO(int id, String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById, Collection<User> notRegisteredUsers, Collection<User> registeredUsers) {
+        this.id = id;
+        setName(name);
+        setInfo(info);
+        setType(type);
+        setMaxNumberOfParticipants(maxNumberOfParticipants);
+        setNumberOfParticipants(numberOfParticipants);
+        setStatus(status);
+        setUsersById(usersById);
+        setNotRegisteredUsers(notRegisteredUsers);
+        setRegisteredUsers(registeredUsers);
     }
 
-    public Activity toActivity(ActivityDTO activity){
-        return new Activity(activity.name, activity.info, activity.type, activity.numberOfParticipants, activity.numberOfParticipants, activity.status, activity.usersById, activity.notRegisteredUsers, activity.registeredUsers);
+    public Activity toActivity(){
+        return new Activity(this.getName(), this.getInfo(), this.getType(), this.getMaxNumberOfParticipants(), this.getNumberOfParticipants(), this.getStatus(), this.getUsersById(), this.getNotRegisteredUsers(), this.getRegisteredUsers());
     }
 
     public String getName() {
@@ -89,5 +91,21 @@ public class ActivityDTO {
 
     public void setUsersById(Collection<User> usersById) {
         this.usersById = usersById;
+    }
+
+    public Collection<User> getNotRegisteredUsers() {
+        return notRegisteredUsers;
+    }
+
+    public void setNotRegisteredUsers(Collection<User> notRegisteredUsers) {
+        this.notRegisteredUsers = notRegisteredUsers;
+    }
+
+    public Collection<User> getRegisteredUsers() {
+        return registeredUsers;
+    }
+
+    public void setRegisteredUsers(Collection<User> registeredUsers) {
+        this.registeredUsers = registeredUsers;
     }
 }

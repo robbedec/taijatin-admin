@@ -144,7 +144,6 @@ public class Club {
     public void setCurrentActivity(Activity activity){
         subjectActivity.firePropertyChange("activity", this.currentActivity, activity);
         this.currentActivity = activity;
-        setActivityUserLists();
     }
 
     public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {
@@ -181,21 +180,19 @@ public class Club {
         return notRegisteredUsersToActivityList;
     }
 
-    public void setActivityUserLists(){
-        if(currentActivity != null) {
-            if(currentActivity.getNotRegisteredUsersByUserId() == null && currentActivity.getRegisteredUsersByUserId() == null
-            || currentActivity.getNotRegisteredUsersByUserId().size() == 0 && currentActivity.getRegisteredUsersByUserId().size() == 0){
-                this.notRegisteredUsersToActivityList = userList;
-                currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
-            }
-            else {
-                this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(currentActivity.getNotRegisteredUsersByUserId());
-                currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
-            }
-            System.out.println(notRegisteredUsersToActivityList);
-
-            this.registeredUsersToActivityList = FXCollections.observableArrayList(currentActivity.getRegisteredUsersByUserId());
-            currentActivity.setRegisteredUsersByUserId(registeredUsersToActivityList);
+    public void setActivityUserLists(ActivityDTO aDto){
+        Activity a = aDto.toActivity();
+        if (a.getNotRegisteredUsersByUserId().size() == 0 && a.getRegisteredUsersByUserId().size() == 0) {
+            this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userList);
+        } else {
+            this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(a.getNotRegisteredUsersByUserId());
+        }
+        a.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
+        System.out.println(notRegisteredUsersToActivityList);
+        this.registeredUsersToActivityList = FXCollections.observableArrayList(a.getRegisteredUsersByUserId());
+        a.setRegisteredUsersByUserId(registeredUsersToActivityList);
+        if(a.getUsersById() == null){
+            a.setUsersById(userList);
         }
     }
 
@@ -214,17 +211,27 @@ public class Club {
             User user = registeredUsersToActivityList.get(index);
             registeredUsersToActivityList.remove(user);
             notRegisteredUsersToActivityList.add(user);
-            currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
             currentActivity.setRegisteredUsersByUserId(registeredUsersToActivityList);
+            currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
         }
     }
 
-    public void addToTotalRegistered(){
-        currentActivity.setNumberOfParticipants(currentActivity.getNumberOfParticipants() + 1);
+    public int getTotalRegistered(){
+        int total = currentActivity.getRegisteredUsersByUserId().size();
+        currentActivity.setNumberOfParticipants(total);
+        return total;
     }
 
-    public void distractFromTotalRegistered(){
-        currentActivity.setNumberOfParticipants(currentActivity.getNumberOfParticipants() - 1);
+    public Activity getActivityByName(String name) {
+        try {
+            Activity a = activityRepo.getByName(name);
+            return a;
+        } catch (EntityNotFoundException ex) {
+            throw new CRuntimeException("User with email: " + name + " not found!");
+        }
     }
 
+    public int getAmountOfUsers() {
+        return userList.size();
+    }
 }

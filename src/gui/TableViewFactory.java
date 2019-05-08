@@ -92,11 +92,11 @@ public class TableViewFactory<T> {
 
         TableColumn<Activity, String> statusCol = new TableColumn<>("Status");
         statusCol.setPrefWidth(50);
-        statusCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getStatus())));
+        statusCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStatus() ? "Actief" : "Inactief"));
 
-        TableColumn<Activity, String> numberCol = new TableColumn<>("Total registered");
+        TableColumn<Activity, String> numberCol = new TableColumn<>("Inschrijvingen");
         numberCol.setPrefWidth(100);
-        numberCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getNumberOfParticipants())));
+        numberCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().registeredUsersByUserId.size())));
 
         tableView.getColumns().add((TableColumn<T, ?>) nameCol);
         tableView.getColumns().add((TableColumn<T, ?>) typeCol);

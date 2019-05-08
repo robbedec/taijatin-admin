@@ -131,7 +131,7 @@ public class Activity implements IActivity {
     @JoinTable(name = "Activity_User",
             joinColumns = {@JoinColumn(name = "fk_registeredToActivity")},
             inverseJoinColumns = {@JoinColumn(name = "fk_registeredUser") })
-    private Collection<User> registeredUsersByUserId;
+    public Collection<User> registeredUsersByUserId;
 
     @ManyToMany
     @JoinTable(name = "Activity_User",

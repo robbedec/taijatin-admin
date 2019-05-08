@@ -53,11 +53,9 @@ public class Club {
         userList = FXCollections.observableArrayList();
         activityList = FXCollections.observableArrayList();
         userRepo.getAll().forEach(user -> {
-            System.out.print(user);
             userList.add(user);
         });
         activityRepo.getAll().forEach(activity -> {
-            System.out.println(activity);
             activityList.add(activity);
         });
         filteredList = new FilteredList<>(userList, p -> true);
@@ -102,11 +100,11 @@ public class Club {
             // NIET VERANDERREN
             User u = userRepo.getByEmail(currentUser.getEmail());
             userRepo.insert(userRepo.update(this.currentUser));
+            System.out.println("test");
         } catch (EntityNotFoundException ex) {
             userRepo.insert(currentUser);
             userList.add(currentUser);
         }
-
     }
 
     public void deleteUser(){

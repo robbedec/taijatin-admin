@@ -1,5 +1,6 @@
 package domain;
 
+import gui.TypeOfActivity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -132,7 +133,7 @@ public class Club {
             filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()));
         }
         else {
-            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) &&  activity.getType().toString().equals(typesOfActivity[index]));
+            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) && TypeOfActivity.valueOf(activity.getType()).equals(typesOfActivity[index]));
         }
     }
 

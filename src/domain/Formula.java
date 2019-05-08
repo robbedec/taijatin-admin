@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import main.StartUpGUI;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -16,14 +17,17 @@ public class Formula {
     private int formulaId;
     private String formulaName;
 
-    @OneToMany(mappedBy = "formulasByFormulaId")
+    public Formula(){
+    }
+
+    @OneToMany(mappedBy = "formulasByFormulaId", cascade = CascadeType.PERSIST)
     private Collection<FormulaFormulaDay> formulaFormulaDaysByFormulaId;
 
     @ManyToOne
-    @JoinColumn(name = "TeacherId", referencedColumnName = "Id")
+    @JoinColumn(name = "TeacherId")
     private User usersByTeacherId;
 
-    @OneToMany(mappedBy = "formulasByFormulaId")
+    @OneToMany(mappedBy = "formulasByFormulaId", cascade = CascadeType.PERSIST)
     private Collection<User> usersByFormulaId;
 
     @Id

@@ -16,7 +16,7 @@ public class FormulaFormulaDay {
     //@JoinColumn(name = "FormulaId")
     private Formula formulasByFormulaId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     //@JoinColumn(name = "FormulaDayId")
     private FormulaDay formulaDayByFormulaDayId;
 

@@ -13,7 +13,7 @@ public class FormulaDay {
     //private Object startTime;
     //private Object endTime;
 
-    @OneToMany(mappedBy = "formulaDayByFormulaDayId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "formulaDayByFormulaDayId")
     private Collection<FormulaFormulaDay> formulaFormulaDaysByFormulaDayId;
 
     @Column(name = "FormulaDayId")

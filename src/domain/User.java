@@ -93,7 +93,7 @@ public class User implements IUser {
     @OneToMany(mappedBy = "usersByMemberId")
     private Collection<CourseModuleViewer> courseModuleViewersById;
 
-    @OneToMany(mappedBy = "usersByTeacherId")
+    @OneToMany(mappedBy = "usersByTeacherId", cascade = CascadeType.PERSIST)
     private Collection<Formula> formulasById;
 
     @ManyToMany(mappedBy = "usersById")
@@ -111,7 +111,7 @@ public class User implements IUser {
     @JoinColumn(name = "AddressId")
     private Address addressByAddressId;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "FormulaId")
     private Formula formulasByFormulaId;
 

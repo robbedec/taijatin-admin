@@ -111,7 +111,7 @@ public class User implements IUser {
     @JoinColumn(name = "AddressId")
     private Address addressByAddressId;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "FormulaId")
     private Formula formulasByFormulaId;
 

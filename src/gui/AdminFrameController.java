@@ -46,7 +46,7 @@ public class AdminFrameController extends BorderPane {
         activityDetailPanelController = new ActivityDetailPanelController(this.dc);
         dc.addActivityPropertyChangeListener(activityDetailPanelController);
 
-        overzichtenPanelController = new OverzichtenPanelController(this.dc);
+        overzichtenPanelController = new OverzichtenPanelController(this.dc, Arrays.asList(Overzichten.values()));
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminFrame.fxml"));
         loader.setRoot(this);
@@ -86,6 +86,7 @@ public class AdminFrameController extends BorderPane {
     private void clearScreens() {
         this.vbLeft.getChildren().clear();
         this.vbTop.getChildren().clear();
+        this.setCenter(null);
         this.vbTop.getChildren().add(hbTop);
     }
 }

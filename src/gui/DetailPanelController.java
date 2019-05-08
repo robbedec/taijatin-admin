@@ -157,10 +157,6 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
         IUser u = (User)evt.getNewValue();
         if (u != null) {
             this.user = u.toUserDTO((User) u);
-        } else {
-            this.user = null;
-        }
-        if(this.user != null) {
             txtUsername.setText(user.getUserName());
             if(this.user.getUserName() == null || this.user.getUserName().equals("") || this.user.getUserName().equals("gebruikersnaam")){
                 txtUsername.setEditable(true);
@@ -229,8 +225,8 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             else {
                 txtFormula.setValue(user.getFormulasByFormulaId().getFormulaName());
             }
-        }
-        else if(user == null){
+        } else {
+            this.user = null;
             disableAllFields();
         }
     }
@@ -238,7 +234,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
     private void disableAllFields(){
         btnSave.setVisible(false);
         btnAdd.setVisible(false);
-        txtUsername.setDisable(true);
+        // txtUsername.setDisable(true);
         txtEmail.setDisable(true);
         txtFirstname.setDisable(true);
         txtLastname.setDisable(true);

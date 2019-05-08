@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.FlowPane?>
 
 <fx:root fx:id="flowpane" alignment="TOP_CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="200.0" prefWidth="1300.0" style="-fx-border-color: black;" type="FlowPane" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        
-    </children>
+   <children>
+      <ComboBox fx:id="cboOverzichten" prefWidth="150.0" />
+   </children>
 </fx:root>

@@ -1,13 +1,22 @@
 package gui;
 
 import domain.*;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import repository.ActivityDTO;
 import repository.UserDTO;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TableViewFactory<T> {
 
@@ -16,13 +25,22 @@ public class TableViewFactory<T> {
 
     public TableViewFactory(DomainController dc) {
         this.dc = dc;
+    }
+
+    private void setSmallSize() {
+        tableView.setPrefHeight(725);
+        tableView.setMaxWidth(400);
+        tableView.setPrefWidth(400);
+    }
+
+    private void setBigSize() {
         tableView.setPrefHeight(725);
         tableView.setMaxWidth(400);
         tableView.setPrefWidth(400);
     }
 
     public TableView<T> getUserTableView() {
-
+        setSmallSize();
         tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
 
         TableColumn<User, String> usernameCol = new TableColumn<>("Gebruikersnaam");
@@ -55,6 +73,7 @@ public class TableViewFactory<T> {
     }
 
     public TableView<T> getActityTableView() {
+        setSmallSize();
         tableView.setPlaceholder(new Label("Geen activiteiten gevonden"));
 
         TableColumn<Activity, String> nameCol = new TableColumn<>("Naam");
@@ -89,6 +108,24 @@ public class TableViewFactory<T> {
                 }
             }
         });
+        return tableView;
+    }
+
+    public TableView<T> getClubKamptioenschapTableView(){
+        setBigSize();
+        tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
+
+        TableColumn<User, String> usernameCol = new TableColumn<>("Gebruikersnaam");
+        usernameCol.setPrefWidth(200);
+        usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
+
+        TableColumn<User, String> scoreCol = new TableColumn<>("Score");
+        scoreCol.setPrefWidth(200);
+        scoreCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getScore())));
+
+        tableView.getColumns().addAll((TableColumn<T, ?>) usernameCol, (TableColumn<T, ?>) scoreCol);
+
+        tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getFilteredMembers().stream().filter(x -> x.getScore() != null).sorted(Comparator.comparing(User::getScore).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
         return tableView;
     }
 }

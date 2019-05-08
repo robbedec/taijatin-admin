@@ -6,6 +6,7 @@ import repository.ActivityDTO;
 import repository.UserDTO;
 
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Method;
 import java.util.Collection;
 
 public class DomainController {
@@ -28,6 +29,7 @@ public class DomainController {
         try {
             // User bestaat
             User u = club.getUserByEmail(userDto.getEmail());
+            mergeUser(userDto.toUser(), u);
             club.setCurrentUser(u);
         } catch (CRuntimeException ex) {
             // Nieuwe user
@@ -45,6 +47,7 @@ public class DomainController {
     }
 
     public void updateUser() {
+        System.out.println();
         club.updateUser();
     }
 
@@ -64,6 +67,7 @@ public class DomainController {
         try {
             // Activity bestaat
             Activity a = club.getActivityByName(activityDto.getName());
+            mergeActivity(activityDto.toActivity(), a);
             club.setCurrentActivity(a);
         } catch (CRuntimeException ex) {
             // Nieuwe activity
@@ -118,5 +122,31 @@ public class DomainController {
 
     public int getAmountOfUsers() {
         return club.getAmountOfUsers();
+    }
+
+    public void mergeUser(User dto, User original){
+        original.setLastname(dto.getLastname());
+        original.setLastname(dto.getLastname());
+        original.setFirstname(dto.getFirstname());
+        original.setBirthday(dto.getBirthday());
+        original.setBornIn(dto.getBornIn());
+        original.setRegistrationdate(dto.getRegistrationdate());
+        original.setGrade(dto.getGrade());
+        original.setGender(dto.getGender());
+        original.setEmail(dto.getEmail());
+        original.setMobilePhoneNumber(dto.getMobilePhoneNumber());
+        original.setPhoneNumber(dto.getPhoneNumber());
+        original.setNationalInsuranceNumber(dto.getNationalInsuranceNumber());
+        original.setType(dto.getType());
+        original.setAddressByAddressId(dto.getAddressByAddressId());
+    }
+
+    public void mergeActivity(Activity dto, Activity original) {
+        original.setInfo(dto.getInfo());
+        original.setName(dto.getName());
+        original.setType(dto.getType());
+        original.setStatus(dto.getStatus());
+        original.setNumberOfParticipants(dto.getNumberOfParticipants());
+        original.setMaxNumberOfParticipants(dto.getMaxNumberOfParticipants());
     }
 }

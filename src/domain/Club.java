@@ -100,7 +100,7 @@ public class Club {
             // NIET VERANDERREN
             User u = userRepo.getByEmail(currentUser.getEmail());
             userRepo.insert(userRepo.update(this.currentUser));
-            System.out.println("test");
+            System.out.println(this.currentUser.getLastname());
         } catch (EntityNotFoundException ex) {
             userRepo.insert(currentUser);
             userList.add(currentUser);

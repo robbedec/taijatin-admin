@@ -90,7 +90,7 @@ public class OverviewPanelController<T> extends FlowPane {
         Date defaultBirthDay = Date.valueOf(LocalDate.of(1920, 1, 1));
         Date registrationDate = Date.valueOf(LocalDate.now());
         Address defaultAddress = new Address();
-        defaultAddress.setCity("fvgsdfse");
+        defaultAddress.setCity("");
         defaultAddress.setCountry("");
         defaultAddress.setStreet("");
         defaultAddress.setNumber(1);
@@ -105,12 +105,12 @@ public class OverviewPanelController<T> extends FlowPane {
         newUser.setType("Member");
         newUser.setAddressByAddressId(defaultAddress);
 
-        newUser.setUserName("gebruikersnaam");
-        newUser.setFirstname("voornaam");
-        newUser.setLastname("naam");
-        newUser.setEmail("email@test.com");
+        newUser.setUserName("Gebruikersnaam");
+        newUser.setFirstname("Voornaam");
+        newUser.setLastname("Naam");
+        newUser.setEmail("naam@email.com");
         newUser.setGender(1);
-        newUser.setBornIn("geboorteplaats");
+        newUser.setBornIn("Geboorteplaats");
         newUser.setNationalInsuranceNumber("yy.mm.dd-123.45");
         newUser.setMobilePhoneNumber("+32");
 

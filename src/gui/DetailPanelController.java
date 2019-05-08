@@ -164,6 +164,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             txtUsername.setText(user.getUserName());
             if(this.user.getUserName() == null || this.user.getUserName().equals("") || this.user.getUserName().equals("gebruikersnaam")){
                 txtUsername.setEditable(true);
+                txtUsername.setDisable(false);
                 btnAdd.setVisible(true);
                 btnSave.setVisible(false);
             }
@@ -259,4 +260,3 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
         txtBus.setDisable(true);
     }
 }
-;

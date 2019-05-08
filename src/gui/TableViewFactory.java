@@ -44,7 +44,7 @@ public class TableViewFactory<T> {
         tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
 
         TableColumn<User, String> usernameCol = new TableColumn<>("Gebruikersnaam");
-        usernameCol.setPrefWidth(200);
+        usernameCol.setPrefWidth(150);
         usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
 
         TableColumn<User, String> gradeCol = new TableColumn<>("Graad");
@@ -52,12 +52,18 @@ public class TableViewFactory<T> {
         gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grade.valueOf(cellData.getValue().getGrade())));
 
         TableColumn<User, String> formulaCol = new TableColumn<>("Formule");
-        formulaCol.setPrefWidth(100);
+        formulaCol.setPrefWidth(85);
         formulaCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getFormulasByFormulaId() == null ? "" : cellData.getValue().getFormulasByFormulaId().getFormulaName()));
+
+        TableColumn<User, String> typeCol = new TableColumn<>("Type");
+        typeCol.setPrefWidth(81);
+        typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getType()));
+
 
         tableView.getColumns().add((TableColumn<T, ?>) usernameCol);
         tableView.getColumns().add((TableColumn<T, ?>) gradeCol);
         tableView.getColumns().add((TableColumn<T, ?>) formulaCol);
+        tableView.getColumns().add((TableColumn<T, ?>) typeCol);
 
         tableView.setItems((ObservableList)dc.getFilteredMembers());
         tableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {

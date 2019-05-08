@@ -234,7 +234,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
     private void disableAllFields(){
         btnSave.setVisible(false);
         btnAdd.setVisible(false);
-        // txtUsername.setDisable(true);
+        txtUsername.setDisable(true);
         txtEmail.setDisable(true);
         txtFirstname.setDisable(true);
         txtLastname.setDisable(true);

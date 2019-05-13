@@ -12,6 +12,16 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
         super(User.class);
     }
     @Override
+    public List<User> getAllButNoMembers() throws EntityNotFoundException {
+        try {
+            return entityManager.createNamedQuery("Users.findAllButNoMembers", User.class)
+                    .getResultList();
+        } catch (NoResultException ex){
+            throw new EntityNotFoundException();
+        }
+    }
+
+    @Override
     public List<User> getAll() throws EntityNotFoundException {
         try {
             return entityManager.createNamedQuery("Users.findAll", User.class)

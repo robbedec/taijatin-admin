@@ -149,4 +149,16 @@ public class DomainController {
         original.setNumberOfParticipants(dto.getNumberOfParticipants());
         original.setMaxNumberOfParticipants(dto.getMaxNumberOfParticipants());
     }
+
+    public void refrestNotRegisteredList(ActivityDTO aDto){
+        club.refreshNotRegisteredList(aDto);
+    }
+
+    public void addNoMember(ActivityDTO activity, User u) {
+        club.addNoMember(activity, u);
+    }
+
+    public boolean isFullActivity(){
+        return club.isFullActivity();
+    }
 }

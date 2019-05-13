@@ -96,7 +96,7 @@ public class TableViewFactory<T> {
 
         TableColumn<Activity, String> numberCol = new TableColumn<>("Inschrijvingen");
         numberCol.setPrefWidth(100);
-        numberCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().registeredUsersByUserId.size())));
+        numberCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getNumberOfParticipants())));
 
         tableView.getColumns().add((TableColumn<T, ?>) nameCol);
         tableView.getColumns().add((TableColumn<T, ?>) typeCol);

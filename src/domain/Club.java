@@ -52,7 +52,7 @@ public class Club {
         activityRepo = new ActivityDaoJpa();
         userList = FXCollections.observableArrayList();
         activityList = FXCollections.observableArrayList();
-        userRepo.getAll().forEach(user -> {
+        userRepo.getAllButNoMembers().forEach(user -> {
             userList.add(user);
         });
         activityRepo.getAll().forEach(activity -> {
@@ -182,7 +182,7 @@ public class Club {
     public void setActivityUserLists(ActivityDTO aDto){
         Activity a = aDto.toActivity();
         if (a.getNotRegisteredUsersByUserId().size() == 0 && a.getRegisteredUsersByUserId().size() == 0) {
-            this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userList);
+            this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAll());
         } else {
             this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(a.getNotRegisteredUsersByUserId());
         }
@@ -191,22 +191,32 @@ public class Club {
         this.registeredUsersToActivityList = FXCollections.observableArrayList(a.getRegisteredUsersByUserId());
         a.setRegisteredUsersByUserId(registeredUsersToActivityList);
         if(a.getUsersById() == null){
-            a.setUsersById(userList);
+            a.setUsersById(userRepo.getAll());
         }
     }
 
     public void register(int index) {
-        if(index >= 0 && index <= notRegisteredUsersToActivityList.size()) {
-            User user = notRegisteredUsersToActivityList.get(index);
-            notRegisteredUsersToActivityList.remove(user);
-            registeredUsersToActivityList.add(user);
-            currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
-            currentActivity.setRegisteredUsersByUserId(registeredUsersToActivityList);
+        if(index >= 0) {
+            if(!isFullActivity()) {
+                User user = notRegisteredUsersToActivityList.get(index);
+                notRegisteredUsersToActivityList.remove(user);
+                registeredUsersToActivityList.add(user);
+                currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
+                currentActivity.setRegisteredUsersByUserId(registeredUsersToActivityList);
+            }
+            else {
+                System.out.println("Maximum aantal deelnemers voor deze activiteit is bereikt. Indien er zich leden uitschrijven, kan er weer plaats vrijkomen...");
+            }
         }
     }
 
+    public boolean isFullActivity(){
+        return currentActivity.getNumberOfParticipants() > currentActivity.getMaxNumberOfParticipants();
+    }
+
+
     public void undoRegister(int index) {
-        if(index >= 0 && index <= registeredUsersToActivityList.size()){
+        if(index >= 0){
             User user = registeredUsersToActivityList.get(index);
             registeredUsersToActivityList.remove(user);
             notRegisteredUsersToActivityList.add(user);
@@ -217,7 +227,8 @@ public class Club {
 
     public int getTotalRegistered(){
         int total = currentActivity.getRegisteredUsersByUserId().size();
-        currentActivity.setNumberOfParticipants(total);
+        System.out.println(total);
+        currentActivity.setNumberOfParticipants(total + 1);
         return total;
     }
 
@@ -232,5 +243,24 @@ public class Club {
 
     public int getAmountOfUsers() {
         return userList.size();
+    }
+
+    public void refreshNotRegisteredList(ActivityDTO aDto){
+        Activity a = aDto.toActivity();
+        this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAll());
+        this.notRegisteredUsersToActivityList.removeAll(this.registeredUsersToActivityList);
+        this.registeredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAll());
+        this.registeredUsersToActivityList.removeAll(this.notRegisteredUsersToActivityList);
+        System.out.println(this.notRegisteredUsersToActivityList);
+        a.setNotRegisteredUsersByUserId(this.notRegisteredUsersToActivityList);
+        a.setRegisteredUsersByUserId(this.registeredUsersToActivityList);
+        a.setUsersById(userRepo.getAll());
+    }
+
+    public void addNoMember(ActivityDTO activity, User u) {
+        Activity a = activity.toActivity();
+        this.registeredUsersToActivityList.add(u);
+        a.setRegisteredUsersByUserId(this.registeredUsersToActivityList);
+        userRepo.insert(u);
     }
 }

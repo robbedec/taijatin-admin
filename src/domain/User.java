@@ -15,7 +15,8 @@ import java.util.regex.Pattern;
 @Entity
 @Table(name = "Users")
 @NamedQueries({
-        @NamedQuery(name = "Users.findAll", query = "SELECT b FROM User b"),
+        @NamedQuery(name = "Users.findAllButNoMembers", query = "SELECT b FROM User b WHERE b.isNoMember != true or b.isNoMember is null"),
+        @NamedQuery(name = "Users.findAll", query = "select b from User b"),
         @NamedQuery(name = "Users.findByMail", query = "SELECT b FROM User b WHERE b.email = :email")
 })
 public class User implements IUser {
@@ -41,20 +42,26 @@ public class User implements IUser {
     private String type;
     private Integer score;
     private Integer grade;
+    private boolean isNoMember;
 
     public User() {  }
 
+    public User(String userName){
+        this.userName = userName;
+        setIdNoMember(true);
+    }
+
     public User(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Collection<Activity> activityById) {
-        setUserName(userName);
-        setEmail(email);
-        setFirstname(firstname);
-        setLastname(lastname);
-        setGender(gender);
-        setNationalInsuranceNumber(nationalInsuranceNumber);
-        setRegistrationdate(registrationdate);
-        setBornIn(bornIn);
-        setBirthday(birthday);
-        setMobilePhoneNumber(mobilePhoneNumber);
+        this.userName = userName;
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
+        this.nationalInsuranceNumber = nationalInsuranceNumber;
+        this.registrationdate = registrationdate;
+        this.bornIn = bornIn;
+        this.birthday = birthday;
+        this.mobilePhoneNumber = mobilePhoneNumber;
         setPhoneNumber(phoneNumber);
         setEmailParent(emailParent);
         setAgreeWithBylaws(agreeWithBylaws);
@@ -72,6 +79,7 @@ public class User implements IUser {
         setFormulasById(formulasById);
         setActivityById(activityById);
         setAddressByAddressId(addressByAddressId);
+        setIdNoMember(false);
     }
 
     public UserDTO toUserDTO(User user) {
@@ -363,6 +371,15 @@ public class User implements IUser {
 
     public void setGrade(Integer grade) {
         this.grade = grade;
+    }
+
+    @Column(name = "IsNoMember")
+    public boolean getIsNoMember(){
+        return isNoMember;
+    }
+
+    public void setIdNoMember(boolean isNoMember){
+        this.isNoMember = isNoMember;
     }
 
     @Override

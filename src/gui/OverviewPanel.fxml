@@ -8,18 +8,26 @@
 
 <fx:root fx:id="flowpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="800.0" prefWidth="400.0" type="FlowPane" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField fx:id="txtFilter" onKeyTyped="#filter" prefHeight="25.0" prefWidth="242.0" promptText="naam" />
-      <ComboBox fx:id="cboType" prefWidth="150.0" promptText="Filter op soort">
+      <TextField fx:id="txtFilter" onKeyTyped="#filter" prefHeight="25.0" prefWidth="220.0" promptText="naam">
+         <FlowPane.margin>
+            <Insets />
+         </FlowPane.margin></TextField>
+      <!--<ComboBox fx:id="cboGrade" prefWidth="120.0" promptText="Filter op graad">
+         <FlowPane.margin>
+            <Insets left="5.0" />
+         </FlowPane.margin>
+      </ComboBox>-->
+      <ComboBox fx:id="cboType" prefWidth="175.0" promptText="Filter op soort">
          <FlowPane.margin>
             <Insets left="5.0" />
          </FlowPane.margin>
       </ComboBox>
-           <Button fx:id="btnNew" mnemonicParsing="false" onAction="#newUser" prefHeight="31.0" prefWidth="175.0" text="Nieuwe gebruiker" textAlignment="CENTER">
+           <Button fx:id="btnNew" mnemonicParsing="false" onAction="#newUser" prefHeight="31.0" prefWidth="180.0" text="Nieuwe gebruiker" textAlignment="CENTER">
          <FlowPane.margin>
             <Insets left="14.0" />
          </FlowPane.margin>
       </Button>
-      <Button fx:id="btnDelete" alignment="CENTER" mnemonicParsing="false" onAction="#deleteUser" prefHeight="31.0" prefWidth="175.0" text="Verwijder" textFill="#eb1212">
+      <Button fx:id="btnDelete" alignment="CENTER" mnemonicParsing="false" onAction="#deleteUser" prefHeight="31.0" prefWidth="180.0" text="Verwijder" textFill="#eb1212">
          <FlowPane.margin>
             <Insets left="20.0" />
          </FlowPane.margin>

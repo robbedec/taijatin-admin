@@ -179,6 +179,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             txtType.setDisable(false);
             cbStatus.setSelected(this.activity.getStatus());
             cbStatus.setDisable(false);
+            sliderMax.setDisable(false);
             sliderMax.setBlockIncrement(1);
             sliderMax.setMin(0);
             sliderMax.setMax(dc.getAmountOfUsers());
@@ -215,6 +216,8 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
         cbStatus.setDisable(true);
         txtTotal.setDisable(true);
         txtInfo.setDisable(true);
+        sliderMax.setDisable(true);
+        txtSlider.setDisable(true);
         listViewNotRegistered.setDisable(true);
         listViewRegistered.setDisable(true);
     }

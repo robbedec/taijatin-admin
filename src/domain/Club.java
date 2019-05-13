@@ -1,5 +1,6 @@
 package domain;
 
+import gui.Grades;
 import gui.TypeOfActivity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,7 +45,7 @@ public class Club {
     private final Comparator<Activity> byStatus = Comparator.comparing(Activity::getStatus);
     private final Comparator<Activity> sortActivityOrder = byActivityType.thenComparing(byActivityName.thenComparing(byActivityType));
 
-    private final String[] typesOfUser = new String[]{ "Geen filter", "Member", "Teacher", "Admin" };
+    private final String[] typesOfUser = new String[]{ "Geen filter", "Lid", "Lesgever", "Beheerder" };
     private final String[] typesOfActivity = new String[]{"Geen filter", "Uitstap", "Stage" };
 
     public Club(){
@@ -69,12 +70,16 @@ public class Club {
         currentActivity = null;
     }
 
-    public void filterUsers(String userName, int index){
-        if(index == 0) {
+    public void filterUsers(String userName, int index1, int index2){
+        if(index1 == 0 && index2 == 0) {
             filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()));
+        } else if(index1 != 0 && index2 == 0){
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index1]));
+        } /*else if(index2 != 0 && index1 == 0){
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && Grade.valueOf(user.getGrade()).equals(...));
         } else {
-            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index]));
-        }
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index1]));
+        }*/
     }
 
     public ObservableList<User> getFilteredMembers() {
@@ -211,7 +216,7 @@ public class Club {
     }
 
     public boolean isFullActivity(){
-        return currentActivity.getNumberOfParticipants() > currentActivity.getMaxNumberOfParticipants();
+        return currentActivity.getNumberOfParticipants() > currentActivity.getMaxNumberOfParticipants() - 1;
     }
 
 
@@ -228,7 +233,7 @@ public class Club {
     public int getTotalRegistered(){
         int total = currentActivity.getRegisteredUsersByUserId().size();
         System.out.println(total);
-        currentActivity.setNumberOfParticipants(total + 1);
+        currentActivity.setNumberOfParticipants(total);
         return total;
     }
 
@@ -261,6 +266,7 @@ public class Club {
         Activity a = activity.toActivity();
         this.registeredUsersToActivityList.add(u);
         a.setRegisteredUsersByUserId(this.registeredUsersToActivityList);
+
         userRepo.insert(u);
     }
 }

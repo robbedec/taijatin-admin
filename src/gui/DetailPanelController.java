@@ -183,7 +183,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             txtBirthday.setDisable(false);
             txtRegistrationDate.setValue(user.getRegistrationdate().toLocalDate());
             txtRegistrationDate.setDisable(false);
-            txtType.setItems(FXCollections.observableArrayList("Member", "Teacher", "Admin"));
+            txtType.setItems(FXCollections.observableArrayList("Lid", "Lesgever", "Beheerder"));
             txtType.setValue(user.getType());
             txtType.setDisable(false);
             //This will show the correct gender for each user

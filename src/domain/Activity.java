@@ -62,6 +62,9 @@ public class Activity implements IActivity {
     }
 
     public void setName(String name) {
+        if(empty(name)){
+            throw new CRuntimeException("Naam van activiteit kan niet leeg zijn!");
+        }
         subject.firePropertyChange("name", this.name, name);
         this.name = name;
     }

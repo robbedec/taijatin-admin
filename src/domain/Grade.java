@@ -28,7 +28,7 @@ public enum Grade {
         this.value = value;
     }
 
-    public static String valueOf(int value) {
+    public static String valueOf(Integer value) {
         return Arrays.stream(values())
                 .filter(legNo -> legNo.value == value)
                 .findFirst().get().name();

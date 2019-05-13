@@ -21,8 +21,8 @@ public class DomainController {
         return club.getFilteredMembers();
     }
 
-    public void filterUsers(String userName, int index){
-        club.filterUsers(userName, index);
+    public void filterUsers(String userName, int index1, int index2){
+        club.filterUsers(userName, index1, index2);
     }
 
     public void setCurrentUser(UserDTO userDto) {

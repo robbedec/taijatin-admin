@@ -5,7 +5,7 @@ import java.util.Arrays;
 public enum Types {
     Geen_filter("Geen filter"),
     Lid("Lid"),
-    Leraar("Leraar"),
+    Leraar("Lesgever"),
     Beheerder("Beheerder");
 
     private String displayName;

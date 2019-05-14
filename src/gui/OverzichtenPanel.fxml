@@ -2,9 +2,15 @@
 
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
 
-<fx:root fx:id="flowpane" alignment="TOP_CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="200.0" prefWidth="1300.0" style="-fx-border-color: black;" type="FlowPane" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+
+<fx:root fx:id="vbTop" type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ComboBox fx:id="cboOverzichten" prefWidth="150.0" />
+      <FlowPane fx:id="flowpane" alignment="TOP_CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="200.0" prefWidth="1300.0" style="-fx-border-color: black;" vgap="10.0">
+         <children>
+            <ComboBox fx:id="cboOverzichten" prefWidth="150.0" />
+         </children>
+      </FlowPane>
    </children>
 </fx:root>

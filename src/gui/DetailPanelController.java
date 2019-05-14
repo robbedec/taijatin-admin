@@ -162,7 +162,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
         }
         if(this.user != null) {
             txtUsername.setText(user.getUserName());
-            if(this.user.getUserName() == null || this.user.getUserName().equals("") || this.user.getUserName().equals("gebruikersnaam")){
+            if(this.user.getUserName() == null || this.user.getUserName().equals("") || this.user.getUserName().equals("Gebruikersnaam")){
                 txtUsername.setEditable(true);
                 txtUsername.setDisable(false);
                 btnAdd.setVisible(true);

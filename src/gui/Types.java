@@ -3,7 +3,7 @@ package gui;
 import java.util.Arrays;
 
 public enum Types {
-    Geen_filter("Geen filter"),
+    Geen_filter("Type"),
     Lid("Lid"),
     Leraar("Lesgever"),
     Beheerder("Beheerder");

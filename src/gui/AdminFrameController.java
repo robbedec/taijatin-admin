@@ -1,7 +1,6 @@
 package gui;
 
 import domain.DomainController;
-import domain.Grade;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -11,7 +10,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AdminFrameController extends BorderPane {
@@ -43,7 +41,7 @@ public class AdminFrameController extends BorderPane {
         detailPanelController = new DetailPanelController(this.dc);
         dc.addPropertyChangeListener(detailPanelController);
 
-        activityOverviewPanelController = new ActivityOverviewPanelController(this.dc, Arrays.asList(TypeOfActivity.values()));
+        activityOverviewPanelController = new ActivityOverviewPanelController(this.dc, Arrays.asList(TypeOfActivity.values()), Arrays.asList(Status.values()));
 
         activityDetailPanelController = new ActivityDetailPanelController(this.dc);
         dc.addActivityPropertyChangeListener(activityDetailPanelController);

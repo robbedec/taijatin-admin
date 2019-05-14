@@ -28,7 +28,7 @@ public class Activity implements IActivity {
     public Activity(){}
 
     public Activity(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById, Collection<User> notRegisteredUsersByUserId, Collection<User> registeredUsersByUserId){
-        setName(name);
+        this.name = name;
         setInfo(info);
         setType(type);
         setMaxNumberOfParticipants(maxNumberOfParticipants);

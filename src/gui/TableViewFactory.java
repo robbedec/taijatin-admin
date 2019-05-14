@@ -44,15 +44,15 @@ public class TableViewFactory<T> {
         tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
 
         TableColumn<User, String> usernameCol = new TableColumn<>("Gebruikersnaam");
-        usernameCol.setPrefWidth(140);
+        usernameCol.setPrefWidth(135);
         usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
 
         TableColumn<User, String> gradeCol = new TableColumn<>("Graad");
         gradeCol.setPrefWidth(95);
-        gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grade.valueOf(cellData.getValue().getGrade())));
+        gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grades.valueOf(cellData.getValue().getGrade() + 1)));
 
         TableColumn<User, String> formulaCol = new TableColumn<>("Formule");
-        formulaCol.setPrefWidth(86);
+        formulaCol.setPrefWidth(76);
         formulaCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getFormulasByFormulaId() == null ? "" : cellData.getValue().getFormulasByFormulaId().getFormulaName()));
 
         TableColumn<User, String> typeCol = new TableColumn<>("Type");

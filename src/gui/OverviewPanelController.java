@@ -54,18 +54,18 @@ public class OverviewPanelController<T> extends FlowPane {
             throw new RuntimeException(ex);
         }
         enumInstances1.forEach(type -> cboType.getItems().add(type.toString()));
-        //enumInstances2.forEach(grade -> cboGrade.getItems().add(grade.toString()));
+        enumInstances2.forEach(grade -> cboGrade.getItems().add(grade.toString()));
         cboType.getSelectionModel().selectedItemProperty().addListener(x -> filter());
         cboType.getSelectionModel().select(0);
-        //cboGrade.getSelectionModel().selectedItemProperty().addListener(x -> filter());
-        //cboGrade.getSelectionModel().select(0);
+        cboGrade.getSelectionModel().selectedItemProperty().addListener(x -> filter());
+        cboGrade.getSelectionModel().select(0);
 
-        flowpane.getChildren().add(2, factory.getUserTableView());
+        flowpane.getChildren().add(3, factory.getUserTableView());
     }
 
     @FXML
     private void filter() {
-        dc.filterUsers(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex(), /*cboGrade.getSelectionModel().getSelectedIndex()*/ 0);
+        dc.filterUsers(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex(), cboGrade.getSelectionModel().getSelectedIndex());
     }
 
     @FXML

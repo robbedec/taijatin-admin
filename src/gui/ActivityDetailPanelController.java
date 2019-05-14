@@ -62,6 +62,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             int newType = types.indexOf(txtType.getValue());
             activity.setType(newType);
             activity.setInfo(txtInfo.getText());
+            activity.setStatus(cbStatus.isSelected());
             activity.setMaxNumberOfParticipants((int) sliderMax.getValue());
             int total = Integer.parseInt(txtTotal.getText());
             activity.setNumberOfParticipants(total);

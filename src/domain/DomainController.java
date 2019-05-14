@@ -76,8 +76,8 @@ public class DomainController {
         }
     }
 
-    public void filterActivities(String name, int index){
-        club.filterActivities(name, index);
+    public void filterActivities(String name, int index1, int index2){
+        club.filterActivities(name, index1, index2);
     }
 
     public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {

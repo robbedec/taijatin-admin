@@ -1,6 +1,7 @@
 package domain;
 
 import gui.Grades;
+import gui.Status;
 import gui.TypeOfActivity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,11 +76,11 @@ public class Club {
             filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()));
         } else if(index1 != 0 && index2 == 0){
             filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index1]));
-        } /*else if(index2 != 0 && index1 == 0){
-            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && Grade.valueOf(user.getGrade()).equals(...));
+        } else if(index2 != 0 && index1 == 0){
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getGrade().equals(index2 - 1));
         } else {
-            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index1]));
-        }*/
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index1]) && user.getGrade().equals(index2 - 1));
+        }
     }
 
     public ObservableList<User> getFilteredMembers() {
@@ -131,12 +132,18 @@ public class Club {
         return typesOfUser;
     }
 
-    public void filterActivities(String activityName, int index){
-        if(index == 0) {
+    public void filterActivities(String activityName, int index1, int index2){
+        if(index1 == 0 && index2 == 0) {
             filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()));
         }
+        else if(index1 != 0 && index2 == 0){
+            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) && TypeOfActivity.valueOf(activity.getType()).equals(typesOfActivity[index1]));
+        }
+        else if(index2 != 0 && index1 == 0){
+            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) && Status.valueOf(activity.getStatus()).equals(index2));
+        }
         else {
-            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) && TypeOfActivity.valueOf(activity.getType()).equals(typesOfActivity[index]));
+            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) && TypeOfActivity.valueOf(activity.getType()).equals(typesOfActivity[index1]) && Status.valueOf(activity.getStatus()).equals(index2));
         }
     }
 

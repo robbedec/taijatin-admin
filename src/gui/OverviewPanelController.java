@@ -28,7 +28,7 @@ public class OverviewPanelController<T> extends FlowPane {
     @FXML
     private TextField txtFilter;
     @FXML
-    private ComboBox cboType, cboOverzicht;
+    private ComboBox cboType, cboGrade, cboOverzicht;
     @FXML
     private Button btnNew, btnDelete;
 
@@ -40,7 +40,7 @@ public class OverviewPanelController<T> extends FlowPane {
     /**
      * @param dc
      */
-    public OverviewPanelController(DomainController dc, List<T> enumInstances) {
+    public OverviewPanelController(DomainController dc, List<T> enumInstances1, List<T> enumInstances2) {
         this.dc = dc;
         this.factory = new TableViewFactory(dc);
 
@@ -53,16 +53,19 @@ public class OverviewPanelController<T> extends FlowPane {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        enumInstances.forEach(type -> cboType.getItems().add(type.toString()));
+        enumInstances1.forEach(type -> cboType.getItems().add(type.toString()));
+        enumInstances2.forEach(grade -> cboGrade.getItems().add(grade.toString()));
         cboType.getSelectionModel().selectedItemProperty().addListener(x -> filter());
         cboType.getSelectionModel().select(0);
+        cboGrade.getSelectionModel().selectedItemProperty().addListener(x -> filter());
+        cboGrade.getSelectionModel().select(0);
 
-        flowpane.getChildren().add(2, factory.getUserTableView());
+        flowpane.getChildren().add(3, factory.getUserTableView());
     }
 
     @FXML
     private void filter() {
-        dc.filterUsers(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex());
+        dc.filterUsers(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex(), cboGrade.getSelectionModel().getSelectedIndex());
     }
 
     @FXML

@@ -21,8 +21,8 @@ public class DomainController {
         return club.getFilteredMembers();
     }
 
-    public void filterUsers(String userName, int index){
-        club.filterUsers(userName, index);
+    public void filterUsers(String userName, int index1, int index2){
+        club.filterUsers(userName, index1, index2);
     }
 
     public void setCurrentUser(UserDTO userDto) {
@@ -76,8 +76,8 @@ public class DomainController {
         }
     }
 
-    public void filterActivities(String name, int index){
-        club.filterActivities(name, index);
+    public void filterActivities(String name, int index1, int index2){
+        club.filterActivities(name, index1, index2);
     }
 
     public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {
@@ -149,4 +149,17 @@ public class DomainController {
         original.setNumberOfParticipants(dto.getNumberOfParticipants());
         original.setMaxNumberOfParticipants(dto.getMaxNumberOfParticipants());
     }
+
+    public void refrestNotRegisteredList(ActivityDTO aDto){
+        club.refreshNotRegisteredList(aDto);
+    }
+
+    public void addNoMember(ActivityDTO activity, User u) {
+        club.addNoMember(activity, u);
+    }
+
+    public boolean isFullActivity(){
+        return club.isFullActivity();
+    }
+
 }

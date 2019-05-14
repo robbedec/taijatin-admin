@@ -17,7 +17,7 @@ public class ActivityOverviewPanelController<T> extends FlowPane {
     @FXML
     private TextField txtFilter;
     @FXML
-    private ComboBox cboType, cboOverzicht;
+    private ComboBox cboType, cboOverzicht, cboStatus;
     @FXML
     private Button btnNew, btnDelete;
 
@@ -26,7 +26,7 @@ public class ActivityOverviewPanelController<T> extends FlowPane {
 
     private TableViewFactory tableViewFactory;
 
-    public ActivityOverviewPanelController(DomainController dc, List<T> enumInstances) {
+    public ActivityOverviewPanelController(DomainController dc, List<T> enumInstances1, List<T> enumInstances2) {
         this.dc = dc;
         this.tableViewFactory = new TableViewFactory(dc);
 
@@ -40,19 +40,20 @@ public class ActivityOverviewPanelController<T> extends FlowPane {
             throw new RuntimeException(ex);
         }
 
-        enumInstances.forEach(typeOfActivity -> cboType.getItems().add(typeOfActivity.toString()));
-        cboType.getSelectionModel().selectedItemProperty().addListener(x -> {
-            filter();
-        });
+        enumInstances1.forEach(typeOfActivity -> cboType.getItems().add(typeOfActivity.toString()));
+        enumInstances2.forEach(status -> cboStatus.getItems().add(status.toString()));
+        cboType.getSelectionModel().selectedItemProperty().addListener(x -> filter());
         cboType.getSelectionModel().select(0);
+        cboStatus.getSelectionModel().selectedItemProperty().addListener(x -> filter());
+        cboStatus.getSelectionModel().select(0);
 
-        flowpane.getChildren().add(2, tableViewFactory.getActityTableView());
+        flowpane.getChildren().add(3, tableViewFactory.getActityTableView());
 
     }
 
     @FXML
     private void filter() {
-        dc.filterActivities(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex());
+        dc.filterActivities(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex(), cboStatus.getSelectionModel().getSelectedIndex());
     }
 
     @FXML

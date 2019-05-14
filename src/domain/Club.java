@@ -1,5 +1,7 @@
 package domain;
 
+import gui.Grades;
+import gui.Status;
 import gui.TypeOfActivity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,17 +36,21 @@ public class Club {
     //Observable Lists to be able to register an user to an activity
     private ObservableList<User> registeredUsersToActivityList;
     private ObservableList<User> notRegisteredUsersToActivityList;
+    private FilteredList<User> filteredNotRegisteredUsers;
+    private SortedList<User> sortedNotRegisteredUserList;
 
     private final Comparator<User> byUsername = (p1,p2) -> p1.getUserName().compareToIgnoreCase(p2.getUserName());
     private final Comparator<User> byGrade = Comparator.comparing(User::getGrade);
     private final Comparator<User> sortOrder = byUsername.thenComparing(byGrade);
+    private final Comparator<User> byIsNoMember = Comparator.comparing(User::getIsNoMember);
+    private final Comparator<User> sortOrderInActivity = byUsername.thenComparing(byIsNoMember);
 
     private final Comparator<Activity> byActivityName = (p1,p2) -> p1.getName().compareToIgnoreCase(p2.getName());
     private final Comparator<Activity> byActivityType = Comparator.comparing(Activity::getType);
     private final Comparator<Activity> byStatus = Comparator.comparing(Activity::getStatus);
     private final Comparator<Activity> sortActivityOrder = byActivityType.thenComparing(byActivityName.thenComparing(byActivityType));
 
-    private final String[] typesOfUser = new String[]{ "Geen filter", "Member", "Teacher", "Admin" };
+    private final String[] typesOfUser = new String[]{ "Geen filter", "Lid", "Lesgever", "Beheerder" };
     private final String[] typesOfActivity = new String[]{"Geen filter", "Uitstap", "Stage" };
 
     public Club(){
@@ -52,7 +58,7 @@ public class Club {
         activityRepo = new ActivityDaoJpa();
         userList = FXCollections.observableArrayList();
         activityList = FXCollections.observableArrayList();
-        userRepo.getAll().forEach(user -> {
+        userRepo.getAllButNoMembers().forEach(user -> {
             userList.add(user);
         });
         activityRepo.getAll().forEach(activity -> {
@@ -69,11 +75,15 @@ public class Club {
         currentActivity = null;
     }
 
-    public void filterUsers(String userName, int index){
-        if(index == 0) {
+    public void filterUsers(String userName, int index1, int index2){
+        if(index1 == 0 && index2 == 0) {
             filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()));
+        } else if(index1 != 0 && index2 == 0){
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index1]));
+        } else if(index2 != 0 && index1 == 0){
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getGrade().equals(index2 - 1));
         } else {
-            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index]));
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index1]) && user.getGrade().equals(index2 - 1));
         }
     }
 
@@ -126,12 +136,18 @@ public class Club {
         return typesOfUser;
     }
 
-    public void filterActivities(String activityName, int index){
-        if(index == 0) {
+    public void filterActivities(String activityName, int index1, int index2){
+        if(index1 == 0 && index2 == 0) {
             filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()));
         }
+        else if(index1 != 0 && index2 == 0){
+            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) && TypeOfActivity.valueOf(activity.getType()).equals(typesOfActivity[index1]));
+        }
+        else if(index2 != 0 && index1 == 0){
+            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) && Status.valueOf(activity.getStatus()).equals(index2));
+        }
         else {
-            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) && TypeOfActivity.valueOf(activity.getType()).equals(typesOfActivity[index]));
+            filteredActivityList.setPredicate(activity -> activity.getName().toLowerCase().startsWith(activityName.toLowerCase()) && TypeOfActivity.valueOf(activity.getType()).equals(typesOfActivity[index1]) && Status.valueOf(activity.getStatus()).equals(index2));
         }
     }
 
@@ -182,7 +198,7 @@ public class Club {
     public void setActivityUserLists(ActivityDTO aDto){
         Activity a = aDto.toActivity();
         if (a.getNotRegisteredUsersByUserId().size() == 0 && a.getRegisteredUsersByUserId().size() == 0) {
-            this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userList);
+            this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAll());
         } else {
             this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(a.getNotRegisteredUsersByUserId());
         }
@@ -191,22 +207,32 @@ public class Club {
         this.registeredUsersToActivityList = FXCollections.observableArrayList(a.getRegisteredUsersByUserId());
         a.setRegisteredUsersByUserId(registeredUsersToActivityList);
         if(a.getUsersById() == null){
-            a.setUsersById(userList);
+            a.setUsersById(userRepo.getAll());
         }
     }
 
     public void register(int index) {
-        if(index >= 0 && index <= notRegisteredUsersToActivityList.size()) {
-            User user = notRegisteredUsersToActivityList.get(index);
-            notRegisteredUsersToActivityList.remove(user);
-            registeredUsersToActivityList.add(user);
-            currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
-            currentActivity.setRegisteredUsersByUserId(registeredUsersToActivityList);
+        if(index >= 0) {
+            if(!isFullActivity()) {
+                User user = notRegisteredUsersToActivityList.get(index);
+                notRegisteredUsersToActivityList.remove(user);
+                registeredUsersToActivityList.add(user);
+                currentActivity.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
+                currentActivity.setRegisteredUsersByUserId(registeredUsersToActivityList);
+            }
+            else {
+                System.out.println("Maximum aantal deelnemers voor deze activiteit is bereikt. Indien er zich leden uitschrijven, kan er weer plaats vrijkomen...");
+            }
         }
     }
 
+    public boolean isFullActivity(){
+        return currentActivity.getNumberOfParticipants() > currentActivity.getMaxNumberOfParticipants() - 1;
+    }
+
+
     public void undoRegister(int index) {
-        if(index >= 0 && index <= registeredUsersToActivityList.size()){
+        if(index >= 0){
             User user = registeredUsersToActivityList.get(index);
             registeredUsersToActivityList.remove(user);
             notRegisteredUsersToActivityList.add(user);
@@ -217,6 +243,7 @@ public class Club {
 
     public int getTotalRegistered(){
         int total = currentActivity.getRegisteredUsersByUserId().size();
+        System.out.println(total);
         currentActivity.setNumberOfParticipants(total);
         return total;
     }
@@ -232,5 +259,25 @@ public class Club {
 
     public int getAmountOfUsers() {
         return userList.size();
+    }
+
+    public void refreshNotRegisteredList(ActivityDTO aDto){
+        Activity a = aDto.toActivity();
+        this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAll());
+        this.notRegisteredUsersToActivityList.removeAll(this.registeredUsersToActivityList);
+        this.registeredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAll());
+        this.registeredUsersToActivityList.removeAll(this.notRegisteredUsersToActivityList);
+        System.out.println(this.notRegisteredUsersToActivityList);
+        a.setNotRegisteredUsersByUserId(this.notRegisteredUsersToActivityList);
+        a.setRegisteredUsersByUserId(this.registeredUsersToActivityList);
+        a.setUsersById(userRepo.getAll());
+    }
+
+    public void addNoMember(ActivityDTO activity, User u) {
+        Activity a = activity.toActivity();
+        this.registeredUsersToActivityList.add(u);
+        a.setRegisteredUsersByUserId(this.registeredUsersToActivityList);
+
+        userRepo.insert(u);
     }
 }

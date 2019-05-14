@@ -15,8 +15,10 @@ import java.util.regex.Pattern;
 @Entity
 @Table(name = "Users")
 @NamedQueries({
-        @NamedQuery(name = "Users.findAll", query = "SELECT b FROM User b"),
-        @NamedQuery(name = "Users.findByMail", query = "SELECT b FROM User b WHERE b.email = :email")
+        @NamedQuery(name = "Users.findAllButNoMembers", query = "SELECT b FROM User b WHERE b.isNoMember != true or b.isNoMember is null"),
+        @NamedQuery(name = "Users.findAll", query = "select b from User b"),
+        @NamedQuery(name = "Users.findByMail", query = "SELECT b FROM User b WHERE b.email = :email"),
+        @NamedQuery(name = "Users.findOnlyNoMembers", query = "select b from User b where b.isNoMember = true")
 })
 public class User implements IUser {
     @Id
@@ -41,8 +43,14 @@ public class User implements IUser {
     private String type;
     private Integer score;
     private Integer grade;
+    private Boolean isNoMember;
 
     public User() {  }
+
+    public User(String userName){
+        this.userName = userName;
+        setIdNoMember(true);
+    }
 
     public User(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Collection<Activity> activityById) {
         setUserName(userName);
@@ -72,6 +80,7 @@ public class User implements IUser {
         setFormulasById(formulasById);
         setActivityById(activityById);
         setAddressByAddressId(addressByAddressId);
+        setIdNoMember(false);
     }
 
     public UserDTO toUserDTO(User user) {
@@ -132,7 +141,7 @@ public class User implements IUser {
 
     public void setUserName(String userName) {
         if (empty(userName)) {
-            throw new CRuntimeException("Username can not be empty!");
+            throw new CRuntimeException("Gebruikersnaam kan niet leeg zijn!");
         }
         this.userName = userName;
     }
@@ -145,13 +154,13 @@ public class User implements IUser {
 
     public void setEmail(String email) {
         if(empty(email)) {
-            throw new CRuntimeException("Email can not be empty!");
+            throw new CRuntimeException("Email kan niet leeg zijn!");
         } else if (email.isEmpty() || email != null) {
             String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(email);
             if (!matcher.matches()) {
-                throw new CRuntimeException("Validation error in email.");
+                throw new CRuntimeException("Validatie error in email.");
             } else {
                 this.email = email;
             }
@@ -166,7 +175,7 @@ public class User implements IUser {
 
     public void setFirstname(String firstname) {
         if (empty(firstname)) {
-            throw new CRuntimeException("Firstname can not be empty!");
+            throw new CRuntimeException("Voornaam kan niet leeg zijn!");
         }
         subject.firePropertyChange("firstname", this.firstname, firstname);
         this.firstname = firstname;
@@ -180,7 +189,7 @@ public class User implements IUser {
 
     public void setLastname(String lastname) {
         if (empty(lastname)) {
-            throw new CRuntimeException("Lastname can not be empty!");
+            throw new CRuntimeException("Naam kan niet leeg zijn!");
         }
         this.lastname = lastname;
     }
@@ -196,7 +205,7 @@ public class User implements IUser {
 
     public void setGender(Integer gender) {
         if (gender == 0) {
-            throw new CRuntimeException("Gender can not be empty!");
+            throw new CRuntimeException("Geslacht kan niet leeg zijn!");
         }
         this.gender = gender;
     }
@@ -210,13 +219,13 @@ public class User implements IUser {
     public void setNationalInsuranceNumber(String nationalInsuranceNumber) {
         try {
             if(empty(nationalInsuranceNumber)) {
-                throw new CRuntimeException("National Insurance Number can not be empty!");
+                throw new CRuntimeException("Rijksregisternummer kan niet leeg zijn!");
             } else if (!nationalInsuranceNumber.isEmpty() || nationalInsuranceNumber != null) {
                 String regex = "^[0-9]{2}.[0-9]{2}.[0-9]{2}-[0-9]{3}.[0-9]{2}$"; // bv. 99.04.05-233.75
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(nationalInsuranceNumber);
                 if (!matcher.matches()) {
-                    throw new CRuntimeException("Validation error in national insurance number. Requires: fex. 99.04.05-233.75");
+                    throw new CRuntimeException("Validatie error in rijksregisternummer. Vereiste: vb. 99.04.05-233.75");
                 } else {
                     this.nationalInsuranceNumber = nationalInsuranceNumber;
                 }
@@ -244,7 +253,7 @@ public class User implements IUser {
 
     public void setBornIn(String bornIn) {
         if (empty(bornIn)) {
-            throw new CRuntimeException("Born in place can not be empty!");
+            throw new CRuntimeException("Geboorteplaats kan niet leeg zijn!");
         }
         this.bornIn = bornIn;
     }
@@ -267,7 +276,7 @@ public class User implements IUser {
 
     public void setMobilePhoneNumber(String mobilePhoneNumber) {
         if (empty(mobilePhoneNumber)) {
-            throw new CRuntimeException("Mobile phone number is required!");
+            throw new CRuntimeException("Gsmnummer is verplicht!");
         }
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
@@ -363,6 +372,18 @@ public class User implements IUser {
 
     public void setGrade(Integer grade) {
         this.grade = grade;
+    }
+
+    @Column(name = "IsNoMember")
+    public Boolean getIsNoMember(){
+        if(isNoMember == null){
+            return false;
+        }
+        return isNoMember;
+    }
+
+    public void setIdNoMember(boolean isNoMember){
+        this.isNoMember = isNoMember;
     }
 
     @Override

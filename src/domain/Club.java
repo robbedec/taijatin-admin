@@ -36,10 +36,14 @@ public class Club {
     //Observable Lists to be able to register an user to an activity
     private ObservableList<User> registeredUsersToActivityList;
     private ObservableList<User> notRegisteredUsersToActivityList;
+    private FilteredList<User> filteredNotRegisteredUsers;
+    private SortedList<User> sortedNotRegisteredUserList;
 
     private final Comparator<User> byUsername = (p1,p2) -> p1.getUserName().compareToIgnoreCase(p2.getUserName());
     private final Comparator<User> byGrade = Comparator.comparing(User::getGrade);
     private final Comparator<User> sortOrder = byUsername.thenComparing(byGrade);
+    private final Comparator<User> byIsNoMember = Comparator.comparing(User::getIsNoMember);
+    private final Comparator<User> sortOrderInActivity = byUsername.thenComparing(byIsNoMember);
 
     private final Comparator<Activity> byActivityName = (p1,p2) -> p1.getName().compareToIgnoreCase(p2.getName());
     private final Comparator<Activity> byActivityType = Comparator.comparing(Activity::getType);

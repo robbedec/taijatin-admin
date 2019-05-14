@@ -43,7 +43,7 @@ public class User implements IUser {
     private String type;
     private Integer score;
     private Integer grade;
-    private boolean isNoMember;
+    private Boolean isNoMember;
 
     public User() {  }
 
@@ -375,7 +375,10 @@ public class User implements IUser {
     }
 
     @Column(name = "IsNoMember")
-    public boolean getIsNoMember(){
+    public Boolean getIsNoMember(){
+        if(isNoMember == null){
+            return false;
+        }
         return isNoMember;
     }
 

@@ -46,13 +46,12 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             throw new RuntimeException(ex);
         }
 
-        listViewNotRegistered.setPlaceholder(new Label("Geen gebruikers meer gevonden"));
+        listViewNotRegistered.setPlaceholder(new Label("Geen (niet-)leden meer gevonden"));
         listViewRegistered.setPlaceholder(new Label("Geen gebruikers geregistreerd"));
         notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
         registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
         listViewNotRegistered.setItems(notRegisteredUsers);
         listViewRegistered.setItems(registeredUsers);
-
     }
 
     public void updateActivity() {

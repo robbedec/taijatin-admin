@@ -161,4 +161,5 @@ public class DomainController {
     public boolean isFullActivity(){
         return club.isFullActivity();
     }
+
 }

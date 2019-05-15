@@ -52,11 +52,17 @@ public class OverzichtenPanelController<T> extends VBox {
                     vbTop.getChildren().add(tableViewOverzicht);
                     break;
                 case 1:
+                    tableViewOverzicht = factory.getInschrijvingsTableView();
+                    clearScreen();
+                    vbTop.getChildren().add(tableViewOverzicht);
                     break;
                 case 2:
                     tableViewOverzicht = factory.getClubKamptioenschapTableView();
                     clearScreen();
                     vbTop.getChildren().add(1, tableViewOverzicht);
+                    break;
+                case 3:
+                    
                     break;
             }
         });

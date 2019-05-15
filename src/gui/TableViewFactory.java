@@ -93,17 +93,22 @@ public class TableViewFactory<T> {
         typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(TypeOfActivity.valueOf(cellData.getValue().getType())));
 
         TableColumn<Activity, String> statusCol = new TableColumn<>("Status");
-        statusCol.setPrefWidth(50);
+        statusCol.setPrefWidth(75);
         statusCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStatus() ? "Actief" : "Inactief"));
 
         TableColumn<Activity, String> numberCol = new TableColumn<>("Inschrijvingen");
-        numberCol.setPrefWidth(100);
+        numberCol.setPrefWidth(120);
         numberCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getNumberOfParticipants())));
+
+        TableColumn<Activity, String> infoCol = new TableColumn<>("Info");
+        typeCol.setPrefWidth(75);
+        typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getInfo()));
 
         tableView.getColumns().add((TableColumn<T, ?>) nameCol);
         tableView.getColumns().add((TableColumn<T, ?>) typeCol);
         tableView.getColumns().add((TableColumn<T, ?>) statusCol);
         tableView.getColumns().add((TableColumn<T, ?>) numberCol);
+        tableView.getColumns().add((TableColumn<T, ?>) infoCol);
 
         tableView.setItems((ObservableList)dc.getFilteredActivities());
         tableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
@@ -116,6 +121,28 @@ public class TableViewFactory<T> {
                 }
             }
         });
+        return tableView;
+    }
+
+   
+
+    public TableView<T> getInschrijvingsTableView() {
+        tableView = new TableView<>();
+        setBigSize();
+        tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
+
+        TableColumn<User, String> usernameCol = new TableColumn<>("Gerbuikersnaam");
+        usernameCol.setPrefWidth(200);
+        usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
+
+
+        TableColumn<User, String> registrationDateCol = new TableColumn<>("Inschrijvingsdatum");
+        registrationDateCol.setPrefWidth(200);
+        registrationDateCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getRegistrationdate())));
+
+        tableView.getColumns().addAll((TableColumn<T, ?>) usernameCol, (TableColumn<T, ?>) registrationDateCol);
+
+        tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getFilteredMembers().stream().sorted(Comparator.comparing(User::getRegistrationdate).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
         return tableView;
     }
 

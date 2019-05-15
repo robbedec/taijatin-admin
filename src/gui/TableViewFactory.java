@@ -124,6 +124,8 @@ public class TableViewFactory<T> {
         return tableView;
     }
 
+   
+
     public TableView<T> getInschrijvingsTableView() {
         tableView = new TableView<>();
         setBigSize();

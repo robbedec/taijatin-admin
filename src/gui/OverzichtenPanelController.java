@@ -61,6 +61,9 @@ public class OverzichtenPanelController<T> extends VBox {
                     clearScreen();
                     vbTop.getChildren().add(1, tableViewOverzicht);
                     break;
+                case 3:
+                    
+                    break;
             }
         });
         cboOverzichten.getSelectionModel().select(0);

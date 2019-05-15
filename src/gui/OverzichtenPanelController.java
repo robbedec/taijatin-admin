@@ -48,10 +48,11 @@ public class OverzichtenPanelController<T> extends FlowPane {
                     //tableViewOverzicht = factory.getClubKamptioenschapTableView();
                     break;
                 case 1:
-                    System.out.println("test 1");
-                    //tableViewOverzicht = factory.getClubKamptioenschapTableView();
+                    System.out.println("Inschrijvingen");
+                    flowpane.getChildren().add(1, factory.getInschrijvingsTableView());
                     break;
                 case 2:
+                    System.out.println("Klubkampioenschap");
                     flowpane.getChildren().add(1, factory.getClubKamptioenschapTableView());
                     break;
             }

@@ -118,6 +118,8 @@ public class TableViewFactory<T> {
     }
 
     public TableView<T> getClubKamptioenschapTableView(){
+        tableView.getItems().clear();
+        tableView.getColumns().clear();
         setBigSize();
         tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
 
@@ -132,6 +134,27 @@ public class TableViewFactory<T> {
         tableView.getColumns().addAll((TableColumn<T, ?>) usernameCol, (TableColumn<T, ?>) scoreCol);
 
         tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getFilteredMembers().stream().filter(x -> x.getScore() != null).sorted(Comparator.comparing(User::getScore).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
+        return tableView;
+    }
+
+    public TableView<T> getInschrijvingsTableView() {
+        tableView.getColumns().clear();
+        tableView.getColumns().clear();
+        setBigSize();
+        tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
+
+        TableColumn<User, String> usernameCol = new TableColumn<>("Gerbuikersnaam");
+        usernameCol.setPrefWidth(200);
+        usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
+
+
+        TableColumn<User, String> registrationDateCol = new TableColumn<>("Inschrijvingsdatum");
+        registrationDateCol.setPrefWidth(200);
+        registrationDateCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getRegistrationdate())));
+
+        tableView.getColumns().addAll((TableColumn<T, ?>) usernameCol, (TableColumn<T, ?>) registrationDateCol);
+
+        tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getFilteredMembers().stream().sorted(Comparator.comparing(User::getRegistrationdate).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
         return tableView;
     }
 }

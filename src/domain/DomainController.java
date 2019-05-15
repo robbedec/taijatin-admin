@@ -162,4 +162,7 @@ public class DomainController {
         return club.isFullActivity();
     }
 
+    public boolean isRegistered(String name) {
+        return club.isRegistered(name);
+    }
 }

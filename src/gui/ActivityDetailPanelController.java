@@ -135,9 +135,18 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             textInputDialog.setHeaderText("Geef een naam in");
             textInputDialog.setContentText("Naam");
             textInputDialog.showAndWait().ifPresent(name -> {
-                IUser u = new User(name);
-                dc.addNoMember(activity, (User) u);
-                setTotalRegistered();
+                if(!dc.isRegistered(name)){
+                    IUser u = new User(name);
+                    dc.addNoMember(activity, (User) u);
+                    setTotalRegistered();
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Reeds geregistreerde naam");
+                    alert.setContentText("Deze naam is reeds geregistreerd. Registreer een andere naam voor het niet-lid.");
+                    alert.showAndWait();
+                }
+
             });
         } else {
             showAlertFull();

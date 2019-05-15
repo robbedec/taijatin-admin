@@ -1,6 +1,5 @@
 package domain;
 
-import gui.Grades;
 import gui.Status;
 import gui.TypeOfActivity;
 import javafx.collections.FXCollections;
@@ -14,6 +13,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Club {
 
@@ -276,5 +276,12 @@ public class Club {
         this.registeredUsersToActivityList.add(u);
         a.setRegisteredUsersByUserId(this.registeredUsersToActivityList);
         userRepo.insert(u);
+    }
+
+    public boolean isRegistered(String name) {
+        List<String> namesInRegistered = new ArrayList<>();
+        registeredUsersToActivityList.forEach(user -> namesInRegistered.add(user.getUserName().toLowerCase()));
+        System.out.println(namesInRegistered.contains(name.toLowerCase()));
+        return namesInRegistered.contains(name.toLowerCase());
     }
 }

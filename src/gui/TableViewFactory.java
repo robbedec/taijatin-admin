@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import repository.ActivityDTO;
 import repository.UserDTO;
 
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -85,30 +86,31 @@ public class TableViewFactory<T> {
         tableView.setPlaceholder(new Label("Geen activiteiten gevonden"));
 
         TableColumn<Activity, String> nameCol = new TableColumn<>("Naam");
-        nameCol.setPrefWidth(175);
+        nameCol.setPrefWidth(150);
         nameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
 
         TableColumn<Activity, String> typeCol = new TableColumn<>("Type");
-        typeCol.setPrefWidth(75);
+        typeCol.setPrefWidth(60);
         typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(TypeOfActivity.valueOf(cellData.getValue().getType())));
 
         TableColumn<Activity, String> statusCol = new TableColumn<>("Status");
-        statusCol.setPrefWidth(75);
+        statusCol.setPrefWidth(60);
         statusCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStatus() ? "Actief" : "Inactief"));
 
-        TableColumn<Activity, String> numberCol = new TableColumn<>("Inschrijvingen");
-        numberCol.setPrefWidth(120);
-        numberCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getNumberOfParticipants())));
+        TableColumn<Activity, String> numberCol = new TableColumn<>("Is volzet?");
+        numberCol.setPrefWidth(140);
+        numberCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNumberOfParticipants() >= cellData.getValue().getMaxNumberOfParticipants() ? "Volzet" : "Nog " + String.valueOf(cellData.getValue().getMaxNumberOfParticipants() - cellData.getValue().getNumberOfParticipants()) + " plaatsen vrij"));
 
         TableColumn<Activity, String> infoCol = new TableColumn<>("Info");
-        typeCol.setPrefWidth(75);
-        typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getInfo()));
+        infoCol.setPrefWidth(400);
+        infoCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getInfo()));
 
         tableView.getColumns().add((TableColumn<T, ?>) nameCol);
         tableView.getColumns().add((TableColumn<T, ?>) typeCol);
         tableView.getColumns().add((TableColumn<T, ?>) statusCol);
         tableView.getColumns().add((TableColumn<T, ?>) numberCol);
         tableView.getColumns().add((TableColumn<T, ?>) infoCol);
+
 
         tableView.setItems((ObservableList)dc.getFilteredActivities());
         tableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {

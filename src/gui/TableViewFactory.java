@@ -93,17 +93,22 @@ public class TableViewFactory<T> {
         typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(TypeOfActivity.valueOf(cellData.getValue().getType())));
 
         TableColumn<Activity, String> statusCol = new TableColumn<>("Status");
-        statusCol.setPrefWidth(50);
+        statusCol.setPrefWidth(75);
         statusCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStatus() ? "Actief" : "Inactief"));
 
         TableColumn<Activity, String> numberCol = new TableColumn<>("Inschrijvingen");
-        numberCol.setPrefWidth(100);
+        numberCol.setPrefWidth(120);
         numberCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getNumberOfParticipants())));
+
+        TableColumn<Activity, String> infoCol = new TableColumn<>("Info");
+        typeCol.setPrefWidth(75);
+        typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getInfo()));
 
         tableView.getColumns().add((TableColumn<T, ?>) nameCol);
         tableView.getColumns().add((TableColumn<T, ?>) typeCol);
         tableView.getColumns().add((TableColumn<T, ?>) statusCol);
         tableView.getColumns().add((TableColumn<T, ?>) numberCol);
+        tableView.getColumns().add((TableColumn<T, ?>) infoCol);
 
         tableView.setItems((ObservableList)dc.getFilteredActivities());
         tableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {

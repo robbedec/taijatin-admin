@@ -131,6 +131,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             dc.updateUser();
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Succes", ButtonType.OK);
             alert.setTitle("De activiteit is succesvol opgeslagen.");
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.showAndWait().ifPresent(type -> {
                 if(type == ButtonType.OK){
                     dc.setCurrentUser(user);
@@ -140,7 +141,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
         } catch (CRuntimeException ex) {
             System.out.println("\nError updating/Creating user: " + ex.getMessage() + "\n");
             Alert error = new Alert(Alert.AlertType.ERROR, "Error updaten/creëren gebruiker: " + ex.getMessage(), ButtonType.OK);
-            error.setHeaderText("Validatie errors");
+            error.setHeaderText("Validatie error");
             error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             error.showAndWait();
         } catch (NullPointerException np) {

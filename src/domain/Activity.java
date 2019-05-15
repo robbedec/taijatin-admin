@@ -28,7 +28,7 @@ public class Activity implements IActivity {
     public Activity(){}
 
     public Activity(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById, Collection<User> notRegisteredUsersByUserId, Collection<User> registeredUsersByUserId){
-        this.name = name;
+        setName(name);
         setInfo(info);
         setType(type);
         setMaxNumberOfParticipants(maxNumberOfParticipants);
@@ -65,7 +65,6 @@ public class Activity implements IActivity {
         if(empty(name)){
             throw new CRuntimeException("Naam van activiteit kan niet leeg zijn!");
         }
-        subject.firePropertyChange("name", this.name, name);
         this.name = name;
     }
 

@@ -76,7 +76,7 @@ public class ActivityOverviewPanelController<T> extends FlowPane {
     @FXML
     public void newActivity(){
         ActivityDTO newActivity = new ActivityDTO();
-        newActivity.setName("");
+        newActivity.setName("Naam");
         newActivity.setInfo("");
         newActivity.setMaxNumberOfParticipants(10);
         newActivity.setStatus(false);

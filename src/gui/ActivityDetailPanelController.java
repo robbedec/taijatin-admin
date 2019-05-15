@@ -69,6 +69,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             dc.updateActivity();
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Succes", ButtonType.OK);
             alert.setTitle("De activiteit is succesvol opgeslagen.");
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.showAndWait().ifPresent(type -> {
                 if(type == ButtonType.OK){
                     disableAllFields();
@@ -76,9 +77,13 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             });
         } catch (CRuntimeException ex) {
             System.out.println("\nError updaten/creëren activiteit: " + ex.getMessage() + "\n");
+            Alert error = new Alert(Alert.AlertType.ERROR, "Error updaten/creëren activiteit: " + ex.getLocalizedMessage(), ButtonType.OK);
+            error.setHeaderText("Validatie error");
+            error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            error.showAndWait();
         } catch (NullPointerException np) {
-            System.out.println("\nNullPointerExceptoin: Geen velden ingevuld.\n");
-            Alert error = new Alert(Alert.AlertType.ERROR, "Vul alle velden in alstublieft.", ButtonType.OK);
+            System.out.println("\nNullPointerException: Geen velden ingevuld.\n");
+            Alert error = new Alert(Alert.AlertType.ERROR, "Controleer en vul alle velden in alstublieft.", ButtonType.OK);
             error.setHeaderText("Validatie errors");
             error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             error.showAndWait();
@@ -108,6 +113,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "", ButtonType.OK, ButtonType.NO);
         alert.setTitle("Maak registratie ongedaan");
         alert.setContentText("Bevestig of je gebruiker " + listViewRegistered.getSelectionModel().getSelectedItem().getUserName() + " terug wilt uitschrijven.");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait().ifPresent(type -> {
             if(type == ButtonType.OK){
                 int index = listViewRegistered.getSelectionModel().getSelectedIndex();
@@ -134,6 +140,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             textInputDialog.setTitle("Voeg een niet-lid toe");
             textInputDialog.setHeaderText("Geef een naam in");
             textInputDialog.setContentText("Naam");
+            textInputDialog.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             textInputDialog.showAndWait().ifPresent(name -> {
                 if(!dc.isRegistered(name)){
                     IUser u = new User(name);
@@ -146,7 +153,6 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
                     alert.setContentText("Deze naam is reeds geregistreerd. Registreer een andere naam voor het niet-lid.");
                     alert.showAndWait();
                 }
-
             });
         } else {
             showAlertFull();
@@ -166,7 +172,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             btnUndoRegister.setVisible(true);
             btnAddNoMember.setVisible(true);
             btnRefresh.setVisible(true);
-            if(this.activity.getName() == null || this.activity.getName().equals("")){
+            if(this.activity.getName() == null || this.activity.getName().equals("") || this.activity.getName().equals("Naam")){
                 txtName.setEditable(true);
                 btnAdd.setVisible(true);
                 btnSave.setVisible(false);
@@ -231,6 +237,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Volzet");
         alert.setContentText("Deze activiteit zit vol.");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
     }
 

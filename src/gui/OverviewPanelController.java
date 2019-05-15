@@ -63,7 +63,7 @@ public class OverviewPanelController<T> extends FlowPane {
 
     @FXML
     public void deleteUser(){
-        TableView<User> tableView = (TableView)flowpane.getChildren().get(2);
+        TableView<User> tableView = (TableView)flowpane.getChildren().get(3);
         int index = tableView.getSelectionModel().getSelectedIndex();
         System.out.println(index);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Ben je zeker dat je de gebruiker " + tableView.getSelectionModel().getSelectedItem().getUserName() + " wilt verwijderen?", ButtonType.OK, ButtonType.NO );

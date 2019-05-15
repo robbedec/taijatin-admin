@@ -58,7 +58,7 @@ public class ActivityOverviewPanelController<T> extends FlowPane {
 
     @FXML
     public void deleteActivity(){
-        TableView<Activity> tableView = (TableView)flowpane.getChildren().get(2);
+        TableView<Activity> tableView = (TableView)flowpane.getChildren().get(3);
         int index = tableView.getSelectionModel().getSelectedIndex();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Ben je zeker dat je de activiteit " + tableView.getSelectionModel().getSelectedItem().getName() + " wilt verwijderen?", ButtonType.OK, ButtonType.NO );
         alert.setTitle("Verwijder activiteit");

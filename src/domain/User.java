@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
         @NamedQuery(name = "Users.findAllButNoMembers", query = "SELECT b FROM User b WHERE b.isNoMember != true or b.isNoMember is null"),
         @NamedQuery(name = "Users.findAll", query = "select b from User b"),
         @NamedQuery(name = "Users.findByMail", query = "SELECT b FROM User b WHERE b.email = :email"),
-        @NamedQuery(name = "Users.findOnlyNoMembers", query = "select b from User b where b.isNoMember = true")
+        @NamedQuery(name = "Users.findAllAdmins", query = "select b from User b where b.type = 'Beheerder'")
 })
 public class User implements IUser {
     @Id

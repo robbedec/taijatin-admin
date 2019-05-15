@@ -187,7 +187,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             sliderMax.setDisable(false);
             sliderMax.setBlockIncrement(1);
             sliderMax.setMin(0);
-            sliderMax.setMax(dc.getAmountOfUsers());
+            sliderMax.setMax(40);
             sliderMax.setValue(this.activity.getMaxNumberOfParticipants());
             txtSlider.setText(String.valueOf(this.activity.getMaxNumberOfParticipants()));
             txtSlider.setDisable(false);

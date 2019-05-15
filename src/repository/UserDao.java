@@ -9,7 +9,7 @@ public interface UserDao extends GenericDao<User> {
     public List<User> getAllButNoMembers()
             throws EntityNotFoundException;
 
-    public List<User> getOnlyNoMembers()
+    public List<User> getAllAdmins()
             throws EntityNotFoundException;
 
     public List<User> getAll()

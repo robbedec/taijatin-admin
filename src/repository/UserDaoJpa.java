@@ -22,9 +22,9 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
     }
 
     @Override
-    public List<User> getOnlyNoMembers() throws EntityNotFoundException {
+    public List<User> getAllAdmins() throws EntityNotFoundException {
         try {
-            return entityManager.createNamedQuery("Users.findOnlyNoMembers", User.class)
+            return entityManager.createNamedQuery("Users.findAllAdmins", User.class)
                     .getResultList();
         } catch (NoResultException ex){
             throw new EntityNotFoundException();

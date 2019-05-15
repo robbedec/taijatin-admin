@@ -159,6 +159,7 @@ public class Club {
     public void setCurrentActivity(Activity activity){
         subjectActivity.firePropertyChange("activity", this.currentActivity, activity);
         this.currentActivity = activity;
+
     }
 
     public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {
@@ -199,16 +200,15 @@ public class Club {
         Activity a = aDto.toActivity();
         if (a.getNotRegisteredUsersByUserId().size() == 0 && a.getRegisteredUsersByUserId().size() == 0) {
             this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAllButNoMembers());
+            this.notRegisteredUsersToActivityList.removeAll(userRepo.getAllAdmins());
         } else {
             this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(a.getNotRegisteredUsersByUserId());
+            this.notRegisteredUsersToActivityList.removeAll(userRepo.getAllAdmins());
         }
         a.setNotRegisteredUsersByUserId(notRegisteredUsersToActivityList);
         System.out.println(notRegisteredUsersToActivityList);
         this.registeredUsersToActivityList = FXCollections.observableArrayList(a.getRegisteredUsersByUserId());
         a.setRegisteredUsersByUserId(registeredUsersToActivityList);
-        if(a.getUsersById() == null){
-            a.setUsersById(userRepo.getAll());
-        }
     }
 
     public void register(int index) {
@@ -265,6 +265,7 @@ public class Club {
         Activity a = aDto.toActivity();
         this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAllButNoMembers());
         this.notRegisteredUsersToActivityList.removeAll(this.registeredUsersToActivityList);
+        this.notRegisteredUsersToActivityList.removeAll(userRepo.getAllAdmins());
         System.out.println(this.notRegisteredUsersToActivityList);
         a.setNotRegisteredUsersByUserId(this.notRegisteredUsersToActivityList);
         a.setRegisteredUsersByUserId(this.registeredUsersToActivityList);

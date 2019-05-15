@@ -1,20 +1,14 @@
 package gui;
 
 import domain.*;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import repository.UserDTO;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -23,7 +17,6 @@ import java.util.*;
 public class OverviewPanelController<T> extends FlowPane {
 
     private final DomainController dc;
-    public final String[] overzichten = new String[]{ "Activiteiten", "Inschrijvingen", "Aanwezigheden", "Clubkampioenschap", "Raadplegingen lesmateriaal" };
 
     @FXML
     private TextField txtFilter;

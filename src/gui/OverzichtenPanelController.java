@@ -6,11 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.List;
 
-public class OverzichtenPanelController<T> extends FlowPane {
+public class OverzichtenPanelController<T> extends VBox {
 
     private DomainController dc;
     private TableViewFactory factory;
@@ -23,6 +24,9 @@ public class OverzichtenPanelController<T> extends FlowPane {
 
     @FXML
     private FlowPane flowpane;
+
+    @FXML
+    private VBox vbTop;
 
     public OverzichtenPanelController(DomainController dc, List<T> enumInstances) {
         this.dc = dc;
@@ -39,23 +43,28 @@ public class OverzichtenPanelController<T> extends FlowPane {
         }
 
         enumInstances.forEach(type -> cboOverzichten.getItems().add(type.toString()));
-        cboOverzichten.getSelectionModel().select(0);
 
         cboOverzichten.getSelectionModel().selectedItemProperty().addListener(x -> {
             switch (cboOverzichten.getSelectionModel().getSelectedIndex()) {
                 case 0:
-                    System.out.println("test 0");
-                    //tableViewOverzicht = factory.getClubKamptioenschapTableView();
+                    tableViewOverzicht = factory.getBigActivityTableView();
+                    clearScreen();
+                    vbTop.getChildren().add(tableViewOverzicht);
                     break;
                 case 1:
-                    System.out.println("test 1");
-                    //tableViewOverzicht = factory.getClubKamptioenschapTableView();
                     break;
                 case 2:
-                    flowpane.getChildren().add(1, factory.getClubKamptioenschapTableView());
+                    tableViewOverzicht = factory.getClubKamptioenschapTableView();
+                    clearScreen();
+                    vbTop.getChildren().add(1, tableViewOverzicht);
                     break;
             }
-            //this.flowpane.getChildren().add(2, tableViewOverzicht);
         });
+        cboOverzichten.getSelectionModel().select(0);
+    }
+
+    private void clearScreen() {
+        this.vbTop.getChildren().clear();
+        this.vbTop.getChildren().add(flowpane);
     }
 }

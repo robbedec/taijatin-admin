@@ -35,11 +35,12 @@ public class TableViewFactory<T> {
 
     private void setBigSize() {
         tableView.setPrefHeight(725);
-        tableView.setMaxWidth(400);
-        tableView.setPrefWidth(400);
+        tableView.setMaxWidth(1225);
+        tableView.setPrefWidth(1225);
     }
 
     public TableView<T> getUserTableView() {
+        tableView = new TableView<>();
         setSmallSize();
         tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
 
@@ -79,6 +80,7 @@ public class TableViewFactory<T> {
     }
 
     public TableView<T> getActityTableView() {
+        tableView = new TableView<>();
         setSmallSize();
         tableView.setPlaceholder(new Label("Geen activiteiten gevonden"));
 
@@ -118,6 +120,7 @@ public class TableViewFactory<T> {
     }
 
     public TableView<T> getClubKamptioenschapTableView(){
+        tableView = new TableView<>();
         setBigSize();
         tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
 
@@ -133,5 +136,11 @@ public class TableViewFactory<T> {
 
         tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getFilteredMembers().stream().filter(x -> x.getScore() != null).sorted(Comparator.comparing(User::getScore).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
         return tableView;
+    }
+
+    public TableView<T> getBigActivityTableView(){
+        TableView t = this.getActityTableView();
+        setBigSize();
+        return t;
     }
 }

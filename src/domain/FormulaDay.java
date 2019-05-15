@@ -1,20 +1,19 @@
 package domain;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
+@Table(name = "FormulaDay")
 public class FormulaDay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int formulaDayId;
     private int day;
-    //private Object startTime;
-    //private Object endTime;
-
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "formulaDayByFormulaDayId")
-    private Collection<FormulaFormulaDay> formulaFormulaDaysByFormulaDayId;
+    private Time startTime;
+    private Time endTime;
 
     @Column(name = "FormulaDayId")
     public int getFormulaDayId() {
@@ -34,27 +33,27 @@ public class FormulaDay {
     public void setDay(int day) {
         this.day = day;
     }
-/*
+
     @Basic
     @Column(name = "StartTime")
-    public Object getStartTime() {
+    public Time getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Object startTime) {
+    public void setStartTime(Time startTime) {
         this.startTime = startTime;
     }
 
     @Basic
     @Column(name = "EndTime")
-    public Object getEndTime() {
+    public Time getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Object endTime) {
+    public void setEndTime(Time endTime) {
         this.endTime = endTime;
     }
-*/
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,13 +68,5 @@ public class FormulaDay {
     @Override
     public int hashCode() {
         return Objects.hash(formulaDayId, day/*, startTime, endTime*/);
-    }
-
-    public Collection<FormulaFormulaDay> getFormulaFormulaDaysByFormulaDayId() {
-        return formulaFormulaDaysByFormulaDayId;
-    }
-
-    public void setFormulaFormulaDaysByFormulaDayId(Collection<FormulaFormulaDay> formulaFormulaDaysByFormulaDayId) {
-        this.formulaFormulaDaysByFormulaDayId = formulaFormulaDaysByFormulaDayId;
     }
 }

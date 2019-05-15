@@ -108,14 +108,6 @@ public class User implements IUser {
     @ManyToMany(mappedBy = "usersById")
     private Collection<Activity> activityById;
 
-  /*  @ManyToOne
-    @JoinColumn(name = "ActivityId", referencedColumnName = "Id")
-    private Activity registeredtoActivityByActivityId;
-
-    @ManyToOne
-    @JoinColumn(name = "ActivityId", referencedColumnName = "Id")
-    private Activity notRegisteredToActivityByActivityId;*/
-
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AddressId")
     private Address addressByAddressId;
@@ -472,22 +464,6 @@ public class User implements IUser {
     public void setAddressByAddressId(Address addressByAddressId) {
         this.addressByAddressId = addressByAddressId;
     }
-
-   /* public Activity getRegisteredtoActivityByActivityId() {
-        return registeredtoActivityByActivityId;
-    }
-
-    public void setRegisteredtoActivityByActivityId(Activity registeredtoActivityByActivityId) {
-        this.registeredtoActivityByActivityId = registeredtoActivityByActivityId;
-    }
-
-    public Activity getNotRegisteredToActivityByActivityId() {
-        return notRegisteredToActivityByActivityId;
-    }
-
-    public void setNotRegisteredToActivityByActivityId(Activity notRegisteredToActivityByActivityId) {
-        this.notRegisteredToActivityByActivityId = notRegisteredToActivityByActivityId;
-    }*/
 
     public Formula getFormulasByFormulaId() {
         if(formulasByFormulaId == null){

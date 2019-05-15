@@ -198,7 +198,7 @@ public class Club {
     public void setActivityUserLists(ActivityDTO aDto){
         Activity a = aDto.toActivity();
         if (a.getNotRegisteredUsersByUserId().size() == 0 && a.getRegisteredUsersByUserId().size() == 0) {
-            this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAll());
+            this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAllButNoMembers());
         } else {
             this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(a.getNotRegisteredUsersByUserId());
         }
@@ -263,10 +263,8 @@ public class Club {
 
     public void refreshNotRegisteredList(ActivityDTO aDto){
         Activity a = aDto.toActivity();
-        this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAll());
+        this.notRegisteredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAllButNoMembers());
         this.notRegisteredUsersToActivityList.removeAll(this.registeredUsersToActivityList);
-        this.registeredUsersToActivityList = FXCollections.observableArrayList(userRepo.getAll());
-        this.registeredUsersToActivityList.removeAll(this.notRegisteredUsersToActivityList);
         System.out.println(this.notRegisteredUsersToActivityList);
         a.setNotRegisteredUsersByUserId(this.notRegisteredUsersToActivityList);
         a.setRegisteredUsersByUserId(this.registeredUsersToActivityList);
@@ -277,7 +275,6 @@ public class Club {
         Activity a = activity.toActivity();
         this.registeredUsersToActivityList.add(u);
         a.setRegisteredUsersByUserId(this.registeredUsersToActivityList);
-
         userRepo.insert(u);
     }
 }

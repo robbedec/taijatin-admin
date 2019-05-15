@@ -69,7 +69,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             user.setLastname(txtLastname.getText());
             user.setEmail(txtEmail.getText());
             user.setBirthday(java.sql.Date.valueOf(txtBirthday.getValue()));
-            user.setBirthday(java.sql.Date.valueOf(txtRegistrationDate.getValue()));
+            user.setRegistrationdate(java.sql.Date.valueOf(txtRegistrationDate.getValue()));
             user.setType(txtType.getValue().toString());
             //Get the gender int back from the list of genders
             ObservableList genders = txtGender.getItems();

@@ -93,13 +93,11 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
 
     public void register(){
         int index = listViewNotRegistered.getSelectionModel().getSelectedIndex();
-        dc.register(index);
         if(!dc.isFullActivity()) {
+            dc.register(index);
             notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
-            registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
             setTotalRegistered();
             listViewNotRegistered.setItems(notRegisteredUsers);
-            listViewRegistered.setItems(registeredUsers);
         }
         else {
             showAlertFull();
@@ -115,10 +113,8 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
                 int index = listViewRegistered.getSelectionModel().getSelectedIndex();
                 dc.undoRegister(index);
                 notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
-                registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
                 setTotalRegistered();
                 listViewNotRegistered.setItems(notRegisteredUsers);
-                listViewRegistered.setItems(registeredUsers);
             }
             else {
                 System.out.println("Gebruiker " + listViewRegistered.getSelectionModel().getSelectedItem() + " is niet uitgeschreven.");
@@ -141,8 +137,8 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             textInputDialog.showAndWait().ifPresent(name -> {
                 IUser u = new User(name);
                 dc.addNoMember(activity, (User) u);
+                setTotalRegistered();
             });
-            setTotalRegistered();
         } else {
             showAlertFull();
         }
@@ -232,5 +228,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     private void setTotalRegistered(){
         int total = dc.getTotalRegistered();
         txtTotal.setText(String.valueOf(total));
+        registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
+        listViewRegistered.setItems(registeredUsers);
     }
 }

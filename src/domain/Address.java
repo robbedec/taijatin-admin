@@ -32,8 +32,8 @@ public class Address {
     @Basic
     @Column(name = "Country")
     public String getCountry() {
-        if(this.country == null)
-            return "";
+        if(this.country == null || this.country == "")
+            return "België";
         return country;
     }
 

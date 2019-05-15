@@ -5,7 +5,9 @@ import main.StartUpGUI;
 
 import javax.persistence.*;
 import java.awt.*;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -20,8 +22,11 @@ public class Formula {
     public Formula(){
     }
 
-    @OneToMany(mappedBy = "formulasByFormulaId", cascade = CascadeType.PERSIST)
-    private Collection<FormulaFormulaDay> formulaFormulaDaysByFormulaId;
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "Formula_FormulaDays",
+            joinColumns = {@JoinColumn(name = "FormulaDayId")},
+            inverseJoinColumns = {@JoinColumn(name = "FormulaId") })
+    private Collection<FormulaDay> formulaDaysByFormulaId;
 
     @ManyToOne
     @JoinColumn(name = "TeacherId")
@@ -64,51 +69,45 @@ public class Formula {
     }
 
     private void addFormulaDays(String formulaName){
-        formulaFormulaDaysByFormulaId = new ArrayList<>();
+        formulaDaysByFormulaId = new ArrayList<>();
+        Calendar cal = Calendar.getInstance();
         FormulaDay dinsdag = new FormulaDay();
-        dinsdag.setDay(1);
+        dinsdag.setDay(2);
+        dinsdag.setStartTime(Time.valueOf("18:00:00"));
+        dinsdag.setEndTime(Time.valueOf("20:00:00"));
         FormulaDay woensdag = new FormulaDay();
-        woensdag.setDay(2);
+        woensdag.setDay(3);
+        woensdag.setStartTime(Time.valueOf("14:00:00"));
+        woensdag.setEndTime(Time.valueOf("15:30:00"));
         FormulaDay donderdag = new FormulaDay();
-        donderdag.setDay(3);
+        donderdag.setDay(4);
+        donderdag.setStartTime(Time.valueOf("18:00:00"));
+        donderdag.setEndTime(Time.valueOf("20:00:00"));
         FormulaDay zaterdag = new FormulaDay();
-        zaterdag.setDay(5);
+        zaterdag.setDay(6);
+        zaterdag.setStartTime(Time.valueOf("10:00:00"));
+        zaterdag.setEndTime(Time.valueOf("11:30:00"));
         FormulaDay zondag = new FormulaDay();
-        zondag.setDay(6);
+        zondag.setDay(7);
+        zondag.setStartTime(Time.valueOf("11:00:00"));
+        zondag.setEndTime(Time.valueOf("12:30:00"));
+
         switch (formulaName){
             case "DI_DO":
-                FormulaFormulaDay di_dodinsdag = new FormulaFormulaDay();
-                di_dodinsdag.setFormulaDayByFormulaDayId(dinsdag);
-                FormulaFormulaDay di_dodonderdag = new FormulaFormulaDay();
-                di_dodonderdag.setFormulaDayByFormulaDayId(donderdag);
-                formulaFormulaDaysByFormulaId.add(di_dodinsdag);
-                formulaFormulaDaysByFormulaId.add(di_dodonderdag);
+                formulaDaysByFormulaId.add(dinsdag);
+                formulaDaysByFormulaId.add(donderdag);
             case "DI_ZA":
-                FormulaFormulaDay di_zadinsdag = new FormulaFormulaDay();
-                di_zadinsdag.setFormulaDayByFormulaDayId(dinsdag);
-                FormulaFormulaDay di_zazaterdag = new FormulaFormulaDay();
-                di_zazaterdag.setFormulaDayByFormulaDayId(zaterdag);
-                formulaFormulaDaysByFormulaId.add(di_zadinsdag);
-                formulaFormulaDaysByFormulaId.add(di_zadinsdag);
+                formulaDaysByFormulaId.add(dinsdag);
+                formulaDaysByFormulaId.add(zaterdag);
             case "WO_ZA":
-                FormulaFormulaDay wo_zawoensdag = new FormulaFormulaDay();
-                wo_zawoensdag.setFormulaDayByFormulaDayId(woensdag);
-                FormulaFormulaDay wo_zazaterdag = new FormulaFormulaDay();
-                wo_zazaterdag.setFormulaDayByFormulaDayId(zaterdag);
-                formulaFormulaDaysByFormulaId.add(wo_zawoensdag);
-                formulaFormulaDaysByFormulaId.add(wo_zazaterdag);
+                formulaDaysByFormulaId.add(woensdag);
+                formulaDaysByFormulaId.add(zaterdag);
             case "WO":
-                FormulaFormulaDay wowoensdag = new FormulaFormulaDay();
-                wowoensdag.setFormulaDayByFormulaDayId(woensdag);
-                formulaFormulaDaysByFormulaId.add(wowoensdag);
+                formulaDaysByFormulaId.add(woensdag);
             case "ZA":
-                FormulaFormulaDay zazaterdag = new FormulaFormulaDay();
-                zazaterdag.setFormulaDayByFormulaDayId(zaterdag);
-                formulaFormulaDaysByFormulaId.add(zazaterdag);
+                formulaDaysByFormulaId.add(zaterdag);
             case "ZO":
-                FormulaFormulaDay zozondag = new FormulaFormulaDay();
-                zozondag.setFormulaDayByFormulaDayId(zondag);
-                formulaFormulaDaysByFormulaId.add(zozondag);
+                formulaDaysByFormulaId.add(zondag);
             case "Geen":
                 default:
 
@@ -120,12 +119,12 @@ public class Formula {
         return Objects.hash(formulaId, formulaName);
     }
 
-    public Collection<FormulaFormulaDay> getFormulaFormulaDaysByFormulaId() {
-        return formulaFormulaDaysByFormulaId;
+    public Collection<FormulaDay> getFormulaDaysByFormulaId() {
+        return formulaDaysByFormulaId;
     }
 
-    public void setFormulaFormulaDaysByFormulaId(Collection<FormulaFormulaDay> formulaFormulaDaysByFormulaId) {
-        this.formulaFormulaDaysByFormulaId = formulaFormulaDaysByFormulaId;
+    public void setFormulaFormulaDaysByFormulaId(Collection<FormulaDay> formulaDaysByFormulaId) {
+        this.formulaDaysByFormulaId = formulaDaysByFormulaId;
     }
 
     public User getUsersByTeacherId() {

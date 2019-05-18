@@ -108,13 +108,16 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             user.setBornIn(txtBornIn.getText());
             Formula formula = user.getFormulasByFormulaId();
             if (!txtFormula.getValue().toString().equals(formula.getFormulaName())) {
-                System.out.println(txtFormula.getValue().toString());
-               formula.setFormulaName(txtFormula.getValue().toString());
-               dc.addFormulaDaysToFormula(txtFormula.getValue().toString());
+                    System.out.println(txtFormula.getValue().toString());
+                    formula.setFormulaName(txtFormula.getValue().toString());
+                    dc.addFormulaDaysToFormula(txtFormula.getValue().toString());
             }
-            if(!txtFormulaTeacher.getValue().toString().equals(formula.getUsersByTeacherId().getUserName())){
-                formula.setUsersByTeacherId(dc.getTeacherByUserName(txtFormulaTeacher.getValue().toString()));
+            if(formula.getUsersByTeacherId() != null) {
+                if (!txtFormulaTeacher.getValue().toString().equals(formula.getUsersByTeacherId().getUserName())) {
+                    formula.setUsersByTeacherId(dc.getTeacherByUserName(txtFormulaTeacher.getValue().toString()));
+                }
             }
+
             user.setFormulasByFormulaId(formula);
 
             dc.setCurrentUser(user);
@@ -135,7 +138,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             error.showAndWait();
         } catch (NullPointerException np) {
-            System.out.println("\nNullPointerExceptoin: no fields touched.\n" + np.getMessage());
+            System.out.println("\nNullPointerException: no fields touched.\n" + np.getMessage() + " " + user.getUserName());
             Alert error = new Alert(Alert.AlertType.ERROR, "Vul alle velden in alstublieft.", ButtonType.OK);
             error.setHeaderText("Validatie errors");
             error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);

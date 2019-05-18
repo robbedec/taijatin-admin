@@ -323,8 +323,14 @@ public class Club {
 
     private FormulaDay getFormulaDayOne(int day1){
         List<FormulaDay> formulaDays = new ArrayList<>(currentUser.getFormulasByFormulaId().getFormulaDaysByFormulaId());
-        FormulaDay formulaDay1 = formulaDays.get(0);
-        if(day1 != formulaDay1.getDay()){
+        FormulaDay formulaDay1;
+        if(formulaDays.size() != 0){
+            formulaDay1 = formulaDays.get(0);
+            if(day1 != formulaDay1.getDay()){
+                formulaDay1 = formulaDayRepo.getByDay(day1);
+            }
+        }
+        else {
             formulaDay1 = formulaDayRepo.getByDay(day1);
         }
         return formulaDay1;
@@ -332,8 +338,14 @@ public class Club {
 
     private FormulaDay getFormulaDayTwo(int day2){
         List<FormulaDay> formulaDays = new ArrayList<>(currentUser.getFormulasByFormulaId().getFormulaDaysByFormulaId());
-        FormulaDay formulaDay2 = formulaDays.get(1);
-        if(day2 != formulaDay2.getDay() && day2 != 0){
+        FormulaDay formulaDay2;
+        if(formulaDays.size() >= 2) {
+            formulaDay2 = formulaDays.get(1);
+            if (day2 != formulaDay2.getDay() && day2 != 0) {
+                formulaDay2 = formulaDayRepo.getByDay(day2);
+            }
+        }
+        else {
             formulaDay2 = formulaDayRepo.getByDay(day2);
         }
         return formulaDay2;

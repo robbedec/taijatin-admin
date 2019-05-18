@@ -172,4 +172,8 @@ public class DomainController {
     public boolean isRegistered(String name) {
         return club.isRegistered(name);
     }
+
+    public void addFormulaDaysToFormula(String formulaName){
+        club.addFormulaDaysToFormula(formulaName);
+    }
 }

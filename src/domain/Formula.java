@@ -1,8 +1,6 @@
 package domain;
 
 import javafx.util.converter.LocalTimeStringConverter;
-import repository.FormulaDayDao;
-import repository.FormulaDayDaoJpa;
 
 import javax.ejb.Local;
 import javax.persistence.*;
@@ -22,9 +20,9 @@ public class Formula {
     private int formulaId;
     private String formulaName;
 
-    private transient FormulaDayDao formulaRepo;
-
-    public Formula(){}
+    public Formula(){
+        formulaDaysByFormulaId = new ArrayList<>();
+    }
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "Formula_FormulaDays",
@@ -60,7 +58,6 @@ public class Formula {
 
     public void setFormulaName(String formulaName) {
         this.formulaName = formulaName;
-        addFormulaDays(formulaName);
     }
 
     @Override
@@ -70,31 +67,6 @@ public class Formula {
         Formula formulas = (Formula) o;
         return formulaId == formulas.formulaId &&
                 Objects.equals(formulaName, formulas.formulaName);
-    }
-
-    private void addFormulaDays(String formulaName){
-        formulaRepo = new FormulaDayDaoJpa();
-        formulaDaysByFormulaId = new ArrayList<>();
-        switch (formulaName){
-            case "DI_DO":
-                formulaDaysByFormulaId.add(getFormulaDay(2));
-                formulaDaysByFormulaId.add(getFormulaDay(4));
-            case "DI_ZA":
-                formulaDaysByFormulaId.add(getFormulaDay(2));
-                formulaDaysByFormulaId.add(getFormulaDay(6));
-            case "WO_ZA":
-                formulaDaysByFormulaId.add(getFormulaDay(3));
-                formulaDaysByFormulaId.add(getFormulaDay(6));
-            case "WO":
-                formulaDaysByFormulaId.add(getFormulaDay(3));
-            case "ZA":
-                formulaDaysByFormulaId.add(getFormulaDay(6));
-            case "ZO":
-                formulaDaysByFormulaId.add(getFormulaDay(7));
-            case "Geen":
-                default:
-
-        }
     }
 
     @Override
@@ -126,13 +98,5 @@ public class Formula {
         this.usersByFormulaId = usersByFormulaId;
     }
 
-
-    private FormulaDay getFormulaDay(int dagNr){
-        FormulaDay day = formulaRepo.getByDay(dagNr);
-         day.getDay();
-         day.getStartTime();
-         day.getEndTime();
-         return day;
-    }
 
 }

@@ -108,7 +108,9 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             user.setBornIn(txtBornIn.getText());
             Formula formula = user.getFormulasByFormulaId();
             if (!txtFormula.getValue().toString().equals(formula.getFormulaName())) {
-                formula.setFormulaName(txtFormula.getValue().toString());
+                System.out.println(txtFormula.getValue().toString());
+               formula.setFormulaName(txtFormula.getValue().toString());
+               dc.addFormulaDaysToFormula(txtFormula.getValue().toString());
             }
             if(!txtFormulaTeacher.getValue().toString().equals(formula.getUsersByTeacherId().getUserName())){
                 formula.setUsersByTeacherId(dc.getTeacherByUserName(txtFormulaTeacher.getValue().toString()));

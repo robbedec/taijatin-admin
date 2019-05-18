@@ -23,6 +23,7 @@ public class Club {
 
     private UserDao userRepo;
     private ActivityDao activityRepo;
+    private FormulaDayDao formulaDayRepo;
 
     private ObservableList<User> userList;
     private FilteredList<User> filteredList;
@@ -55,6 +56,7 @@ public class Club {
     public Club(){
         userRepo = new UserDaoJpa();
         activityRepo = new ActivityDaoJpa();
+        formulaDayRepo = new FormulaDayDayDaoJpa();
         userList = FXCollections.observableArrayList();
         activityList = FXCollections.observableArrayList();
         userRepo.getAllButNoMembers().forEach(user -> {
@@ -294,4 +296,47 @@ public class Club {
         System.out.println(namesInRegistered.contains(name.toLowerCase()));
         return namesInRegistered.contains(name.toLowerCase());
     }
+
+    public void addFormulaDaysToFormula(String formulaName){
+        Collection<FormulaDay> formulaDays = new ArrayList<>();
+        switch (formulaName){
+            case "DI_DO":
+                formulaDays.add(getFormulaDayOne(2));
+                formulaDays.add(getFormulaDayTwo(4));
+            case "DI_ZA":
+                formulaDays.add(getFormulaDayOne(2));
+                formulaDays.add(getFormulaDayTwo(6));
+            case "WO_ZA":
+                formulaDays.add(getFormulaDayOne(3));
+                formulaDays.add(getFormulaDayTwo(6));
+            case "WO":
+                formulaDays.add(getFormulaDayOne(3));
+            case "ZA":
+                formulaDays.add(getFormulaDayOne(6));
+            case "ZO":
+                formulaDays.add(getFormulaDayOne(7));
+            case "Geen":
+            default:
+        }
+        currentUser.getFormulasByFormulaId().setFormulaFormulaDaysByFormulaId(formulaDays);
+    }
+
+    private FormulaDay getFormulaDayOne(int day1){
+        List<FormulaDay> formulaDays = new ArrayList<>(currentUser.getFormulasByFormulaId().getFormulaDaysByFormulaId());
+        FormulaDay formulaDay1 = formulaDays.get(0);
+        if(day1 != formulaDay1.getDay()){
+            formulaDay1 = formulaDayRepo.getByDay(day1);
+        }
+        return formulaDay1;
+    }
+
+    private FormulaDay getFormulaDayTwo(int day2){
+        List<FormulaDay> formulaDays = new ArrayList<>(currentUser.getFormulasByFormulaId().getFormulaDaysByFormulaId());
+        FormulaDay formulaDay2 = formulaDays.get(1);
+        if(day2 != formulaDay2.getDay() && day2 != 0){
+            formulaDay2 = formulaDayRepo.getByDay(day2);
+        }
+        return formulaDay2;
+    }
+
 }

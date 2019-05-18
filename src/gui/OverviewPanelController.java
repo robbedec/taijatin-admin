@@ -95,10 +95,11 @@ public class OverviewPanelController<T> extends FlowPane {
 
         Formula defaultFormula = new Formula();
         defaultFormula.setFormulaName("");
+
         newUser.setBirthday(defaultBirthDay);
         newUser.setRegistrationdate(registrationDate);
         newUser.setGrade(1);
-        newUser.setType("Member");
+        newUser.setType("Lid");
         newUser.setAddressByAddressId(defaultAddress);
 
         newUser.setUserName("Gebruikersnaam");

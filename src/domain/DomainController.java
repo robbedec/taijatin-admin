@@ -6,7 +6,6 @@ import repository.ActivityDTO;
 import repository.UserDTO;
 
 import java.beans.PropertyChangeListener;
-import java.lang.reflect.Method;
 import java.util.Collection;
 
 public class DomainController {
@@ -57,6 +56,14 @@ public class DomainController {
 
     public String[] getTypesOfUser(){
         return club.getTypesOfUser();
+    }
+
+    public Collection<String> getTeacherNames(){
+        return club.getTeachers();
+    }
+
+    public User getTeacherByUserName(String userName){
+        return club.getTeacherByUserName(userName);
     }
 
     public Collection<Activity> getFilteredActivities() {

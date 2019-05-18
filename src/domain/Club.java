@@ -13,7 +13,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Club {
 
@@ -89,6 +88,16 @@ public class Club {
 
     public ObservableList<User> getFilteredMembers() {
         return sorderdList;
+    }
+
+    public Collection<String> getTeachers(){
+        Collection<String> teacherNames = new ArrayList<>();
+        userRepo.getAllTeachers().forEach(t -> teacherNames.add(t.getUserName()));
+        return teacherNames;
+    }
+
+    public User getTeacherByUserName(String userName){
+        return userRepo.getByUserName(userName);
     }
 
     public void setCurrentUser(User user){

@@ -1,14 +1,17 @@
 package domain;
 
-import javafx.collections.FXCollections;
-import main.StartUpGUI;
+import javafx.util.converter.LocalTimeStringConverter;
+import repository.FormulaDayDao;
+import repository.FormulaDayDaoJpa;
 
+import javax.ejb.Local;
 import javax.persistence.*;
-import java.awt.*;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -19,13 +22,14 @@ public class Formula {
     private int formulaId;
     private String formulaName;
 
-    public Formula(){
-    }
+    private transient FormulaDayDao formulaRepo;
+
+    public Formula(){}
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "Formula_FormulaDays",
-            joinColumns = {@JoinColumn(name = "FormulaDayId")},
-            inverseJoinColumns = {@JoinColumn(name = "FormulaId") })
+            joinColumns = {@JoinColumn(name = "FormulaId")},
+            inverseJoinColumns = {@JoinColumn(name = "FormulaDayId") })
     private Collection<FormulaDay> formulaDaysByFormulaId;
 
     @ManyToOne
@@ -55,8 +59,8 @@ public class Formula {
     }
 
     public void setFormulaName(String formulaName) {
-        addFormulaDays(formulaName);
         this.formulaName = formulaName;
+        addFormulaDays(formulaName);
     }
 
     @Override
@@ -69,45 +73,24 @@ public class Formula {
     }
 
     private void addFormulaDays(String formulaName){
+        formulaRepo = new FormulaDayDaoJpa();
         formulaDaysByFormulaId = new ArrayList<>();
-        Calendar cal = Calendar.getInstance();
-        FormulaDay dinsdag = new FormulaDay();
-        dinsdag.setDay(2);
-        dinsdag.setStartTime(Time.valueOf("18:00:00"));
-        dinsdag.setEndTime(Time.valueOf("20:00:00"));
-        FormulaDay woensdag = new FormulaDay();
-        woensdag.setDay(3);
-        woensdag.setStartTime(Time.valueOf("14:00:00"));
-        woensdag.setEndTime(Time.valueOf("15:30:00"));
-        FormulaDay donderdag = new FormulaDay();
-        donderdag.setDay(4);
-        donderdag.setStartTime(Time.valueOf("18:00:00"));
-        donderdag.setEndTime(Time.valueOf("20:00:00"));
-        FormulaDay zaterdag = new FormulaDay();
-        zaterdag.setDay(6);
-        zaterdag.setStartTime(Time.valueOf("10:00:00"));
-        zaterdag.setEndTime(Time.valueOf("11:30:00"));
-        FormulaDay zondag = new FormulaDay();
-        zondag.setDay(7);
-        zondag.setStartTime(Time.valueOf("11:00:00"));
-        zondag.setEndTime(Time.valueOf("12:30:00"));
-
         switch (formulaName){
             case "DI_DO":
-                formulaDaysByFormulaId.add(dinsdag);
-                formulaDaysByFormulaId.add(donderdag);
+                formulaDaysByFormulaId.add(getFormulaDay(2));
+                formulaDaysByFormulaId.add(getFormulaDay(4));
             case "DI_ZA":
-                formulaDaysByFormulaId.add(dinsdag);
-                formulaDaysByFormulaId.add(zaterdag);
+                formulaDaysByFormulaId.add(getFormulaDay(2));
+                formulaDaysByFormulaId.add(getFormulaDay(6));
             case "WO_ZA":
-                formulaDaysByFormulaId.add(woensdag);
-                formulaDaysByFormulaId.add(zaterdag);
+                formulaDaysByFormulaId.add(getFormulaDay(3));
+                formulaDaysByFormulaId.add(getFormulaDay(6));
             case "WO":
-                formulaDaysByFormulaId.add(woensdag);
+                formulaDaysByFormulaId.add(getFormulaDay(3));
             case "ZA":
-                formulaDaysByFormulaId.add(zaterdag);
+                formulaDaysByFormulaId.add(getFormulaDay(6));
             case "ZO":
-                formulaDaysByFormulaId.add(zondag);
+                formulaDaysByFormulaId.add(getFormulaDay(7));
             case "Geen":
                 default:
 
@@ -142,4 +125,14 @@ public class Formula {
     public void setUsersByFormulaId(Collection<User> usersByFormulaId) {
         this.usersByFormulaId = usersByFormulaId;
     }
+
+
+    private FormulaDay getFormulaDay(int dagNr){
+        FormulaDay day = formulaRepo.getByDay(dagNr);
+         day.getDay();
+         day.getStartTime();
+         day.getEndTime();
+         return day;
+    }
+
 }

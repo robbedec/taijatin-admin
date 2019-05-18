@@ -103,14 +103,10 @@ public class Address {
     @Basic
     @Column(name = "Bus")
     public String getBus() {
-        if(this.country == null)
-            return "";
         return bus;
     }
 
     public void setBus(String bus) {
-        if(this.bus == null)
-            this.bus = "";
         this.bus = bus;
     }
 

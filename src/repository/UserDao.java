@@ -12,9 +12,15 @@ public interface UserDao extends GenericDao<User> {
     public List<User> getAllAdmins()
             throws EntityNotFoundException;
 
+    public List<User> getAllTeachers()
+            throws EntityNotFoundException;
+
     public List<User> getAll()
             throws EntityNotFoundException;
 
     public User getByEmail(String email)
+        throws EntityNotFoundException;
+
+    public User getByUserName(String userName)
         throws EntityNotFoundException;
 }

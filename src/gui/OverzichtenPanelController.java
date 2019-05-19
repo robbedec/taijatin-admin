@@ -1,6 +1,8 @@
 package gui;
 
+import domain.Course;
 import domain.DomainController;
+import domain.ICourse;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
@@ -62,7 +64,9 @@ public class OverzichtenPanelController<T> extends VBox {
                     vbTop.getChildren().add(1, tableViewOverzicht);
                     break;
                 case 3:
-                    
+                    tableViewOverzicht = factory.getCourseTableView();
+                    clearScreen();
+                    vbTop.getChildren().add(tableViewOverzicht);
                     break;
             }
         });

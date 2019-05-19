@@ -24,6 +24,7 @@ public class Club {
     private UserDao userRepo;
     private ActivityDao activityRepo;
     private FormulaDayDao formulaDayRepo;
+    private CourseModuleDao courseModuleRepo;
 
     private ObservableList<User> userList;
     private FilteredList<User> filteredList;
@@ -32,6 +33,8 @@ public class Club {
     private ObservableList<Activity> activityList;
     private FilteredList<Activity> filteredActivityList;
     private SortedList<Activity> sortedActivityList;
+
+    private ObservableList<CourseModule> courseModules;
 
     //Observable Lists to be able to register an user to an activity
     private ObservableList<User> registeredUsersToActivityList;
@@ -57,13 +60,18 @@ public class Club {
         userRepo = new UserDaoJpa();
         activityRepo = new ActivityDaoJpa();
         formulaDayRepo = new FormulaDayDayDaoJpa();
+        courseModuleRepo = new CourseModuleDaoJpa();
         userList = FXCollections.observableArrayList();
         activityList = FXCollections.observableArrayList();
+        courseModules = FXCollections.observableArrayList();
         userRepo.getAllButNoMembers().forEach(user -> {
             userList.add(user);
         });
         activityRepo.getAll().forEach(activity -> {
             activityList.add(activity);
+        });
+        courseModuleRepo.getAll().forEach(cm -> {
+            courseModules.add(cm);
         });
         filteredList = new FilteredList<>(userList, p -> true);
         filteredActivityList = new FilteredList<>(activityList, p -> true);
@@ -90,6 +98,7 @@ public class Club {
 
     public ObservableList<User> getLeden() { return userList; }
     public ObservableList<Activity> getActivities() { return activityList;}
+
 
     public ObservableList<User> getFilteredMembers() {
         return sorderdList;
@@ -168,6 +177,9 @@ public class Club {
     public Collection<Activity> getFilteredActivities() {
         return sortedActivityList;
     }
+
+    public Collection<CourseModule> getCourseModules() { return  courseModules; }
+
 
 
     public void setCurrentActivity(Activity activity){

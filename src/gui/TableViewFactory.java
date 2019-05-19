@@ -126,7 +126,36 @@ public class TableViewFactory<T> {
         return tableView;
     }
 
-   
+    public TableView<T> getCourseTableView() {
+        tableView = new TableView<>();
+        setBigSize();
+        tableView.setPlaceholder(new Label("Geen lesmateriaal gevonden"));
+
+        TableColumn<CourseModule, String> nameCol = new TableColumn<>("Naam");
+        nameCol.setPrefWidth(250);
+        nameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
+
+        TableColumn<CourseModule, String> linkCol = new TableColumn<>("Link");
+        linkCol.setPrefWidth(350);
+        linkCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUrl()));
+
+        TableColumn<CourseModule, String> imageCol = new TableColumn<>("Afbeeldingslink");
+        imageCol.setPrefWidth(350);
+        imageCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getImageUrl()));
+
+        TableColumn<CourseModule, String> infoCol = new TableColumn<>("Info");
+        infoCol.setPrefWidth(150);
+        infoCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getText()));
+
+
+        tableView.getColumns().add((TableColumn<T, ?>) nameCol);
+        tableView.getColumns().add((TableColumn<T, ?>) linkCol);
+        tableView.getColumns().add((TableColumn<T, ?>) imageCol);
+        tableView.getColumns().add((TableColumn<T, ?>) infoCol);
+
+        tableView.setItems((ObservableList)dc.getCourseModules());
+        return tableView;
+    }
 
     public TableView<T> getInschrijvingsTableView() {
         tableView = new TableView<>();

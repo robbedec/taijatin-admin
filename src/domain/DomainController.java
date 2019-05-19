@@ -78,6 +78,8 @@ public class DomainController {
         return club.getFilteredActivities();
     }
 
+    public Collection<CourseModule> getCourseModules() { return club.getCourseModules(); }
+
     public void setCurrentActivity(ActivityDTO activityDto){
         try {
             // Activity bestaat

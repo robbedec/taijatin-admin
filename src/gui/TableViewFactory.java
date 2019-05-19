@@ -171,6 +171,13 @@ public class TableViewFactory<T> {
 
     public TableView<T> getBigActivityTableView(){
         TableView t = this.getActityTableView();
+
+        TableColumn<Activity, String> participants = new TableColumn<>("Aantal deelnemers");
+        participants.setPrefWidth(200);
+        participants.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getRegisteredUsersByUserId().size())));
+
+        t.getColumns().add((TableColumn<T, ?>) participants);
+
         t.setItems(dc.getUnfilteredActivities());
         setBigSize();
         return t;

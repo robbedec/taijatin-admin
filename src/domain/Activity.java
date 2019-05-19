@@ -27,20 +27,19 @@ public class Activity implements IActivity {
 
     public Activity(){}
 
-    public Activity(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById, Collection<User> notRegisteredUsersByUserId, Collection<User> registeredUsersByUserId){
+    public Activity(String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> notRegisteredUsersByUserId, Collection<User> registeredUsersByUserId){
         setName(name);
         setInfo(info);
         setType(type);
         setMaxNumberOfParticipants(maxNumberOfParticipants);
         setNumberOfParticipants(numberOfParticipants);
         setStatus(status);
-        setUsersById(usersById);
         setNotRegisteredUsersByUserId(notRegisteredUsersByUserId);
         setRegisteredUsersByUserId(registeredUsersByUserId);
     }
 
     public ActivityDTO toActivityDTO(Activity activity){
-        return new ActivityDTO(activity.id, activity.getName(), activity.getInfo(), activity.getType(), activity.getMaxNumberOfParticipants(), activity.getNumberOfParticipants(), activity.getStatus(), activity.getUsersById(), activity.getNotRegisteredUsersByUserId(), activity.getRegisteredUsersByUserId());
+        return new ActivityDTO(activity.id, activity.getName(), activity.getInfo(), activity.getType(), activity.getMaxNumberOfParticipants(), activity.getNumberOfParticipants(), activity.getStatus(), activity.getNotRegisteredUsersByUserId(), activity.getRegisteredUsersByUserId());
     }
 
     @Transient
@@ -120,15 +119,6 @@ public class Activity implements IActivity {
         this.status = status;
     }
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "Activity_User",
-        joinColumns = {@JoinColumn(name = "fk_activity")},
-        inverseJoinColumns = {@JoinColumn(name = "fk_user") })
-    private Collection<User> usersById;
-
     @ManyToMany
     @JoinTable(name = "Activity_User",
             joinColumns = {@JoinColumn(name = "fk_registeredToActivity")},
@@ -163,14 +153,6 @@ public class Activity implements IActivity {
         return this.name;
     }
 
-    public Collection<User> getUsersById() {
-        return usersById;
-    }
-
-    public void setUsersById(Collection<User> usersById) {
-        this.usersById = usersById;
-    }
-
     public Collection<User> getRegisteredUsersByUserId() {
         return registeredUsersByUserId == null ? new ArrayList<>() : registeredUsersByUserId;
     }
@@ -185,16 +167,6 @@ public class Activity implements IActivity {
 
     public void setNotRegisteredUsersByUserId(Collection<User> notRegisteredUsersByUserId) {
         this.notRegisteredUsersByUserId = notRegisteredUsersByUserId;
-    }
-
-    public void addRegisteredUser(User user){
-        this.getRegisteredUsersByUserId().add(user);
-        this.getNotRegisteredUsersByUserId().remove(user);
-    }
-
-    public void deleteRegisteredUser(User user){
-        this.getRegisteredUsersByUserId().add(user);
-        this.getNotRegisteredUsersByUserId().remove(user);
     }
 
     private boolean empty(String string) {

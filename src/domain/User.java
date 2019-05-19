@@ -54,7 +54,7 @@ public class User implements IUser {
         setIdNoMember(true);
     }
 
-    public User(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Collection<Activity> activityById) {
+    public User(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId) {
         setUserName(userName);
         setEmail(email);
         setFirstname(firstname);
@@ -80,13 +80,12 @@ public class User implements IUser {
         setCourseModuleViewersById(courseModuleViewersById);
         setFormulasByFormulaId(formulasByFormulaId);
         setFormulasById(formulasById);
-        setActivityById(activityById);
         setAddressByAddressId(addressByAddressId);
         setIdNoMember(false);
     }
 
     public UserDTO toUserDTO(User user) {
-        return new UserDTO(user.id, user.getUserName(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getGender(), user.getNationalInsuranceNumber(), user.getRegistrationdate(), user.getBornIn(), user.getBirthday(), user.getMobilePhoneNumber(), user.getPhoneNumber(), user.getEmailParent(), user.isAgreeWithBylaws(), user.isAgreeWithPicturesAndAudio(), user.isReceiveClubinfo(), user.isReceiveInfoAboutPromotionsAndFederalMatters(), user.getType(), user.getScore(), user.getGrade(), user.getAttendancesById(), user.getCommentRepliesById(), user.getCommentsById(), user.getCourseModuleViewersById(), user.getFormulasById(), user.getAddressByAddressId(), user.getFormulasByFormulaId(), user.getActivityById());
+        return new UserDTO(user.id, user.getUserName(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getGender(), user.getNationalInsuranceNumber(), user.getRegistrationdate(), user.getBornIn(), user.getBirthday(), user.getMobilePhoneNumber(), user.getPhoneNumber(), user.getEmailParent(), user.isAgreeWithBylaws(), user.isAgreeWithPicturesAndAudio(), user.isReceiveClubinfo(), user.isReceiveInfoAboutPromotionsAndFederalMatters(), user.getType(), user.getScore(), user.getGrade(), user.getAttendancesById(), user.getCommentRepliesById(), user.getCommentsById(), user.getCourseModuleViewersById(), user.getFormulasById(), user.getAddressByAddressId(), user.getFormulasByFormulaId());
     }
 
     @Transient
@@ -106,9 +105,6 @@ public class User implements IUser {
 
     @OneToMany(mappedBy = "usersByTeacherId", cascade = CascadeType.PERSIST)
     private Collection<Formula> formulasById;
-
-    @ManyToMany(mappedBy = "usersById")
-    private Collection<Activity> activityById;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AddressId")
@@ -410,12 +406,6 @@ public class User implements IUser {
     @Override
     public int hashCode() {
         return Objects.hash(id, userName, email, firstname, lastname, gender, nationalInsuranceNumber, registrationdate, bornIn, birthday, mobilePhoneNumber, phoneNumber, emailParent, agreeWithBylaws, agreeWithPicturesAndAudio, receiveClubinfo, receiveInfoAboutPromotionsAndFederalMatters, type, score, grade);
-    }
-
-    public Collection<Activity> getActivityById(){ return activityById; }
-
-    public void setActivityById(Collection<Activity> activityById){
-        this.activityById = activityById;
     }
 
     public Collection<Attendance> getAttendancesById() {

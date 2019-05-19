@@ -20,7 +20,7 @@ public class ActivityDTO {
     public ActivityDTO() {
     }
 
-    public ActivityDTO(int id, String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> usersById, Collection<User> notRegisteredUsers, Collection<User> registeredUsers) {
+    public ActivityDTO(int id, String name, String info, Integer type, int maxNumberOfParticipants, int numberOfParticipants, boolean status, Collection<User> notRegisteredUsers, Collection<User> registeredUsers) {
         this.id = id;
         setName(name);
         setInfo(info);
@@ -34,7 +34,7 @@ public class ActivityDTO {
     }
 
     public Activity toActivity(){
-        return new Activity(this.getName(), this.getInfo(), this.getType(), this.getMaxNumberOfParticipants(), this.getNumberOfParticipants(), this.getStatus(), this.getUsersById(), this.getNotRegisteredUsers(), this.getRegisteredUsers());
+        return new Activity(this.getName(), this.getInfo(), this.getType(), this.getMaxNumberOfParticipants(), this.getNumberOfParticipants(), this.getStatus(), this.getNotRegisteredUsers(), this.getRegisteredUsers());
     }
 
     public String getName() {

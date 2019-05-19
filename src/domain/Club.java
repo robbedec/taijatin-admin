@@ -142,7 +142,7 @@ public class Club {
             User u = userRepo.getByEmail(email);
             return u;
         } catch (EntityNotFoundException ex) {
-            throw new CRuntimeException("User with email: " + email + " not found!");
+            throw new CRuntimeException("Gebruiker met email: " + email + " niet gevonden...");
         }
     }
 
@@ -283,7 +283,6 @@ public class Club {
         System.out.println(this.notRegisteredUsersToActivityList);
         a.setNotRegisteredUsersByUserId(this.notRegisteredUsersToActivityList);
         a.setRegisteredUsersByUserId(this.registeredUsersToActivityList);
-        a.setUsersById(userRepo.getAll());
     }
 
     public void addNoMember(ActivityDTO activity, User u) {

@@ -88,6 +88,9 @@ public class Club {
         }
     }
 
+    public ObservableList<User> getLeden() { return userList; }
+    public ObservableList<Activity> getActivities() { return activityList;}
+
     public ObservableList<User> getFilteredMembers() {
         return sorderdList;
     }

@@ -144,7 +144,7 @@ public class TableViewFactory<T> {
 
         tableView.getColumns().addAll((TableColumn<T, ?>) usernameCol, (TableColumn<T, ?>) registrationDateCol);
 
-        tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getFilteredMembers().stream().sorted(Comparator.comparing(User::getRegistrationdate).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
+        tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getUnfilteredMembers().stream().sorted(Comparator.comparing(User::getRegistrationdate).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
         return tableView;
     }
 
@@ -163,12 +163,15 @@ public class TableViewFactory<T> {
 
         tableView.getColumns().addAll((TableColumn<T, ?>) usernameCol, (TableColumn<T, ?>) scoreCol);
 
-        tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getFilteredMembers().stream().filter(x -> x.getScore() != null).sorted(Comparator.comparing(User::getScore).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
+        //tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getFilteredMembers().stream().filter(x -> x.getScore() != null).sorted(Comparator.comparing(User::getScore).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
+        tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getUnfilteredMembers().stream().filter(x -> x.getScore() != null).sorted(Comparator.comparing(User::getScore).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
+
         return tableView;
     }
 
     public TableView<T> getBigActivityTableView(){
         TableView t = this.getActityTableView();
+        t.setItems(dc.getUnfilteredActivities());
         setBigSize();
         return t;
     }

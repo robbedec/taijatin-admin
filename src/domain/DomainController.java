@@ -20,6 +20,14 @@ public class DomainController {
         return club.getFilteredMembers();
     }
 
+    public ObservableList<User> getUnfilteredMembers() {
+        return club.getLeden();
+    }
+
+    public ObservableList<Activity> getUnfilteredActivities() {
+        return club.getActivities();
+    }
+
     public void filterUsers(String userName, int index1, int index2){
         club.filterUsers(userName, index1, index2);
     }

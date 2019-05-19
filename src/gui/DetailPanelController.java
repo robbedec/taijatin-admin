@@ -109,6 +109,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             }
             user.setAddressByAddressId(address);
             user.setBornIn(txtBornIn.getText());
+
             Formula formula = user.getFormulasByFormulaId();
             if (!txtFormula.getValue().toString().equals(formula.getFormulaName())) {
                     System.out.println(txtFormula.getValue().toString());
@@ -117,10 +118,17 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             }
             if(formula.getUsersByTeacherId() != null) {
                 if (!txtFormulaTeacher.getValue().toString().equals(formula.getUsersByTeacherId().getUserName())) {
-                    formula.setUsersByTeacherId(dc.getTeacherByUserName(txtFormulaTeacher.getValue().toString()));
+                    if (!txtFormulaTeacher.getValue().toString().equals("Geen")) {
+                        formula.setUsersByTeacherId(dc.getTeacherByUserName(txtFormulaTeacher.getValue().toString()));
+                    }
+                    else {
+                        formula.setUsersByTeacherId(null);
+                    }
                 }
             }
-
+            else {
+                formula.setUsersByTeacherId(dc.getTeacherByUserName(txtFormulaTeacher.getValue().toString()));
+            }
             user.setFormulasByFormulaId(formula);
 
             dc.setCurrentUser(user);

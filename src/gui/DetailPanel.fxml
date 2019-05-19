@@ -66,14 +66,14 @@
                   <GridPane.margin>
                      <Insets bottom="15.0" />
                   </GridPane.margin></Button>
-               <Label text="Graad" GridPane.columnIndex="1" GridPane.rowIndex="17">
+               <Label text="Graad*" GridPane.columnIndex="1" GridPane.rowIndex="17">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
                   <GridPane.margin>
                      <Insets left="20.0" />
                   </GridPane.margin></Label>
-               <Label text="Email" GridPane.columnIndex="1">
+               <Label text="Email*" GridPane.columnIndex="1">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -81,7 +81,7 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label text="Voornaam" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <Label text="Voornaam*" GridPane.columnIndex="1" GridPane.rowIndex="2">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -89,7 +89,7 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label text="Naam" GridPane.rowIndex="2">
+               <Label text="Naam*" GridPane.rowIndex="2">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -97,7 +97,7 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label text="Geboortedatum" GridPane.rowIndex="4">
+               <Label text="Geboortedatum*" GridPane.rowIndex="4">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -105,7 +105,7 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label text="Geslacht" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <Label text="Geslacht*" GridPane.columnIndex="1" GridPane.rowIndex="4">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -113,7 +113,7 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label text="Type" GridPane.columnIndex="1" GridPane.rowIndex="19">
+               <Label text="Type*" GridPane.columnIndex="1" GridPane.rowIndex="19">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -121,7 +121,7 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label text="Gebruikersnaam">
+               <Label text="Gebruikersnaam*">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -129,7 +129,7 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label text="Inschrijvingsdatum" GridPane.rowIndex="17">
+               <Label text="Inschrijvingsdatum*" GridPane.rowIndex="17">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -166,7 +166,7 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-               <Label layoutX="30.0" layoutY="361.0" text="Gsm-nummer" GridPane.rowIndex="8">
+               <Label layoutX="30.0" layoutY="361.0" text="Gsm-nummer*" GridPane.rowIndex="8">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -174,7 +174,7 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label text="Rijksregisternummer" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <Label text="Rijksregisternummer*" GridPane.columnIndex="1" GridPane.rowIndex="6">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -200,7 +200,7 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-               <Label text="Woonplaats" GridPane.columnIndex="1" GridPane.rowIndex="10">
+               <Label text="Woonplaats*" GridPane.columnIndex="1" GridPane.rowIndex="10">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -213,7 +213,7 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-               <Label text="Straat" GridPane.columnIndex="1" GridPane.rowIndex="12">
+               <Label text="Straat*" GridPane.columnIndex="1" GridPane.rowIndex="12">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -221,7 +221,7 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label text="Land" GridPane.rowIndex="10">
+               <Label text="Land*" GridPane.rowIndex="10">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -239,7 +239,7 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-               <Label text="Huisnummer" GridPane.rowIndex="14">
+               <Label text="Huisnummer*" GridPane.rowIndex="14">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -247,7 +247,7 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label layoutX="430.0" layoutY="556.0" text="Postcode" GridPane.rowIndex="12">
+               <Label layoutX="430.0" layoutY="556.0" text="Postcode*" GridPane.rowIndex="12">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -265,7 +265,7 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-               <Label text="Geboorteplaats" GridPane.rowIndex="6">
+               <Label text="Geboorteplaats*" GridPane.rowIndex="6">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -278,7 +278,7 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-               <Label layoutX="30.0" layoutY="533.0" text="Formula" GridPane.rowIndex="19">
+               <Label layoutX="30.0" layoutY="533.0" text="Formula*" GridPane.rowIndex="19">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>

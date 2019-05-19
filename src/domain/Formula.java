@@ -98,5 +98,4 @@ public class Formula {
         this.usersByFormulaId = usersByFormulaId;
     }
 
-
 }

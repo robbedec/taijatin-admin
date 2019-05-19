@@ -300,57 +300,47 @@ public class Club {
     }
 
     public void addFormulaDaysToFormula(String formulaName){
+        Formula formula = currentUser.getFormulasByFormulaId();
         Collection<FormulaDay> formulaDays = new ArrayList<>();
-        switch (formulaName){
-            case "DI_DO":
-                formulaDays.add(getFormulaDayOne(2));
-                formulaDays.add(getFormulaDayTwo(4));
-            case "DI_ZA":
-                formulaDays.add(getFormulaDayOne(2));
-                formulaDays.add(getFormulaDayTwo(6));
-            case "WO_ZA":
-                formulaDays.add(getFormulaDayOne(3));
-                formulaDays.add(getFormulaDayTwo(6));
-            case "WO":
-                formulaDays.add(getFormulaDayOne(3));
-            case "ZA":
-                formulaDays.add(getFormulaDayOne(6));
-            case "ZO":
-                formulaDays.add(getFormulaDayOne(7));
-            case "Geen":
+        String name = formulaName.replace("_", "").toLowerCase();
+        System.out.println(name);
+        switch (name){
+            case "dido":
+                FormulaDay dinsdag = getFormulaDay(2);
+                FormulaDay donderdag = getFormulaDay(4);
+                System.out.println(dinsdag.getDay() + " - " + donderdag.getDay());
+                formulaDays.add(dinsdag);
+                formulaDays.add(donderdag);
+                break;
+            case "diza":
+                formulaDays.add(getFormulaDay(2));
+                formulaDays.add(getFormulaDay(6));
+                break;
+            case "woza":
+                formulaDays.add(getFormulaDay(3));
+                formulaDays.add(getFormulaDay(6));
+                break;
+            case "wo":
+                formulaDays.add(getFormulaDay(3));
+                break;
+            case "za":
+                formulaDays.add(getFormulaDay(6));
+                break;
+            case "zo":
+                formulaDays.add(getFormulaDay(7));
+                break;
+            case "geen":
+                break;
             default:
+                return;
         }
-        currentUser.getFormulasByFormulaId().setFormulaFormulaDaysByFormulaId(formulaDays);
+        formula.setFormulaFormulaDaysByFormulaId(formulaDays);
+        currentUser.setFormulasByFormulaId(formula);
     }
 
-    private FormulaDay getFormulaDayOne(int day1){
-        List<FormulaDay> formulaDays = new ArrayList<>(currentUser.getFormulasByFormulaId().getFormulaDaysByFormulaId());
-        FormulaDay formulaDay1;
-        if(formulaDays.size() != 0){
-            formulaDay1 = formulaDays.get(0);
-            if(day1 != formulaDay1.getDay()){
-                formulaDay1 = formulaDayRepo.getByDay(day1);
-            }
-        }
-        else {
-            formulaDay1 = formulaDayRepo.getByDay(day1);
-        }
-        return formulaDay1;
+    private FormulaDay getFormulaDay(int day){
+        return formulaDayRepo.getByDay(day);
     }
 
-    private FormulaDay getFormulaDayTwo(int day2){
-        List<FormulaDay> formulaDays = new ArrayList<>(currentUser.getFormulasByFormulaId().getFormulaDaysByFormulaId());
-        FormulaDay formulaDay2;
-        if(formulaDays.size() >= 2) {
-            formulaDay2 = formulaDays.get(1);
-            if (day2 != formulaDay2.getDay() && day2 != 0) {
-                formulaDay2 = formulaDayRepo.getByDay(day2);
-            }
-        }
-        else {
-            formulaDay2 = formulaDayRepo.getByDay(day2);
-        }
-        return formulaDay2;
-    }
 
 }

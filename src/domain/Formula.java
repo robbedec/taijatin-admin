@@ -20,9 +20,7 @@ public class Formula {
     private int formulaId;
     private String formulaName;
 
-    public Formula(){
-        formulaDaysByFormulaId = new ArrayList<>();
-    }
+    public Formula(){}
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "Formula_FormulaDays",

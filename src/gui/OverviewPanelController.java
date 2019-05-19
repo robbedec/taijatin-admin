@@ -86,9 +86,9 @@ public class OverviewPanelController<T> extends FlowPane {
         Date defaultBirthDay = Date.valueOf(LocalDate.of(1920, 1, 1));
         Date registrationDate = Date.valueOf(LocalDate.now());
         Address defaultAddress = new Address();
-        defaultAddress.setCity("");
-        defaultAddress.setCountry("");
-        defaultAddress.setStreet("");
+        defaultAddress.setCity("Bv. Gent");
+        defaultAddress.setCountry("België");
+        defaultAddress.setStreet("Bv. Veldstraat");
         defaultAddress.setNumber(1);
         defaultAddress.setZipCode(1000);
         defaultAddress.setBus("");

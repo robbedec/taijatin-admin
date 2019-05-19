@@ -101,8 +101,11 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             if (!number.equals(address.getNumber())) {
                 address.setNumber(number);
             }
-            if (!txtBus.getText().equals(address.getBus())) {
-                address.setBus(txtBus.getText());
+            String bus = address.getBus();
+            if(bus != null || !bus.equals("")) {
+                if (!txtBus.getText().equals(bus)) {
+                    address.setBus(txtBus.getText());
+                }
             }
             user.setAddressByAddressId(address);
             user.setBornIn(txtBornIn.getText());

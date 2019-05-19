@@ -82,9 +82,9 @@ public class Club {
         } else if(index1 != 0 && index2 == 0){
             filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index1]));
         } else if(index2 != 0 && index1 == 0){
-            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getGrade().equals(index2 - 1));
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getGrade().equals(index2));
         } else {
-            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index1]) && user.getGrade().equals(index2 - 1));
+            filteredList.setPredicate(user -> user.getUserName().toLowerCase().startsWith(userName.toLowerCase()) && user.getType().equals(typesOfUser[index1]) && user.getGrade().equals(index2));
         }
     }
 

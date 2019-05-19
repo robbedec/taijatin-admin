@@ -127,7 +127,7 @@ public class UserDTO {
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(nationalInsuranceNumber);
                 if (!matcher.matches()) {
-                    throw new CRuntimeException("Validation error in national insurance number. Requires: fex. 99.04.05-233.75");
+                    throw new CRuntimeException("Validatie error bij rijksregisternummer: vb. 99.04.05-233.75");
                 } else {
                     this.nationalInsuranceNumber = nationalInsuranceNumber;
 

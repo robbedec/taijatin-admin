@@ -51,7 +51,7 @@ public class TableViewFactory<T> {
 
         TableColumn<User, String> gradeCol = new TableColumn<>("Graad");
         gradeCol.setPrefWidth(95);
-        gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grades.valueOf(cellData.getValue().getGrade() + 1)));
+        gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grades.valueOf(cellData.getValue().getGrade()).equals("Geen_filter") ? "Geen" : Grades.valueOf(cellData.getValue().getGrade())));
 
         TableColumn<User, String> formulaCol = new TableColumn<>("Formule");
         formulaCol.setPrefWidth(76);

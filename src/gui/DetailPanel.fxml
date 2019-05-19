@@ -46,81 +46,6 @@
                <RowConstraints minHeight="8.0" percentHeight="12.0" prefHeight="8.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-               <TextField fx:id="txtUsername" editable="false" promptText="Gebruikersnaam" GridPane.rowIndex="1">
-                  <GridPane.margin>
-                     <Insets left="20.0" right="20.0" />
-                  </GridPane.margin></TextField>
-               <TextField fx:id="txtEmail" prefHeight="31.0" prefWidth="365.0" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                  <GridPane.margin>
-                     <Insets left="20.0" right="20.0" />
-                  </GridPane.margin></TextField>
-               <TextField fx:id="txtFirstname" promptText="Voornaam" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                  <GridPane.margin>
-                     <Insets left="20.0" right="20.0" />
-                  </GridPane.margin></TextField>
-               <TextField fx:id="txtLastname" promptText="Naam" GridPane.rowIndex="3">
-                  <GridPane.margin>
-                     <Insets left="20.0" right="20.0" />
-                  </GridPane.margin></TextField>
-               <Button fx:id="btnSave" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateUser" prefHeight="30.0" prefWidth="300.0" text="Opslaan" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="21">
-                  <GridPane.margin>
-                     <Insets bottom="15.0" />
-                  </GridPane.margin></Button>
-               <Label text="Graad*" GridPane.columnIndex="1" GridPane.rowIndex="17">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin></Label>
-               <Label text="Email*" GridPane.columnIndex="1">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin>
-               </Label>
-               <Label text="Voornaam*" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin>
-               </Label>
-               <Label text="Naam*" GridPane.rowIndex="2">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin>
-               </Label>
-               <Label text="Geboortedatum*" GridPane.rowIndex="4">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin>
-               </Label>
-               <Label text="Geslacht*" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-                  <GridPane.margin>
-                     <Insets left="20.0" right="20.0" />
-                  </GridPane.margin>
-               </Label>
-               <Label text="Type*" GridPane.columnIndex="1" GridPane.rowIndex="19">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin>
-               </Label>
                <Label text="Gebruikersnaam*">
                   <font>
                      <Font name="System Bold" size="14.0" />
@@ -129,7 +54,47 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label text="Inschrijvingsdatum*" GridPane.rowIndex="17">
+               <TextField fx:id="txtUsername" editable="false" promptText="Gebruikersnaam" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="20.0" right="20.0" />
+                  </GridPane.margin></TextField>
+               <Label text="Email*" GridPane.columnIndex="1">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin>
+               </Label>
+               <TextField fx:id="txtEmail" prefHeight="31.0" prefWidth="365.0" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="20.0" right="20.0" />
+                  </GridPane.margin></TextField>
+               <Label text="Naam*" GridPane.rowIndex="2">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin>
+               </Label>
+               <TextField fx:id="txtLastname" promptText="Naam" GridPane.rowIndex="3">
+                  <GridPane.margin>
+                     <Insets left="20.0" right="20.0" />
+                  </GridPane.margin></TextField>
+               <Label text="Voornaam*" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin>
+               </Label>
+               <TextField fx:id="txtFirstname" promptText="Voornaam" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <GridPane.margin>
+                     <Insets left="20.0" right="20.0" />
+                  </GridPane.margin></TextField>
+               <Label text="Geboortedatum*" GridPane.rowIndex="4">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -141,32 +106,19 @@
                   <GridPane.margin>
                      <Insets left="20.0" />
                   </GridPane.margin></DatePicker>
-               <DatePicker fx:id="txtRegistrationDate" GridPane.rowIndex="18">
+               <Label text="Geslacht*" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
                   <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin></DatePicker>
+                     <Insets left="20.0" right="20.0" />
+                  </GridPane.margin>
+               </Label>
                <ChoiceBox fx:id="txtGender" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                   <GridPane.margin>
                      <Insets left="20.0" />
                   </GridPane.margin></ChoiceBox>
-               <ChoiceBox fx:id="txtType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="20">
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin></ChoiceBox>
-               <ChoiceBox fx:id="txtGrade" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="18">
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin></ChoiceBox>
-               <Button fx:id="btnAdd" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateUser" prefHeight="30.0" prefWidth="300.0" text="Voeg gebruiker toe" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="21">
-                  <GridPane.margin>
-                     <Insets bottom="15.0" />
-                  </GridPane.margin></Button>
-               <TextField fx:id="txtGsm" promptText="Gsm-nummer" GridPane.rowIndex="9">
-                  <GridPane.margin>
-                     <Insets left="20.0" right="20.0" />
-                  </GridPane.margin>
-               </TextField>
-               <Label layoutX="30.0" layoutY="361.0" text="Gsm-nummer*" GridPane.rowIndex="8">
+               <Label text="Geboorteplaats*" GridPane.rowIndex="6">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -174,6 +126,11 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
+               <TextField fx:id="txtBornIn" promptText="Geboorteplaats" GridPane.rowIndex="7">
+                  <GridPane.margin>
+                     <Insets left="20.0" right="20.0" />
+                  </GridPane.margin>
+               </TextField>
                <Label text="Rijksregisternummer*" GridPane.columnIndex="1" GridPane.rowIndex="6">
                   <font>
                      <Font name="System Bold" size="14.0" />
@@ -187,7 +144,20 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-               <Label fx:id="txtTelefoon" layoutX="430.0" layoutY="361.0" text="Telefoonnummer" GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <Label text="Gsm-nummer*" layoutX="30.0" layoutY="361.0" GridPane.rowIndex="8">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin>
+               </Label>
+               <TextField fx:id="txtGsm" promptText="Gsm-nummer" GridPane.rowIndex="9">
+                  <GridPane.margin>
+                     <Insets left="20.0" right="20.0" />
+                  </GridPane.margin>
+               </TextField>
+               <Label text="Telefoonnummer" layoutX="430.0" layoutY="361.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -196,6 +166,19 @@
                   </padding>
                </Label>
                <TextField fx:id="txtTelephone" layoutX="430.0" layoutY="398.0" promptText="Telefoonnummer" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                  <GridPane.margin>
+                     <Insets left="20.0" right="20.0" />
+                  </GridPane.margin>
+               </TextField>
+               <Label text="Land*" GridPane.rowIndex="10">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin>
+               </Label>
+               <TextField fx:id="txtCountry" promptText="Land" GridPane.rowIndex="11">
                   <GridPane.margin>
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
@@ -213,7 +196,7 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-               <Label text="Straat*" GridPane.columnIndex="1" GridPane.rowIndex="12">
+               <Label layoutX="430.0" layoutY="556.0" text="Postcode*" GridPane.rowIndex="12">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -221,33 +204,12 @@
                      <Insets left="20.0" />
                   </GridPane.margin>
                </Label>
-               <Label text="Land*" GridPane.rowIndex="10">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin>
-               </Label>
-               <TextField fx:id="txtCountry" promptText="Land" GridPane.rowIndex="11">
-                  <GridPane.margin>
-                     <Insets left="20.0" right="20.0" />
-                  </GridPane.margin>
-               </TextField>
                <TextField fx:id="txtZipcode" layoutX="10.0" layoutY="567.0" promptText="Postcode" GridPane.rowIndex="13">
                   <GridPane.margin>
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-               <Label text="Huisnummer*" GridPane.rowIndex="14">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin>
-               </Label>
-               <Label layoutX="430.0" layoutY="556.0" text="Postcode*" GridPane.rowIndex="12">
+               <Label text="Straat*" GridPane.columnIndex="1" GridPane.rowIndex="12">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
@@ -260,37 +222,19 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
+               <Label text="Huisnummer*" GridPane.rowIndex="14">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin>
+               </Label>
                <TextField fx:id="txtNumber" layoutX="410.0" layoutY="589.0" promptText="Huisnummer" GridPane.rowIndex="15">
                   <GridPane.margin>
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-               <Label text="Geboorteplaats*" GridPane.rowIndex="6">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin>
-               </Label>
-               <TextField fx:id="txtBornIn" promptText="Geboorteplaats" GridPane.rowIndex="7">
-                  <GridPane.margin>
-                     <Insets left="20.0" right="20.0" />
-                  </GridPane.margin>
-               </TextField>
-               <Label layoutX="30.0" layoutY="533.0" text="Formula*" GridPane.rowIndex="19">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin>
-               </Label>
-               <ChoiceBox fx:id="txtFormula" layoutX="30.0" layoutY="307.0" prefWidth="150.0" GridPane.rowIndex="20">
-                  <GridPane.margin>
-                     <Insets left="20.0" />
-                  </GridPane.margin>
-               </ChoiceBox>
                <Label text="Bus" GridPane.columnIndex="1" GridPane.rowIndex="14">
                   <font>
                      <Font name="System Bold" size="14.0" />
@@ -304,9 +248,40 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-               <ChoiceBox fx:id="txtFormulaTeacher" prefWidth="150.0" GridPane.rowIndex="20">
+               <Label text="Inschrijvingsdatum*" GridPane.rowIndex="17">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
                   <GridPane.margin>
-                     <Insets left="225.0" />
+                     <Insets left="20.0" />
+                  </GridPane.margin>
+               </Label>
+               <DatePicker fx:id="txtRegistrationDate" GridPane.rowIndex="18">
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin></DatePicker>
+               <Label text="Graad*" GridPane.columnIndex="1" GridPane.rowIndex="17">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin></Label>
+               <ChoiceBox fx:id="txtGrade" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="18">
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin></ChoiceBox>
+               <Label text="Formula" layoutX="30.0" layoutY="533.0" GridPane.rowIndex="19">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin>
+               </Label>
+               <ChoiceBox fx:id="txtFormula" layoutX="30.0" layoutY="307.0" prefWidth="150.0" GridPane.rowIndex="20">
+                  <GridPane.margin>
+                     <Insets left="20.0" />
                   </GridPane.margin>
                </ChoiceBox>
                <Label text="Lesgever bij formula" GridPane.rowIndex="19">
@@ -317,6 +292,31 @@
                      <Insets left="225.0" />
                   </GridPane.margin>
                </Label>
+               <ChoiceBox fx:id="txtFormulaTeacher" prefWidth="150.0" GridPane.rowIndex="20">
+                  <GridPane.margin>
+                     <Insets left="225.0" />
+                  </GridPane.margin>
+               </ChoiceBox>
+               <Label text="Type*" GridPane.columnIndex="1" GridPane.rowIndex="19">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin>
+               </Label>
+               <ChoiceBox fx:id="txtType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="20">
+                  <GridPane.margin>
+                     <Insets left="20.0" />
+                  </GridPane.margin></ChoiceBox>
+               <Button fx:id="btnAdd" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateUser" prefHeight="30.0" prefWidth="300.0" text="Voeg gebruiker toe" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="21">
+                  <GridPane.margin>
+                     <Insets bottom="15.0" />
+                  </GridPane.margin></Button>
+               <Button fx:id="btnSave" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateUser" prefHeight="30.0" prefWidth="300.0" text="Opslaan" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="21">
+                  <GridPane.margin>
+                     <Insets bottom="15.0" />
+                  </GridPane.margin></Button>
             </children>
          </GridPane>
       </ScrollPane>

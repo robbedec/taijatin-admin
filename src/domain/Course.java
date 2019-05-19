@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Courses")
-public class Course {
+public class Course implements ICourse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CourseId")

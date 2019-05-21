@@ -132,6 +132,13 @@ public class User implements IUser {
     public void setUserName(String userName) {
         if (empty(userName)) {
             throw new CRuntimeException("Gebruikersnaam kan niet leeg zijn!");
+        }else if(!userName.isEmpty() || userName != null){
+            String regex = "^[A-Z]{1}[A-Za-z]+([0-9]*)?([A-Za-z]*)?$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(userName);
+            if(!matcher.matches()){
+                throw new CRuntimeException("Validatie error bij gebruikersnaam: Moet starten met een hoofdletter gevolgd door minstens 1 kleine letter en mag geen spaties bevatten. Mag cijfers hebben.");
+            }
         }
         this.userName = userName;
     }
@@ -145,7 +152,7 @@ public class User implements IUser {
     public void setEmail(String email) {
         if(empty(email)) {
             throw new CRuntimeException("Email kan niet leeg zijn!");
-        } else if (email.isEmpty() || email != null) {
+        } else if (!email.isEmpty() || email != null) {
             String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(email);

@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import repository.ActivityDTO;
 import repository.UserDTO;
 
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -35,28 +36,29 @@ public class TableViewFactory<T> {
 
     private void setBigSize() {
         tableView.setPrefHeight(725);
-        tableView.setMaxWidth(400);
-        tableView.setPrefWidth(400);
+        tableView.setMaxWidth(1225);
+        tableView.setPrefWidth(1225);
     }
 
     public TableView<T> getUserTableView() {
+        tableView = new TableView<>();
         setSmallSize();
         tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
 
         TableColumn<User, String> usernameCol = new TableColumn<>("Gebruikersnaam");
-        usernameCol.setPrefWidth(150);
+        usernameCol.setPrefWidth(135);
         usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
 
         TableColumn<User, String> gradeCol = new TableColumn<>("Graad");
-        gradeCol.setPrefWidth(100);
-        gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grade.valueOf(cellData.getValue().getGrade())));
+        gradeCol.setPrefWidth(95);
+        gradeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(Grades.valueOf(cellData.getValue().getGrade()).equals("Geen_filter") ? "Geen" : Grades.valueOf(cellData.getValue().getGrade())));
 
         TableColumn<User, String> formulaCol = new TableColumn<>("Formule");
-        formulaCol.setPrefWidth(85);
+        formulaCol.setPrefWidth(76);
         formulaCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getFormulasByFormulaId() == null ? "" : cellData.getValue().getFormulasByFormulaId().getFormulaName()));
 
         TableColumn<User, String> typeCol = new TableColumn<>("Type");
-        typeCol.setPrefWidth(81);
+        typeCol.setPrefWidth(95);
         typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getType()));
 
 
@@ -79,29 +81,36 @@ public class TableViewFactory<T> {
     }
 
     public TableView<T> getActityTableView() {
+        tableView = new TableView<>();
         setSmallSize();
         tableView.setPlaceholder(new Label("Geen activiteiten gevonden"));
 
         TableColumn<Activity, String> nameCol = new TableColumn<>("Naam");
-        nameCol.setPrefWidth(175);
+        nameCol.setPrefWidth(150);
         nameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
 
         TableColumn<Activity, String> typeCol = new TableColumn<>("Type");
-        typeCol.setPrefWidth(75);
+        typeCol.setPrefWidth(60);
         typeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(TypeOfActivity.valueOf(cellData.getValue().getType())));
 
         TableColumn<Activity, String> statusCol = new TableColumn<>("Status");
-        statusCol.setPrefWidth(50);
+        statusCol.setPrefWidth(60);
         statusCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStatus() ? "Actief" : "Inactief"));
 
-        TableColumn<Activity, String> numberCol = new TableColumn<>("Inschrijvingen");
-        numberCol.setPrefWidth(100);
-        numberCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().registeredUsersByUserId.size())));
+        TableColumn<Activity, String> numberCol = new TableColumn<>("Is volzet?");
+        numberCol.setPrefWidth(140);
+        numberCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNumberOfParticipants() >= cellData.getValue().getMaxNumberOfParticipants() ? "Volzet" : "Nog " + String.valueOf(cellData.getValue().getMaxNumberOfParticipants() - cellData.getValue().getNumberOfParticipants()) + " plaatsen vrij"));
+
+        TableColumn<Activity, String> infoCol = new TableColumn<>("Info");
+        infoCol.setPrefWidth(400);
+        infoCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getInfo()));
 
         tableView.getColumns().add((TableColumn<T, ?>) nameCol);
         tableView.getColumns().add((TableColumn<T, ?>) typeCol);
         tableView.getColumns().add((TableColumn<T, ?>) statusCol);
         tableView.getColumns().add((TableColumn<T, ?>) numberCol);
+        tableView.getColumns().add((TableColumn<T, ?>) infoCol);
+
 
         tableView.setItems((ObservableList)dc.getFilteredActivities());
         tableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue, oldValue, newValue) -> {
@@ -117,7 +126,59 @@ public class TableViewFactory<T> {
         return tableView;
     }
 
+    public TableView<T> getCourseTableView() {
+        tableView = new TableView<>();
+        setBigSize();
+        tableView.setPlaceholder(new Label("Geen lesmateriaal gevonden"));
+
+        TableColumn<CourseModule, String> nameCol = new TableColumn<>("Naam");
+        nameCol.setPrefWidth(250);
+        nameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
+
+        TableColumn<CourseModule, String> linkCol = new TableColumn<>("Link");
+        linkCol.setPrefWidth(350);
+        linkCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUrl()));
+
+        TableColumn<CourseModule, String> imageCol = new TableColumn<>("Afbeeldingslink");
+        imageCol.setPrefWidth(350);
+        imageCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getImageUrl()));
+
+        TableColumn<CourseModule, String> infoCol = new TableColumn<>("Info");
+        infoCol.setPrefWidth(150);
+        infoCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getText()));
+
+
+        tableView.getColumns().add((TableColumn<T, ?>) nameCol);
+        tableView.getColumns().add((TableColumn<T, ?>) linkCol);
+        tableView.getColumns().add((TableColumn<T, ?>) imageCol);
+        tableView.getColumns().add((TableColumn<T, ?>) infoCol);
+
+        tableView.setItems((ObservableList)dc.getCourseModules());
+        return tableView;
+    }
+
+    public TableView<T> getInschrijvingsTableView() {
+        tableView = new TableView<>();
+        setBigSize();
+        tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
+
+        TableColumn<User, String> usernameCol = new TableColumn<>("Gerbuikersnaam");
+        usernameCol.setPrefWidth(200);
+        usernameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUserName()));
+
+
+        TableColumn<User, String> registrationDateCol = new TableColumn<>("Inschrijvingsdatum");
+        registrationDateCol.setPrefWidth(200);
+        registrationDateCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getRegistrationdate())));
+
+        tableView.getColumns().addAll((TableColumn<T, ?>) usernameCol, (TableColumn<T, ?>) registrationDateCol);
+
+        tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getUnfilteredMembers().stream().sorted(Comparator.comparing(User::getRegistrationdate).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
+        return tableView;
+    }
+
     public TableView<T> getClubKamptioenschapTableView(){
+        tableView = new TableView<>();
         setBigSize();
         tableView.setPlaceholder(new Label("Geen gebruikers gevonden"));
 
@@ -131,7 +192,23 @@ public class TableViewFactory<T> {
 
         tableView.getColumns().addAll((TableColumn<T, ?>) usernameCol, (TableColumn<T, ?>) scoreCol);
 
-        tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getFilteredMembers().stream().filter(x -> x.getScore() != null).sorted(Comparator.comparing(User::getScore).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
+        //tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getFilteredMembers().stream().filter(x -> x.getScore() != null).sorted(Comparator.comparing(User::getScore).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
+        tableView.setItems((ObservableList)FXCollections.observableArrayList(dc.getUnfilteredMembers().stream().filter(x -> x.getScore() != null).sorted(Comparator.comparing(User::getScore).reversed().thenComparing(User::getUserName)).collect(Collectors.toList())));
+
         return tableView;
+    }
+
+    public TableView<T> getBigActivityTableView(){
+        TableView t = this.getActityTableView();
+
+        TableColumn<Activity, String> participants = new TableColumn<>("Aantal deelnemers");
+        participants.setPrefWidth(200);
+        participants.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getRegisteredUsersByUserId().size())));
+
+        t.getColumns().add((TableColumn<T, ?>) participants);
+
+        t.setItems(dc.getUnfilteredActivities());
+        setBigSize();
+        return t;
     }
 }

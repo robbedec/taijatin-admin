@@ -1,20 +1,14 @@
 package gui;
 
 import domain.*;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import repository.UserDTO;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -23,12 +17,11 @@ import java.util.*;
 public class OverviewPanelController<T> extends FlowPane {
 
     private final DomainController dc;
-    public final String[] overzichten = new String[]{ "Activiteiten", "Inschrijvingen", "Aanwezigheden", "Clubkampioenschap", "Raadplegingen lesmateriaal" };
 
     @FXML
     private TextField txtFilter;
     @FXML
-    private ComboBox cboType, cboOverzicht;
+    private ComboBox cboType, cboGrade, cboOverzicht;
     @FXML
     private Button btnNew, btnDelete;
 
@@ -40,7 +33,7 @@ public class OverviewPanelController<T> extends FlowPane {
     /**
      * @param dc
      */
-    public OverviewPanelController(DomainController dc, List<T> enumInstances) {
+    public OverviewPanelController(DomainController dc, List<T> enumInstances1, List<T> enumInstances2) {
         this.dc = dc;
         this.factory = new TableViewFactory(dc);
 
@@ -53,21 +46,24 @@ public class OverviewPanelController<T> extends FlowPane {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        enumInstances.forEach(type -> cboType.getItems().add(type.toString()));
+        enumInstances1.forEach(type -> cboType.getItems().add(type.toString()));
+        enumInstances2.forEach(grade -> cboGrade.getItems().add(grade.toString()));
         cboType.getSelectionModel().selectedItemProperty().addListener(x -> filter());
         cboType.getSelectionModel().select(0);
+        cboGrade.getSelectionModel().selectedItemProperty().addListener(x -> filter());
+        cboGrade.getSelectionModel().select(0);
 
-        flowpane.getChildren().add(2, factory.getUserTableView());
+        flowpane.getChildren().add(3, factory.getUserTableView());
     }
 
     @FXML
     private void filter() {
-        dc.filterUsers(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex());
+        dc.filterUsers(txtFilter.getText(), cboType.getSelectionModel().getSelectedIndex(), cboGrade.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
     public void deleteUser(){
-        TableView<User> tableView = (TableView)flowpane.getChildren().get(2);
+        TableView<User> tableView = (TableView)flowpane.getChildren().get(3);
         int index = tableView.getSelectionModel().getSelectedIndex();
         System.out.println(index);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Ben je zeker dat je de gebruiker " + tableView.getSelectionModel().getSelectedItem().getUserName() + " wilt verwijderen?", ButtonType.OK, ButtonType.NO );
@@ -90,19 +86,20 @@ public class OverviewPanelController<T> extends FlowPane {
         Date defaultBirthDay = Date.valueOf(LocalDate.of(1920, 1, 1));
         Date registrationDate = Date.valueOf(LocalDate.now());
         Address defaultAddress = new Address();
-        defaultAddress.setCity("");
-        defaultAddress.setCountry("");
-        defaultAddress.setStreet("");
+        defaultAddress.setCity("Bv. Gent");
+        defaultAddress.setCountry("België");
+        defaultAddress.setStreet("Bv. Veldstraat");
         defaultAddress.setNumber(1);
         defaultAddress.setZipCode(1000);
         defaultAddress.setBus("");
 
         Formula defaultFormula = new Formula();
-        defaultFormula.setFormulaName("");
+        defaultFormula.setFormulaName("Geen");
+
         newUser.setBirthday(defaultBirthDay);
         newUser.setRegistrationdate(registrationDate);
         newUser.setGrade(1);
-        newUser.setType("Member");
+        newUser.setType("Lid");
         newUser.setAddressByAddressId(defaultAddress);
 
         newUser.setUserName("Gebruikersnaam");

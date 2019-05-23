@@ -30,7 +30,7 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     @FXML
     private ChoiceBox txtType;
     @FXML
-    private Button btnSave, btnAdd, btnRegister, btnUndoRegister;
+    private Button btnSave, btnAdd, btnRegister, btnUndoRegister, btnRefresh, btnAddNoMember;
     private ActivityDTO activity;
 
     private ObservableList<IUser> registeredUsers, notRegisteredUsers;
@@ -46,13 +46,12 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             throw new RuntimeException(ex);
         }
 
-        listViewNotRegistered.setPlaceholder(new Label("Geen gebruikers meer gevonden"));
+        listViewNotRegistered.setPlaceholder(new Label("Geen (niet-)leden meer gevonden"));
         listViewRegistered.setPlaceholder(new Label("Geen gebruikers geregistreerd"));
         notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
         registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
         listViewNotRegistered.setItems(notRegisteredUsers);
         listViewRegistered.setItems(registeredUsers);
-
     }
 
     public void updateActivity() {
@@ -62,11 +61,15 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             int newType = types.indexOf(txtType.getValue());
             activity.setType(newType);
             activity.setInfo(txtInfo.getText());
+            activity.setStatus(cbStatus.isSelected());
             activity.setMaxNumberOfParticipants((int) sliderMax.getValue());
+            int total = Integer.parseInt(txtTotal.getText());
+            activity.setNumberOfParticipants(total);
             dc.setCurrentActivity(activity);
             dc.updateActivity();
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Succes", ButtonType.OK);
             alert.setTitle("De activiteit is succesvol opgeslagen.");
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.showAndWait().ifPresent(type -> {
                 if(type == ButtonType.OK){
                     disableAllFields();
@@ -74,9 +77,13 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             });
         } catch (CRuntimeException ex) {
             System.out.println("\nError updaten/creëren activiteit: " + ex.getMessage() + "\n");
+            Alert error = new Alert(Alert.AlertType.ERROR, "Error updaten/creëren activiteit: " + ex.getLocalizedMessage(), ButtonType.OK);
+            error.setHeaderText("Validatie error");
+            error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            error.showAndWait();
         } catch (NullPointerException np) {
-            System.out.println("\nNullPointerExceptoin: Geen velden ingevuld.\n");
-            Alert error = new Alert(Alert.AlertType.ERROR, "Vul alle velden in alstublieft.", ButtonType.OK);
+            System.out.println("\nNullPointerException: Geen velden ingevuld.\n");
+            Alert error = new Alert(Alert.AlertType.ERROR, "Controleer en vul alle velden in alstublieft.", ButtonType.OK);
             error.setHeaderText("Validatie errors");
             error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             error.showAndWait();
@@ -91,34 +98,65 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
 
     public void register(){
         int index = listViewNotRegistered.getSelectionModel().getSelectedIndex();
-        dc.register(index);
-        notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
-        registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
-        int total = dc.getTotalRegistered();
-        txtTotal.setText(String.valueOf(total));
-        listViewNotRegistered.setItems(notRegisteredUsers);
-        listViewRegistered.setItems(registeredUsers);
+        if(!dc.isFullActivity()) {
+            dc.register(index);
+            notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
+            setTotalRegistered();
+            listViewNotRegistered.setItems(notRegisteredUsers);
+        }
+        else {
+            showAlertFull();
+        }
     }
 
     public void undoRegister(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "", ButtonType.OK, ButtonType.NO);
         alert.setTitle("Maak registratie ongedaan");
         alert.setContentText("Bevestig of je gebruiker " + listViewRegistered.getSelectionModel().getSelectedItem().getUserName() + " terug wilt uitschrijven.");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait().ifPresent(type -> {
             if(type == ButtonType.OK){
                 int index = listViewRegistered.getSelectionModel().getSelectedIndex();
                 dc.undoRegister(index);
                 notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
-                registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
-                int total = dc.getTotalRegistered();
-                txtTotal.setText(String.valueOf(total));
+                setTotalRegistered();
                 listViewNotRegistered.setItems(notRegisteredUsers);
-                listViewRegistered.setItems(registeredUsers);
             }
             else {
                 System.out.println("Gebruiker " + listViewRegistered.getSelectionModel().getSelectedItem() + " is niet uitgeschreven.");
             }
         });
+    }
+
+    public void refresh(){
+        dc.refrestNotRegisteredList(activity);
+        notRegisteredUsers = (ObservableList) dc.getNotRegisteredUsersFromActivity();
+        listViewNotRegistered.setItems(notRegisteredUsers);
+    }
+
+    public void addNoMember() {
+        if (!dc.isFullActivity()) {
+            TextInputDialog textInputDialog = new TextInputDialog("Naam");
+            textInputDialog.setTitle("Voeg een niet-lid toe");
+            textInputDialog.setHeaderText("Geef een naam in");
+            textInputDialog.setContentText("Naam");
+            textInputDialog.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            textInputDialog.showAndWait().ifPresent(name -> {
+                if(!dc.isRegistered(name)){
+                    IUser u = new User(name);
+                    dc.addNoMember(activity, (User) u);
+                    setTotalRegistered();
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Reeds geregistreerde naam");
+                    alert.setContentText("Deze naam is reeds geregistreerd. Registreer een andere naam voor het niet-lid.");
+                    alert.showAndWait();
+                }
+            });
+        } else {
+            showAlertFull();
+        }
     }
 
     @Override
@@ -132,7 +170,9 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
         if (this.activity != null) {
             btnRegister.setVisible(true);
             btnUndoRegister.setVisible(true);
-            if(this.activity.getName() == null || this.activity.getName().equals("")){
+            btnAddNoMember.setVisible(true);
+            btnRefresh.setVisible(true);
+            if(this.activity.getName() == null || this.activity.getName().equals("") || this.activity.getName().equals("Naam")){
                 txtName.setEditable(true);
                 btnAdd.setVisible(true);
                 btnSave.setVisible(false);
@@ -150,9 +190,10 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
             txtType.setDisable(false);
             cbStatus.setSelected(this.activity.getStatus());
             cbStatus.setDisable(false);
+            sliderMax.setDisable(false);
             sliderMax.setBlockIncrement(1);
             sliderMax.setMin(0);
-            sliderMax.setMax(dc.getAmountOfUsers());
+            sliderMax.setMax(40);
             sliderMax.setValue(this.activity.getMaxNumberOfParticipants());
             txtSlider.setText(String.valueOf(this.activity.getMaxNumberOfParticipants()));
             txtSlider.setDisable(false);
@@ -177,6 +218,8 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
     private void disableAllFields(){
         btnSave.setVisible(false);
         btnAdd.setVisible(false);
+        btnRefresh.setVisible(false);
+        btnAddNoMember.setVisible(false);
         btnRegister.setVisible(false);
         btnUndoRegister.setVisible(false);
         txtName.setDisable(true);
@@ -184,8 +227,24 @@ public class ActivityDetailPanelController extends VBox implements PropertyChang
         cbStatus.setDisable(true);
         txtTotal.setDisable(true);
         txtInfo.setDisable(true);
+        sliderMax.setDisable(true);
+        txtSlider.setDisable(true);
         listViewNotRegistered.setDisable(true);
         listViewRegistered.setDisable(true);
     }
+
+    private void showAlertFull(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Volzet");
+        alert.setContentText("Deze activiteit zit vol.");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.showAndWait();
+    }
+
+    private void setTotalRegistered(){
+        int total = dc.getTotalRegistered();
+        txtTotal.setText(String.valueOf(total));
+        registeredUsers = (ObservableList) dc.getRegisteredUsersFromActivity();
+        listViewRegistered.setItems(registeredUsers);
+    }
 }
-;

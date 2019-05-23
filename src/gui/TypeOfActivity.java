@@ -3,7 +3,7 @@ package gui;
 import java.util.Arrays;
 
 public enum TypeOfActivity {
-    Geen_Filter("Geen", 0),
+    Geen_Filter("Type", 0),
     Uitstap("Uitstap",1),
     Stage("Stage",2);
 

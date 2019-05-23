@@ -33,7 +33,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
     @FXML
     private DatePicker txtBirthday, txtRegistrationDate;
     @FXML
-    private ChoiceBox txtGrade, txtGender, txtType, txtFormula;
+    private ChoiceBox txtGrade, txtGender, txtType, txtFormula, txtFormulaTeacher;
     @FXML
     private Button btnSave, btnAdd;
     private UserDTO user;
@@ -69,7 +69,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             user.setLastname(txtLastname.getText());
             user.setEmail(txtEmail.getText());
             user.setBirthday(java.sql.Date.valueOf(txtBirthday.getValue()));
-            user.setBirthday(java.sql.Date.valueOf(txtRegistrationDate.getValue()));
+            user.setRegistrationdate(java.sql.Date.valueOf(txtRegistrationDate.getValue()));
             user.setType(txtType.getValue().toString());
             //Get the gender int back from the list of genders
             ObservableList genders = txtGender.getItems();
@@ -84,53 +84,66 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             user.setPhoneNumber(txtTelephone.getText());
             //Update the address
             Address address = user.getAddressByAddressId();
-            if (address == null) { // new address for new user
-                address = new Address();
+            if (!txtCountry.getText().equals(address.getCountry())) {
                 address.setCountry(txtCountry.getText());
+            }
+            if (!txtPlace.getText().equals(address.getCountry())) {
                 address.setCity(txtPlace.getText());
-                Integer zip = Integer.parseInt(txtZipcode.getText());
+            }
+            Integer zip = Integer.parseInt(txtZipcode.getText());
+            if (!zip.equals(address.getZipCode())) {
                 address.setZipCode(zip);
+            }
+            if (txtStreet.getText().isEmpty() || !txtStreet.getText().equals(address.getStreet())) {
                 address.setStreet(txtStreet.getText());
-                Integer number = Integer.parseInt(txtNumber.getText());
+            }
+            Integer number = Integer.parseInt(txtNumber.getText());
+            if (!number.equals(address.getNumber())) {
                 address.setNumber(number);
-                address.setBus(txtBus.getText());
-            } else {
-                if (!txtCountry.getText().equals(address.getCountry())) {
-                    address.setCountry(txtCountry.getText());
-                }
-                if (!txtPlace.getText().equals(address.getCountry())) {
-                    address.setCity(txtPlace.getText());
-                }
-                Integer zip = Integer.parseInt(txtZipcode.getText());
-                if (!zip.equals(address.getZipCode())) {
-                    address.setZipCode(zip);
-                }
-                if (txtStreet.getText().isEmpty() || !txtStreet.getText().equals(address.getStreet())) {
-                    address.setStreet(txtStreet.getText());
-                }
-                Integer number = Integer.parseInt(txtNumber.getText());
-                if (!number.equals(address.getNumber())) {
-                    address.setNumber(number);
-                }
-                if (!txtBus.getText().equals(address.getBus())) {
+            }
+            String bus = address.getBus();
+            if(bus != null || !bus.equals("")) {
+                if (!txtBus.getText().equals(bus)) {
                     address.setBus(txtBus.getText());
                 }
             }
             user.setAddressByAddressId(address);
             user.setBornIn(txtBornIn.getText());
+
             Formula formula = user.getFormulasByFormulaId();
-            if (formula == null) {
-                formula = new Formula();
-                formula.setFormulaName(txtFormula.getValue().toString());
-            } else {
-                if (!txtFormula.getValue().toString().equals(formula.getFormulaName())) {
+            if (!txtFormula.getValue().toString().equals(formula.getFormulaName())) {
+                if(!txtFormula.getValue().toString().equals("Geen")) {
+                    System.out.println(txtFormula.getValue().toString());
                     formula.setFormulaName(txtFormula.getValue().toString());
+                    dc.addFormulaDaysToFormula(txtFormula.getValue().toString());
+                }
+                else {
+                    formula.setFormulaName("Geen");
+                    dc.addFormulaDaysToFormula(txtFormula.getValue().toString());
                 }
             }
+            if(formula.getUsersByTeacherId() != null) {
+                if (!txtFormulaTeacher.getValue().toString().equals(formula.getUsersByTeacherId().getUserName())) {
+                    if (!txtFormulaTeacher.getValue().toString().equals("Geen")) {
+                        formula.setUsersByTeacherId(dc.getTeacherByUserName(txtFormulaTeacher.getValue().toString()));
+                    }
+                    else {
+                        formula.setUsersByTeacherId(null);
+                    }
+                }
+            }
+            else {
+                if(!txtFormulaTeacher.getValue().toString().equals("Geen")){
+                    formula.setUsersByTeacherId(dc.getTeacherByUserName(txtFormulaTeacher.getValue().toString()));
+                }
+            }
+            user.setFormulasByFormulaId(formula);
+
             dc.setCurrentUser(user);
             dc.updateUser();
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Succes", ButtonType.OK);
             alert.setTitle("De activiteit is succesvol opgeslagen.");
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.showAndWait().ifPresent(type -> {
                 if(type == ButtonType.OK){
                     dc.setCurrentUser(user);
@@ -140,11 +153,11 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
         } catch (CRuntimeException ex) {
             System.out.println("\nError updating/Creating user: " + ex.getMessage() + "\n");
             Alert error = new Alert(Alert.AlertType.ERROR, "Error updaten/creëren gebruiker: " + ex.getMessage(), ButtonType.OK);
-            error.setHeaderText("Validatie errors");
+            error.setHeaderText("Validatie error");
             error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             error.showAndWait();
         } catch (NullPointerException np) {
-            System.out.println("\nNullPointerExceptoin: no fields touched.\n");
+            System.out.println("\nNullPointerException: no fields touched.\n" + np.getMessage() + " " + user.getUserName());
             Alert error = new Alert(Alert.AlertType.ERROR, "Vul alle velden in alstublieft.", ButtonType.OK);
             error.setHeaderText("Validatie errors");
             error.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
@@ -162,7 +175,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
         }
         if(this.user != null) {
             txtUsername.setText(user.getUserName());
-            if(this.user.getUserName() == null || this.user.getUserName().equals("") || this.user.getUserName().equals("gebruikersnaam")){
+            if(this.user.getUserName() == null || this.user.getUserName().equals("") || this.user.getUserName().equals("Gebruikersnaam")){
                 txtUsername.setEditable(true);
                 txtUsername.setDisable(false);
                 btnAdd.setVisible(true);
@@ -183,7 +196,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             txtBirthday.setDisable(false);
             txtRegistrationDate.setValue(user.getRegistrationdate().toLocalDate());
             txtRegistrationDate.setDisable(false);
-            txtType.setItems(FXCollections.observableArrayList("Member", "Teacher", "Admin"));
+            txtType.setItems(FXCollections.observableArrayList("Lid", "Lesgever", "Beheerder"));
             txtType.setValue(user.getType());
             txtType.setDisable(false);
             //This will show the correct gender for each user
@@ -220,15 +233,7 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
             txtBus.setDisable(false);
             txtBornIn.setText(user.getBornIn());
             txtBornIn.setDisable(false);
-            ObservableList formulas = FXCollections.observableArrayList("Geen", "DI_DO", "DI_ZA", "WO_ZA", "WO", "ZA", "ZO");
-            txtFormula.setDisable(false);
-            txtFormula.setItems(formulas);
-            if(user.getFormulasByFormulaId() == null || user.getFormulasByFormulaId().getFormulaName().equals("")){
-                txtFormula.setValue(formulas.get(0));
-            }
-            else {
-                txtFormula.setValue(user.getFormulasByFormulaId().getFormulaName());
-            }
+            setFormulaFields();
         } else {
             this.user = null;
             disableAllFields();
@@ -257,6 +262,29 @@ public class DetailPanelController extends VBox implements PropertyChangeListene
         txtNumber.setDisable(true);
         txtBornIn.setDisable(true);
         txtFormula.setDisable(true);
+        txtFormulaTeacher.setDisable(true);
         txtBus.setDisable(true);
+    }
+    private void setFormulaFields() {
+        ObservableList formulas = FXCollections.observableArrayList("Geen", "DI_DO", "DI_ZA", "WO_ZA", "WO", "ZA", "ZO");
+        txtFormula.setDisable(false);
+        txtFormula.setItems(formulas);
+        ObservableList formulaTeachers = FXCollections.observableArrayList("Geen");
+        formulaTeachers.addAll(dc.getTeacherNames());
+        txtFormulaTeacher.setDisable(false);
+        txtFormulaTeacher.setItems(formulaTeachers);
+        if (user.getFormulasByFormulaId() == null || user.getFormulasByFormulaId().getUsersByTeacherId() == null && user.getFormulasByFormulaId().getFormulaName().equals("")) {
+            txtFormula.setValue(formulas.get(0));
+            txtFormulaTeacher.setValue(formulaTeachers.get(0));
+        } else if (!user.getFormulasByFormulaId().getFormulaName().equals("") && user.getFormulasByFormulaId().getUsersByTeacherId() == null) {
+            txtFormula.setValue(user.getFormulasByFormulaId().getFormulaName());
+            txtFormulaTeacher.setValue(formulaTeachers.get(0));
+        } else if (user.getFormulasByFormulaId().getUsersByTeacherId() != null && user.getFormulasByFormulaId().getFormulaName().equals("")) {
+            txtFormula.setValue(formulas.get(0));
+            txtFormulaTeacher.setValue(user.getFormulasByFormulaId().getUsersByTeacherId().getUserName());
+        } else {
+            txtFormula.setValue(user.getFormulasByFormulaId().getFormulaName());
+            txtFormulaTeacher.setValue(user.getFormulasByFormulaId().getUsersByTeacherId().getUserName());
+        }
     }
 }

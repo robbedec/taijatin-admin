@@ -6,6 +6,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "CourseModules")
+@NamedQueries({
+        @NamedQuery(name = "CourseModules.findAll", query = "select c from CourseModule c")
+})
 public class CourseModule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

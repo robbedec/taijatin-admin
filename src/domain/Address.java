@@ -32,14 +32,15 @@ public class Address {
     @Basic
     @Column(name = "Country")
     public String getCountry() {
-        if(this.country == null)
-            return "";
+        if(this.country == null || this.country == "")
+            return "België";
         return country;
     }
 
     public void setCountry(String country) {
-        if(this.country == null)
-            this.country = "";
+        if (empty(country)) {
+            throw new CRuntimeException("Land kan niet leeg zijn!");
+        }
         this.country = country;
     }
 
@@ -52,8 +53,8 @@ public class Address {
     }
 
     public void setCity(String city) {
-        if(this.city == null){
-            this.city = "";
+        if (empty(city)) {
+            throw new CRuntimeException("Woonplaats kan niet leeg zijn!");
         }
         this.city = city;
     }
@@ -67,8 +68,9 @@ public class Address {
     }
 
     public void setZipCode(Integer zipCode) {
-        if(this.zipCode == null)
-            this.zipCode = 0;
+        if (empty(zipCode.toString()) || zipCode == 0) {
+            throw new CRuntimeException("Postcode kan niet leeg of 0 zijn!");
+        }
         this.zipCode = zipCode;
     }
 
@@ -81,8 +83,9 @@ public class Address {
     }
 
     public void setStreet(String street) {
-        if(this.street == null)
-            this.street = "";
+        if (empty(street)) {
+            throw new CRuntimeException("Straat kan niet leeg zijn!");
+        }
         this.street = street;
     }
 
@@ -95,22 +98,19 @@ public class Address {
     }
 
     public void setNumber(Integer number) {
-        if(this.number == null)
-            this.number = 0;
+        if (empty(number.toString()) || number == 0) {
+            throw new CRuntimeException("Huisnummer kan niet leeg of 0 zijn!");
+        }
         this.number = number;
     }
 
     @Basic
     @Column(name = "Bus")
     public String getBus() {
-        if(this.country == null)
-            return "";
         return bus;
     }
 
     public void setBus(String bus) {
-        if(this.bus == null)
-            this.bus = "";
         this.bus = bus;
     }
 
@@ -139,5 +139,13 @@ public class Address {
 
     public void setUsersByAddressId(Collection<User> usersByAddressId) {
         this.usersByAddressId = usersByAddressId;
+    }
+
+    private boolean empty(String string) {
+        if (string.trim().isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

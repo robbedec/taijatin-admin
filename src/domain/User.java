@@ -15,8 +15,12 @@ import java.util.regex.Pattern;
 @Entity
 @Table(name = "Users")
 @NamedQueries({
-        @NamedQuery(name = "Users.findAll", query = "SELECT b FROM User b"),
-        @NamedQuery(name = "Users.findByMail", query = "SELECT b FROM User b WHERE b.email = :email")
+        @NamedQuery(name = "Users.findAllButNoMembers", query = "SELECT b FROM User b WHERE b.isNoMember != true or b.isNoMember is null"),
+        @NamedQuery(name = "Users.findAll", query = "select b from User b"),
+        @NamedQuery(name = "Users.findByMail", query = "SELECT b FROM User b WHERE b.email = :email"),
+        @NamedQuery(name = "Users.findByUserName", query = "SELECT b FROM User b WHERE b.userName = :userName"),
+        @NamedQuery(name = "Users.findAllAdmins", query = "select b from User b where b.type = 'Beheerder'"),
+        @NamedQuery(name = "Users.findAllTeachers", query = "select b from User b where b.type = 'Lesgever'")
 })
 public class User implements IUser {
     @Id
@@ -41,10 +45,16 @@ public class User implements IUser {
     private String type;
     private Integer score;
     private Integer grade;
+    private Boolean isNoMember;
 
     public User() {  }
 
-    public User(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Collection<Activity> activityById) {
+    public User(String userName){
+        this.userName = userName;
+        setIdNoMember(true);
+    }
+
+    public User(String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId) {
         setUserName(userName);
         setEmail(email);
         setFirstname(firstname);
@@ -70,12 +80,12 @@ public class User implements IUser {
         setCourseModuleViewersById(courseModuleViewersById);
         setFormulasByFormulaId(formulasByFormulaId);
         setFormulasById(formulasById);
-        setActivityById(activityById);
         setAddressByAddressId(addressByAddressId);
+        setIdNoMember(false);
     }
 
     public UserDTO toUserDTO(User user) {
-        return new UserDTO(user.id, user.getUserName(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getGender(), user.getNationalInsuranceNumber(), user.getRegistrationdate(), user.getBornIn(), user.getBirthday(), user.getMobilePhoneNumber(), user.getPhoneNumber(), user.getEmailParent(), user.isAgreeWithBylaws(), user.isAgreeWithPicturesAndAudio(), user.isReceiveClubinfo(), user.isReceiveInfoAboutPromotionsAndFederalMatters(), user.getType(), user.getScore(), user.getGrade(), user.getAttendancesById(), user.getCommentRepliesById(), user.getCommentsById(), user.getCourseModuleViewersById(), user.getFormulasById(), user.getAddressByAddressId(), user.getFormulasByFormulaId(), user.getActivityById());
+        return new UserDTO(user.id, user.getUserName(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getGender(), user.getNationalInsuranceNumber(), user.getRegistrationdate(), user.getBornIn(), user.getBirthday(), user.getMobilePhoneNumber(), user.getPhoneNumber(), user.getEmailParent(), user.isAgreeWithBylaws(), user.isAgreeWithPicturesAndAudio(), user.isReceiveClubinfo(), user.isReceiveInfoAboutPromotionsAndFederalMatters(), user.getType(), user.getScore(), user.getGrade(), user.getAttendancesById(), user.getCommentRepliesById(), user.getCommentsById(), user.getCourseModuleViewersById(), user.getFormulasById(), user.getAddressByAddressId(), user.getFormulasByFormulaId());
     }
 
     @Transient
@@ -95,17 +105,6 @@ public class User implements IUser {
 
     @OneToMany(mappedBy = "usersByTeacherId", cascade = CascadeType.PERSIST)
     private Collection<Formula> formulasById;
-
-    @ManyToMany(mappedBy = "usersById")
-    private Collection<Activity> activityById;
-
-  /*  @ManyToOne
-    @JoinColumn(name = "ActivityId", referencedColumnName = "Id")
-    private Activity registeredtoActivityByActivityId;
-
-    @ManyToOne
-    @JoinColumn(name = "ActivityId", referencedColumnName = "Id")
-    private Activity notRegisteredToActivityByActivityId;*/
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "AddressId")
@@ -132,7 +131,14 @@ public class User implements IUser {
 
     public void setUserName(String userName) {
         if (empty(userName)) {
-            throw new CRuntimeException("Username can not be empty!");
+            throw new CRuntimeException("Gebruikersnaam kan niet leeg zijn!");
+        }else if(!userName.isEmpty() || userName != null){
+            String regex = "^[A-Z]{1}[A-Za-z]+([0-9]*)?([A-Za-z]*)?$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(userName);
+            if(!matcher.matches()){
+                throw new CRuntimeException("Validatie error bij gebruikersnaam: Moet starten met een hoofdletter gevolgd door minstens 1 kleine letter en mag geen spaties bevatten. Mag cijfers hebben.");
+            }
         }
         this.userName = userName;
     }
@@ -145,13 +151,13 @@ public class User implements IUser {
 
     public void setEmail(String email) {
         if(empty(email)) {
-            throw new CRuntimeException("Email can not be empty!");
-        } else if (email.isEmpty() || email != null) {
+            throw new CRuntimeException("Email kan niet leeg zijn!");
+        } else if (!email.isEmpty() || email != null) {
             String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(email);
             if (!matcher.matches()) {
-                throw new CRuntimeException("Validation error in email.");
+                throw new CRuntimeException("Validatie error in email.");
             } else {
                 this.email = email;
             }
@@ -166,7 +172,7 @@ public class User implements IUser {
 
     public void setFirstname(String firstname) {
         if (empty(firstname)) {
-            throw new CRuntimeException("Firstname can not be empty!");
+            throw new CRuntimeException("Voornaam kan niet leeg zijn!");
         }
         subject.firePropertyChange("firstname", this.firstname, firstname);
         this.firstname = firstname;
@@ -180,7 +186,7 @@ public class User implements IUser {
 
     public void setLastname(String lastname) {
         if (empty(lastname)) {
-            throw new CRuntimeException("Lastname can not be empty!");
+            throw new CRuntimeException("Naam kan niet leeg zijn!");
         }
         this.lastname = lastname;
     }
@@ -196,7 +202,7 @@ public class User implements IUser {
 
     public void setGender(Integer gender) {
         if (gender == 0) {
-            throw new CRuntimeException("Gender can not be empty!");
+            throw new CRuntimeException("Geslacht kan niet leeg zijn!");
         }
         this.gender = gender;
     }
@@ -210,13 +216,13 @@ public class User implements IUser {
     public void setNationalInsuranceNumber(String nationalInsuranceNumber) {
         try {
             if(empty(nationalInsuranceNumber)) {
-                throw new CRuntimeException("National Insurance Number can not be empty!");
+                throw new CRuntimeException("Rijksregisternummer kan niet leeg zijn!");
             } else if (!nationalInsuranceNumber.isEmpty() || nationalInsuranceNumber != null) {
                 String regex = "^[0-9]{2}.[0-9]{2}.[0-9]{2}-[0-9]{3}.[0-9]{2}$"; // bv. 99.04.05-233.75
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(nationalInsuranceNumber);
                 if (!matcher.matches()) {
-                    throw new CRuntimeException("Validation error in national insurance number. Requires: fex. 99.04.05-233.75");
+                    throw new CRuntimeException("Validatie error in rijksregisternummer. Vereiste: vb. 99.04.05-233.75");
                 } else {
                     this.nationalInsuranceNumber = nationalInsuranceNumber;
                 }
@@ -244,7 +250,7 @@ public class User implements IUser {
 
     public void setBornIn(String bornIn) {
         if (empty(bornIn)) {
-            throw new CRuntimeException("Born in place can not be empty!");
+            throw new CRuntimeException("Geboorteplaats kan niet leeg zijn!");
         }
         this.bornIn = bornIn;
     }
@@ -267,7 +273,7 @@ public class User implements IUser {
 
     public void setMobilePhoneNumber(String mobilePhoneNumber) {
         if (empty(mobilePhoneNumber)) {
-            throw new CRuntimeException("Mobile phone number is required!");
+            throw new CRuntimeException("Gsmnummer is verplicht!");
         }
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
@@ -365,6 +371,18 @@ public class User implements IUser {
         this.grade = grade;
     }
 
+    @Column(name = "IsNoMember")
+    public Boolean getIsNoMember(){
+        if(isNoMember == null){
+            return false;
+        }
+        return isNoMember;
+    }
+
+    public void setIdNoMember(boolean isNoMember){
+        this.isNoMember = isNoMember;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -395,12 +413,6 @@ public class User implements IUser {
     @Override
     public int hashCode() {
         return Objects.hash(id, userName, email, firstname, lastname, gender, nationalInsuranceNumber, registrationdate, bornIn, birthday, mobilePhoneNumber, phoneNumber, emailParent, agreeWithBylaws, agreeWithPicturesAndAudio, receiveClubinfo, receiveInfoAboutPromotionsAndFederalMatters, type, score, grade);
-    }
-
-    public Collection<Activity> getActivityById(){ return activityById; }
-
-    public void setActivityById(Collection<Activity> activityById){
-        this.activityById = activityById;
     }
 
     public Collection<Attendance> getAttendancesById() {
@@ -451,22 +463,6 @@ public class User implements IUser {
     public void setAddressByAddressId(Address addressByAddressId) {
         this.addressByAddressId = addressByAddressId;
     }
-
-   /* public Activity getRegisteredtoActivityByActivityId() {
-        return registeredtoActivityByActivityId;
-    }
-
-    public void setRegisteredtoActivityByActivityId(Activity registeredtoActivityByActivityId) {
-        this.registeredtoActivityByActivityId = registeredtoActivityByActivityId;
-    }
-
-    public Activity getNotRegisteredToActivityByActivityId() {
-        return notRegisteredToActivityByActivityId;
-    }
-
-    public void setNotRegisteredToActivityByActivityId(Activity notRegisteredToActivityByActivityId) {
-        this.notRegisteredToActivityByActivityId = notRegisteredToActivityByActivityId;
-    }*/
 
     public Formula getFormulasByFormulaId() {
         if(formulasByFormulaId == null){

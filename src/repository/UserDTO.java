@@ -37,11 +37,10 @@ public class UserDTO {
     private Collection<Formula> formulasById;
     private Address addressByAddressId;
     private Formula formulasByFormulaId;
-    private Collection<Activity> activityById;
 
     public UserDTO() { }
 
-    public UserDTO(int id, String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId, Collection<Activity> activityById) {
+    public UserDTO(int id, String userName, String email, String firstname, String lastname, Integer gender, String nationalInsuranceNumber, Date registrationdate, String bornIn, Date birthday, String mobilePhoneNumber, String phoneNumber, String emailParent, boolean agreeWithBylaws, boolean agreeWithPicturesAndAudio, boolean receiveClubinfo, boolean receiveInfoAboutPromotionsAndFederalMatters, String type, Integer score, Integer grade, Collection<Attendance> attendancesById, Collection<CommentReply> commentRepliesById, Collection<Comment> commentsById, Collection<CourseModuleViewer> courseModuleViewersById, Collection<Formula> formulasById, Address addressByAddressId, Formula formulasByFormulaId) {
         this.id = id;
         setUserName(userName);
         setEmail(email);
@@ -68,12 +67,11 @@ public class UserDTO {
         setCourseModuleViewersById(courseModuleViewersById);
         setFormulasByFormulaId(formulasByFormulaId);
         setFormulasById(formulasById);
-        setActivityById(activityById);
         setAddressByAddressId(addressByAddressId);
     }
 
     public User toUser() {
-        return new User(this.getUserName(), this.getEmail(), this.getFirstname(), this.getLastname(), this.getGender(), this.getNationalInsuranceNumber(), this.getRegistrationdate(), this.getBornIn(), this.getBirthday(), this.getMobilePhoneNumber(), this.getPhoneNumber(), this.getEmailParent(), this.isAgreeWithBylaws(), this.isAgreeWithPicturesAndAudio(), this.isReceiveClubinfo(), this.isReceiveInfoAboutPromotionsAndFederalMatters(), this.getType(), this.getScore(), this.getGrade(), this.getAttendancesById(), this.getCommentRepliesById(), this.getCommentsById(), this.getCourseModuleViewersById(), this.getFormulasById(), this.getAddressByAddressId(), this.getFormulasByFormulaId(), this.getActivityById());
+        return new User(this.getUserName(), this.getEmail(), this.getFirstname(), this.getLastname(), this.getGender(), this.getNationalInsuranceNumber(), this.getRegistrationdate(), this.getBornIn(), this.getBirthday(), this.getMobilePhoneNumber(), this.getPhoneNumber(), this.getEmailParent(), this.isAgreeWithBylaws(), this.isAgreeWithPicturesAndAudio(), this.isReceiveClubinfo(), this.isReceiveInfoAboutPromotionsAndFederalMatters(), this.getType(), this.getScore(), this.getGrade(), this.getAttendancesById(), this.getCommentRepliesById(), this.getCommentsById(), this.getCourseModuleViewersById(), this.getFormulasById(), this.getAddressByAddressId(), this.getFormulasByFormulaId());
     }
 
     public String getUserName() {
@@ -127,7 +125,7 @@ public class UserDTO {
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(nationalInsuranceNumber);
                 if (!matcher.matches()) {
-                    throw new CRuntimeException("Validation error in national insurance number. Requires: fex. 99.04.05-233.75");
+                    throw new CRuntimeException("Validatie error bij rijksregisternummer: vb. 99.04.05-233.75");
                 } else {
                     this.nationalInsuranceNumber = nationalInsuranceNumber;
 
@@ -318,9 +316,4 @@ public class UserDTO {
         this.formulasByFormulaId = formulasByFormulaId;
     }
 
-    public Collection<Activity> getActivityById(){ return activityById; }
-
-    public void setActivityById(Collection<Activity> activityById){
-        this.activityById = activityById;
-    }
 }

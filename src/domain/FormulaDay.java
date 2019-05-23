@@ -1,20 +1,24 @@
 package domain;
 
+import javax.ejb.Local;
 import javax.persistence.*;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
+@Table(name = "FormulaDay")
+@NamedQueries({
+        @NamedQuery(name = "FormulaDay.findByDay", query = "select f from FormulaDay f where f.day = :day")
+})
 public class FormulaDay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int formulaDayId;
     private int day;
-    //private Object startTime;
-    //private Object endTime;
-
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "formulaDayByFormulaDayId")
-    private Collection<FormulaFormulaDay> formulaFormulaDaysByFormulaDayId;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
     @Column(name = "FormulaDayId")
     public int getFormulaDayId() {
@@ -25,7 +29,6 @@ public class FormulaDay {
         this.formulaDayId = formulaDayId;
     }
 
-    @Basic
     @Column(name = "Day")
     public int getDay() {
         return day;
@@ -34,27 +37,27 @@ public class FormulaDay {
     public void setDay(int day) {
         this.day = day;
     }
-/*
+
     @Basic
     @Column(name = "StartTime")
-    public Object getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Object startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
     @Basic
     @Column(name = "EndTime")
-    public Object getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Object endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
-*/
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,13 +72,5 @@ public class FormulaDay {
     @Override
     public int hashCode() {
         return Objects.hash(formulaDayId, day/*, startTime, endTime*/);
-    }
-
-    public Collection<FormulaFormulaDay> getFormulaFormulaDaysByFormulaDayId() {
-        return formulaFormulaDaysByFormulaDayId;
-    }
-
-    public void setFormulaFormulaDaysByFormulaDayId(Collection<FormulaFormulaDay> formulaFormulaDaysByFormulaDayId) {
-        this.formulaFormulaDaysByFormulaDayId = formulaFormulaDaysByFormulaDayId;
     }
 }

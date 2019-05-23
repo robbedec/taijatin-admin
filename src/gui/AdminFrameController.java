@@ -35,13 +35,13 @@ public class AdminFrameController extends BorderPane {
     public AdminFrameController(DomainController dc) {
         this.dc = dc;
 
-        overviewPanelController = new OverviewPanelController(this.dc, Arrays.asList(Types.values()));
+        overviewPanelController = new OverviewPanelController(this.dc, Arrays.asList(Types.values()), Arrays.asList(Grades.values()));
         //dc.addPropertyChangeListener(overviewPanelController);
 
         detailPanelController = new DetailPanelController(this.dc);
         dc.addPropertyChangeListener(detailPanelController);
 
-        activityOverviewPanelController = new ActivityOverviewPanelController(this.dc, Arrays.asList(TypeOfActivity.values()));
+        activityOverviewPanelController = new ActivityOverviewPanelController(this.dc, Arrays.asList(TypeOfActivity.values()), Arrays.asList(Status.values()));
 
         activityDetailPanelController = new ActivityDetailPanelController(this.dc);
         dc.addActivityPropertyChangeListener(activityDetailPanelController);

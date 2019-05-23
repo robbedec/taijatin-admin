@@ -6,7 +6,6 @@ import repository.ActivityDTO;
 import repository.UserDTO;
 
 import java.beans.PropertyChangeListener;
-import java.lang.reflect.Method;
 import java.util.Collection;
 
 public class DomainController {
@@ -21,8 +20,16 @@ public class DomainController {
         return club.getFilteredMembers();
     }
 
-    public void filterUsers(String userName, int index){
-        club.filterUsers(userName, index);
+    public ObservableList<User> getUnfilteredMembers() {
+        return club.getLeden();
+    }
+
+    public ObservableList<Activity> getUnfilteredActivities() {
+        return club.getActivities();
+    }
+
+    public void filterUsers(String userName, int index1, int index2){
+        club.filterUsers(userName, index1, index2);
     }
 
     public void setCurrentUser(UserDTO userDto) {
@@ -59,9 +66,19 @@ public class DomainController {
         return club.getTypesOfUser();
     }
 
+    public Collection<String> getTeacherNames(){
+        return club.getTeachers();
+    }
+
+    public User getTeacherByUserName(String userName){
+        return club.getTeacherByUserName(userName);
+    }
+
     public Collection<Activity> getFilteredActivities() {
         return club.getFilteredActivities();
     }
+
+    public Collection<CourseModule> getCourseModules() { return club.getCourseModules(); }
 
     public void setCurrentActivity(ActivityDTO activityDto){
         try {
@@ -76,8 +93,8 @@ public class DomainController {
         }
     }
 
-    public void filterActivities(String name, int index){
-        club.filterActivities(name, index);
+    public void filterActivities(String name, int index1, int index2){
+        club.filterActivities(name, index1, index2);
     }
 
     public void addActivityPropertyChangeListener(PropertyChangeListener pcl) {
@@ -148,5 +165,25 @@ public class DomainController {
         original.setStatus(dto.getStatus());
         original.setNumberOfParticipants(dto.getNumberOfParticipants());
         original.setMaxNumberOfParticipants(dto.getMaxNumberOfParticipants());
+    }
+
+    public void refrestNotRegisteredList(ActivityDTO aDto){
+        club.refreshNotRegisteredList(aDto);
+    }
+
+    public void addNoMember(ActivityDTO activity, User u) {
+        club.addNoMember(activity, u);
+    }
+
+    public boolean isFullActivity(){
+        return club.isFullActivity();
+    }
+
+    public boolean isRegistered(String name) {
+        return club.isRegistered(name);
+    }
+
+    public void addFormulaDaysToFormula(String formulaName){
+        club.addFormulaDaysToFormula(formulaName);
     }
 }

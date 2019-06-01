@@ -156,6 +156,7 @@ public class DomainController {
         original.setNationalInsuranceNumber(dto.getNationalInsuranceNumber());
         original.setType(dto.getType());
         original.setAddressByAddressId(dto.getAddressByAddressId());
+        original.setScore(dto.getScore());
     }
 
     public void mergeActivity(Activity dto, Activity original) {

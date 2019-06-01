@@ -245,7 +245,12 @@ public class UserDTO {
     }
 
     public Integer getScore() {
-        return score;
+
+        if(this.score == null){
+            return 0;
+        } else {
+            return score;
+        }
     }
 
     public void setScore(Integer score) {
